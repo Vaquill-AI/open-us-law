@@ -18,7 +18,7 @@ each section from its anchor until the next anchor; metadata trailers
 are stripped to keep just the substantive rule text.
 
 Geo-restricted; uses Webshare US proxy + Mozilla UA. Rate-limited politely
-(2 workers, 1.5s pause per chapter) — the site 429s at >4 req/s.
+(2 workers, 1.5s pause per chapter) - the site 429s at >4 req/s.
 """
 
 from __future__ import annotations
@@ -95,13 +95,13 @@ def fetch(url: str, retries: int = 5) -> Optional[str]:
             if r.status_code == 200:
                 return r.text
             if r.status_code == 429:
-                # Rate limited — back off exponentially
+                # Rate limited - back off exponentially
                 time.sleep(2 ** attempt)
                 continue
             if r.status_code in (502, 503, 504):
                 time.sleep(2)
                 continue
-            # Other status — give up
+            # Other status - give up
             return None
         except Exception:
             time.sleep(2)

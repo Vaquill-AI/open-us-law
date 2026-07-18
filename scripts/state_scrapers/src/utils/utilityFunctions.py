@@ -4,7 +4,7 @@ The scrapers build ``Node`` pydantic models and call ``insert_node(...)`` (in
 ``scrapingHelpers``), which routes here to ``pydantic_insert``. In this open
 edition, ``pydantic_insert`` appends each node as one JSON line to
 ``$OUT_DIR/<table_name>.jsonl`` (default ``./data``). No database, no cloud
-storage, and no credentials are required — you run a scraper, you get a JSONL
+storage, and no credentials are required - you run a scraper, you get a JSONL
 file of normalized statutory nodes.
 
     OUT_DIR=./data python -m src.scrapers.us.states.ut.statutes.scrapeUT

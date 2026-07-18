@@ -27,7 +27,7 @@ Each rule set is rendered one of two ways, both of which resolve to a single
   1. PLAIN     /court_rules/<code>/id/<rule_id>/
                (cr, cp, ev, gp, ra, sg, parts of ap)
   2. SUBTYPE   /court_rules/<code>/subtype/<subtype>/id/<rule_id>/
-               (ms, ju, dc, pr, parts of ap — these sets are split into named
+               (ms, ju, dc, pr, parts of ap - these sets are split into named
                 sub-collections, e.g. pr/subtype/admi = Rules for Admission to
                 the Bar)
 
@@ -424,7 +424,7 @@ def to_chunk_record(r: Rule) -> dict:
         "act_id": act_id,
         "corpus_type": "state_rules",
         # Canonical value per CANONICAL_CATEGORIES; see
-        # app/services/us_statutes_taxonomy.py (was 'state_court_rule' —
+        # app/services/us_statutes_taxonomy.py (was 'state_court_rule' -
         # 2026-07-16 audit fix).
         "category": "state_rules",
         "document_type": "court_rule",

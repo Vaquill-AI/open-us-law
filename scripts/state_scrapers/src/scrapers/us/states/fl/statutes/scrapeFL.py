@@ -54,7 +54,7 @@ SKIP_TITLE = 0
 # "1.05  [Repealed by s. 7, ch. 99-3.]". Detected case-insensitively.
 RESERVED_KEYWORDS = ["[repealed", "[reserved", "[expired", "[transferred", "[renumbered", "[former"]
 
-# Pattern: "Title 1" / "Chapter 12" / "Part II" — first token is label, second
+# Pattern: "Title 1" / "Chapter 12" / "Part II" - first token is label, second
 # is the number. Hardened: if the split fails we skip the entry with a warning
 # instead of crashing the whole title.
 _NUMBER_TOKEN_RE = re.compile(r"^\S+\s+(\S+)")

@@ -177,7 +177,7 @@ def scrape_all_articles(corpus_node: Node) -> None:
 
     # Insert all Article structure nodes up front (cheap, idempotent), then
     # hand the actual section walks to a thread pool. Each Article walk is
-    # independent — no cross-article shared state.
+    # independent - no cross-article shared state.
     work: List[Tuple[Node, str, str]] = []
     for code, name in articles:
         node_id = f"{corpus_node.node_id}/article={code}"

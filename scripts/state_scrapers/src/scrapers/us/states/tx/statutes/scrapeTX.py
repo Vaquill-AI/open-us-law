@@ -75,7 +75,7 @@ STATUTE_ORIGIN = "https://statutes.capitol.texas.gov"
 
 # All 26 Texas codes. Verified 2026-05-11 by probing
 # https://tcss.legis.texas.gov/resources/{CODE}/htm/{CODE}.*.htm.
-# Note: the "Code Construction Act" is NOT a standalone code — it lives as
+# Note: the "Code Construction Act" is NOT a standalone code - it lives as
 # chapters 311-312 inside the Government Code, so it is not listed here.
 TX_CODES: List[Tuple[str, str]] = [
     ("AG", "Agriculture Code"),
@@ -264,7 +264,7 @@ def _fetch_chapters_quicksearch(code: str) -> list:
     out = []
     for it in items:
         name = (it.get("text") or "").strip()
-        # url is like "SD.1" — build full HTML URL on the resources host.
+        # url is like "SD.1" - build full HTML URL on the resources host.
         rel = (it.get("url") or "").strip()
         full = f"{TCAS_RESOURCES}{code}/htm/{rel}.htm" if rel else ""
         if name and full:
@@ -288,7 +288,7 @@ def _fetch_chapters(code: str):
         + f"{code}/{code}/null/null/null/null/null/null/null/null/htm"
     )
     try:
-        # 120s timeout — TX API is intermittently slow from non-residential
+        # 120s timeout - TX API is intermittently slow from non-residential
         # IPs and large codes (CR, ED, GV) take 20-90s to enumerate.
         chapters = _get(url, as_json=True, timeout=120.0)
     except Exception as exc:  # noqa: BLE001
@@ -456,7 +456,7 @@ def _scrape_chapter(chapter_entry: dict, code_node: Node, code: str, code_name: 
     raw_name: str = chapter_entry.get("name", "").strip()
     chapter_url: str = chapter_entry.get("url", "").strip()
 
-    # Extract chapter number. Some codes (notably CR — Code of Criminal
+    # Extract chapter number. Some codes (notably CR - Code of Criminal
     # Procedure) return a placeholder "Chapter Title Not Found" in the
     # ``name`` field instead of a real "CHAPTER N." string, but the ``url``
     # field still carries the correct chapter ID

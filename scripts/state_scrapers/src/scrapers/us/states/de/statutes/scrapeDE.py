@@ -166,7 +166,7 @@ def scrape_all_titles(node_parent: Node):
     is set by env var ``VAQUILL_TITLE_WORKERS`` (default 8). The HTTP layer
     uses a connection pool so concurrent requests share keep-alive sockets.
     JsonlSink + r2_sync + patch._state_lock all serialize the small critical
-    sections — everything else (HTTP, parse) runs in parallel.
+    sections - everything else (HTTP, parse) runs in parallel.
 
     Resume: titles previously completed are persisted in
     ``state_de_titles_done.txt`` and skipped entirely on re-runs (no HTTP
@@ -182,7 +182,7 @@ def scrape_all_titles(node_parent: Node):
     soup = get_url_as_soup(TOC_URL).find(id="content")
     all_title_containers = soup.find_all("a")
 
-    # Build the list of title work items first (small, sequential — pure parse).
+    # Build the list of title work items first (small, sequential - pure parse).
     work: List[Node] = []
     for i, title_container in enumerate(all_title_containers):
         if i < SKIP_TITLE:

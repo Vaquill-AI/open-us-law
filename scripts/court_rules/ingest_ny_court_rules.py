@@ -206,7 +206,7 @@ def _to_chunk_record(sec: NySection) -> dict:
         "act_id": act_id,
         "corpus_type": "state_rules",
         # Canonical value per CANONICAL_CATEGORIES; see
-        # app/services/us_statutes_taxonomy.py (was 'state_court_rule' —
+        # app/services/us_statutes_taxonomy.py (was 'state_court_rule' -
         # 2026-07-16 audit fix).
         "category": "state_rules",
         "document_type": "court_rule",
@@ -340,7 +340,7 @@ async def _new_warmed_context(p, max_attempts: int = 8):
                 timezone_id="America/New_York",
                 java_script_enabled=True,
             )
-            # Apply playwright-stealth — patches navigator.webdriver, plugins,
+            # Apply playwright-stealth - patches navigator.webdriver, plugins,
             # languages, chrome.runtime, permissions, WebGL fingerprint, etc.
             if _STEALTH_AVAILABLE:
                 await Stealth().apply_stealth_async(ctx)
@@ -398,7 +398,7 @@ async def _collect_category_parts(page, cat_slug: str, cat_url: str) -> list[tup
             continue
         part_num = m.group(1)
         text = a["text"]
-        # text is like "100 - Judicial Conduct" — split on " - " for name
+        # text is like "100 - Judicial Conduct" - split on " - " for name
         if " - " in text:
             _, _, name = text.partition(" - ")
             name = name.strip()
@@ -437,7 +437,7 @@ async def _scrape_part(page, cat_slug: str, cat_name: str,
         if len(body) >= 500 and (part_marker_a in body or part_marker_b in body):
             # Page is real and matches the Part requested
             break
-        # Wrong content (CF intermediate, blank, or wrong page) — retry
+        # Wrong content (CF intermediate, blank, or wrong page) - retry
         print(
             f"      retry {attempt+1}: body={len(body)} chars, "
             f"part-marker={(part_marker_a in body or part_marker_b in body)}",

@@ -4,8 +4,8 @@
 corpus_type='state_rules', act_id prefix 'SRULES_<ST>_'
 
 Currently configured states:
-  - ca (California Rules of Court)  — courts.ca.gov/cms/rules/index/<title>
-  - mt (Administrative Rules of Montana)  — rules.mt.gov (NOTE: this is admin
+  - ca (California Rules of Court)  - courts.ca.gov/cms/rules/index/<title>
+  - mt (Administrative Rules of Montana)  - rules.mt.gov (NOTE: this is admin
        rules, not court rules; renaming will happen later if needed)
 
 Adding more states: provide a scrape_<st>() function + register in STATE_SCRAPERS.

@@ -7,7 +7,7 @@ of Maryland Regulations). dsd.maryland.gov/Pages/COMARSearch.aspx redirects here
 No aggregators (no Justia/ZenRows).
 
 The DSD platform exposes a fully structured TOC as JSON, so discovery is lossless
-and fast — there is no need to parse navigation HTML:
+and fast - there is no need to parse navigation HTML:
 
     /us/md/exec/comar/index.json
         -> the ENTIRE COMAR hierarchy tree in one ~575KB file. Each node carries
@@ -40,7 +40,7 @@ Title codes can carry a letter suffix (13A, 13B, 19A). corpus_type='state_regula
 
 A chapter's Authority + Administrative History apply to all of the chapter's
 regulations and are captured into structured fields (statutory_authority,
-history, register_citations, effective_date, prior_effective_dates) — nothing
+history, register_citations, effective_date, prior_effective_dates) - nothing
 discarded.
 
 The host is geo-restricted to the US; Webshare US proxy + Mozilla UA + polite
@@ -273,7 +273,7 @@ def _norm_ws(s: str) -> str:
     return s.strip()
 
 
-# A standalone enumerator paragraph, e.g. "A.", "(1)", "(a)", "B-1." — when a
+# A standalone enumerator paragraph, e.g. "A.", "(1)", "(a)", "B-1." - when a
 # paragraph collapses to just its label, the following paragraph holds its text.
 _LONE_ENUM_RE = re.compile(r"^(?:\([0-9A-Za-z]+\)|[0-9A-Za-z]{1,4}[.\-]?)$")
 

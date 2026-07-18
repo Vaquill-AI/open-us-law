@@ -343,7 +343,7 @@ def _emit_section(
 ) -> None:
     """Build and insert one section node from a FindLaw section page."""
     # Canonical section number: drop the chapter prefix, then rejoin. The
-    # URL segment for §1-440.19 is "1-440-19" — FindLaw flattens dots to
+    # URL segment for §1-440.19 is "1-440-19" - FindLaw flattens dots to
     # hyphens. We surface BOTH forms: the URL form is the node ``number``
     # (uniquely keys this node), and the citation uses the same form for
     # consistency. Consumers that need dotted form can normalize.
@@ -442,7 +442,7 @@ def _fetch_section_content(
             continue
         if low.startswith("findlaw codes may not reflect"):
             continue
-        # "Current as of January 01, 2023 | Updated by Findlaw Staff" — this
+        # "Current as of January 01, 2023 | Updated by Findlaw Staff" - this
         # acts as a publication-date marker; record it as history rather
         # than dropping silently so downstream tooling can surface vintage.
         if low.startswith("current as of") or low.startswith("updated by"):

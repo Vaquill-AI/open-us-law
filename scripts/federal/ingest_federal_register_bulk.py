@@ -109,7 +109,7 @@ UA = "Vaquill-Legal-Ingest/2.0 (contact: priyansh@vaquill.ai)"
 DATA_DIR = Path(os.environ.get("OUT_DIR", "./data"))
 DATA_DIR.mkdir(parents=True, exist_ok=True)
 
-# Fields we ask the FR API to inline on every list result — matches every
+# Fields we ask the FR API to inline on every list result - matches every
 # key our old per-doc script populated, so downstream sync / embed is
 # unchanged.
 FR_LIST_FIELDS = [

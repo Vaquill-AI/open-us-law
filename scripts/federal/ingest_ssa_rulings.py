@@ -243,7 +243,7 @@ def _parse_subject_index(program: str, url: str, html: str) -> SubjectIndex:
     # often have two <h2>s: a generic banner ("Social Security and
     # Acquiescence Rulings") and the specific subject
     # ("Disability, Period of Disability"). We keep the last non-generic,
-    # non-TOC one — that's consistently the specific subject.
+    # non-TOC one - that's consistently the specific subject.
     _GENERIC = re.compile(
         r"social\s+security\s+(and\s+acquiescence\s+)?rulings?",
         re.IGNORECASE,

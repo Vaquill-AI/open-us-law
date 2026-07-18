@@ -244,7 +244,7 @@ def _scrape_chapter(chapter_node: Node, chapter_dotted: str) -> None:
         sec_number = m.group(1)
 
         # Section name is the link text, taken DIRECTLY (no regex slicing
-        # against the cleaned text — that loses the name).
+        # against the cleaned text - that loses the name).
         raw_link_text = _clean_text(link.get_text())
         node_name = _extract_section_name(raw_link_text)
 
@@ -362,12 +362,12 @@ def _fetch_section_content(
                 if not text:
                     continue
                 # The xRef endpoint always appends a literal "here" sentinel
-                # right after the history paragraph — drop it.
+                # right after the history paragraph - drop it.
                 if text.lower() == "here":
                     continue
                 history_lines.append(text)
     except Exception as exc:
-        # Non-fatal — body text is the load-bearing field.
+        # Non-fatal - body text is the load-bearing field.
         print(f"[scrapeAK] xRef fetch failed for {sec_number}: {exc}", flush=True)
 
     addendum: Optional[Addendum] = None
@@ -393,7 +393,7 @@ def _extract_section_name(link_text: str) -> str:
     Link text format: "Sec. 01.05.006.   Adoption of Alaska Statutes; ..."
     We strip the leading "Sec. <N>." prefix and return what remains, which IS
     the section name. The previous regex-based approach tried to strip after a
-    double-space — but `_clean_text` already collapses runs of whitespace, so
+    double-space - but `_clean_text` already collapses runs of whitespace, so
     that double-space anchor never matched.
     """
     text = _clean_text(link_text)
@@ -417,7 +417,7 @@ def _clean_text(raw: str) -> str:
         return ""
     text = raw.replace("\xa0", " ").replace(" ", " ")
     # The akleg pages serve ISO-8859-1; if anything slipped through as
-    # mojibake bytes (e.g. "â") leave it alone — get_url_as_soup decodes
+    # mojibake bytes (e.g. "â") leave it alone - get_url_as_soup decodes
     # via requests' apparent encoding. Just collapse whitespace.
     text = re.sub(r"\s+", " ", text).strip()
     return text

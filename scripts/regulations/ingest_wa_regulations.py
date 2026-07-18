@@ -7,8 +7,8 @@ https://lawfilesext.leg.wa.gov/law/wac/ . No aggregators (no Justia/ZenRows).
 The Code Reviser's "bulk download / web services" landing page
 (leg.wa.gov/code-reviser/bulk-download-and-web-services) now 404s, but the
 underlying bulk file server it pointed at is alive and authoritative. It serves
-the *entire* WAC as a browsable IIS directory tree of static .htm files — one
-file per section — which is effectively a bulk download (fast static host, no
+the *entire* WAC as a browsable IIS directory tree of static .htm files - one
+file per section - which is effectively a bulk download (fast static host, no
 dynamic rate-limiting like app.leg.wa.gov). XML files do not exist (.xml 404s);
 the .htm files ARE the structured source, each delimited by HTML comment field
 markers (`<!-- field: Citations -->`, `CaptionsTitles`, `Text`, `History`).
@@ -24,7 +24,7 @@ markers (`<!-- field: Citations -->`, `CaptionsTitles`, `Text`, `History`).
 
 Repealed/recodified/decodified sections are listed only in the chapter's
 disposition table; they get no standalone .htm in the directory, so crawling
-the listing yields live (in-force) sections only — same behavior as the OAC
+the listing yields live (in-force) sections only - same behavior as the OAC
 ingester.
 
 A section's History field carries everything WA exposes:

@@ -374,7 +374,7 @@ def _extract_doc_text(blob: bytes) -> str:
 
 
 def _extract_pdf_text(blob: bytes) -> str:
-    # pymupdf (fitz) — memory-safe alternative to pdfplumber for large-scale
+    # pymupdf (fitz) - memory-safe alternative to pdfplumber for large-scale
     # scrapes; same output shape.
     import fitz  # pymupdf
 

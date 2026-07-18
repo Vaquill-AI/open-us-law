@@ -11,7 +11,7 @@
 # not from raw counts. Until then a jurisdiction stays out of the dump.
 #
 # dump_ready is computed as (section_count >= floor) AND coverage_verified.
-# Everything below is coverage_verified: false on purpose — nothing ships
+# Everything below is coverage_verified: false on purpose - nothing ships
 # until it has been verified and flipped to true in a reviewed commit.
 
 snapshot:

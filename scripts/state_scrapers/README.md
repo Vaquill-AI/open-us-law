@@ -2,7 +2,7 @@
 
 Scrapers for the compiled statutory code of every US state. Each builds
 structured `Node` objects and writes them as JSONL via the local sink in
-`src/utils/utilityFunctions.py` — no database, no cloud storage, no credentials.
+`src/utils/utilityFunctions.py` - no database, no cloud storage, no credentials.
 
 ## Run one state
 

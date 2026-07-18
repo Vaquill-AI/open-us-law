@@ -19,7 +19,7 @@ Hierarchy (TOC of titles -> chapters -> regulations):
                                                  <a href="/law/kar/titles/{t}/{c}/{r}/">
                                                  "Regulation NNN - <heading> [status]"
                                                  (a "/REG/" suffix variant is the
-                                                 *proposed* version — skipped.)
+                                                 *proposed* version - skipped.)
     /law/kar/titles/{title}/{chapter}/{reg}/   -> the regulation page
 
 NOTE on URL form: the title TOC lives at `titles.htm`, but the working title /
@@ -404,7 +404,7 @@ def parse_reg(html: str, ref: RegRef) -> Reg | None:
         elif label.startswith("NECESSITY"):
             nfc = value
 
-    # --- HISTORY block (effective dates) — lives in a sibling div ---
+    # --- HISTORY block (effective dates) - lives in a sibling div ---
     history_raw = ""
     hist = soup.find("div", class_="history-content")
     if hist:

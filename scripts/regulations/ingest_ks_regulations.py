@@ -521,7 +521,7 @@ def parse_book(
                 cur_article = _ArticleCtx()
                 bucket_key = (cur_agency.number, "")
 
-        # 2. Article boundary(s) on this page — there may be more than one.
+        # 2. Article boundary(s) on this page - there may be more than one.
         article_hits = _detect_articles(page_text)
         if article_hits:
             # If a new article header appears, flush prior bucket then continue.
@@ -577,7 +577,7 @@ def to_chunk_record(r: Rule) -> dict:
     section_title = (f"{citation}. {r.rule_title}".rstrip(".") if r.rule_title else citation)
     text = r.raw_text
 
-    # Rich, searchable embed header — surfaces the rich metadata so it is
+    # Rich, searchable embed header - surfaces the rich metadata so it is
     # retrievable, not just stored (per ingestion spec).
     meta_lines: list[str] = []
     if r.effective_date:

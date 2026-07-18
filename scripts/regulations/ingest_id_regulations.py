@@ -17,14 +17,14 @@ page's own JS posts to:
 
 Each `data` item is one IDAPA *chapter docket* (~381 total). `documentNumber`
 is the docket itself: ``<agency>.<chapter>.<subchapter>`` (e.g. ``02.08.01``).
-`file` is a PDF on Azure blob storage — the rules are PDF-ONLY (no HTML or
+`file` is a PDF on Azure blob storage - the rules are PDF-ONLY (no HTML or
 bulk XML/zip export exists; checked: every one of the 381 docs is `.pdf`).
 
 So discovery is structured JSON; the bodies are PDFs parsed with pdfplumber
 (same approach as ingest_pr_codes.py). Each chapter PDF carries many numbered
 *sections* delimited by ``NNN. TITLE.`` headers (zero-padded 3-digit number,
 ALL-CAPS title). Per IDAPA convention each provision ends with one or more
-``(M-D-YY)`` parenthetical date codes — the last is the effective date, the
+``(M-D-YY)`` parenthetical date codes - the last is the effective date, the
 full set is the amendment history. We emit one chunk per section.
 
 IDAPA hierarchy / cite form:
@@ -406,7 +406,7 @@ def parse_chapter_pdf(text: str, doc: ChapterDoc) -> list[Section]:
         )
 
     # Backfill statutory authority across the chapter (000 section preferred,
-    # else the preamble Q&A block). Never strip — capture into structured field.
+    # else the preamble Q&A block). Never strip - capture into structured field.
     authority = chapter_legal_auth or preamble_auth
     for s in out:
         s.statutory_authority = authority

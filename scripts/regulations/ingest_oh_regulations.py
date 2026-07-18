@@ -175,7 +175,7 @@ def _strip_metadata(body: str) -> str:
     body = re.sub(r"PDF:\s*Download Authenticated PDF\s*", "", body, flags=re.IGNORECASE)
     # Strip a leading run of orphaned metadata values (dates, "Ch 119.",
     # promulgation fragments) that precede the substantive text. Stop at the
-    # first real paragraph marker — "(A)", a digit list, or a capitalized
+    # first real paragraph marker - "(A)", a digit list, or a capitalized
     # sentence longer than a fragment.
     leading_noise = re.compile(
         rf"^\s*(?:(?:{_MONTHS})\s+\d{{1,2}},\s+\d{{4}}"
@@ -262,7 +262,7 @@ def parse_chapter(html: str, chapter_id: str, chapter_url: str) -> list[Rule]:
         end = matches[i + 1].start() if i + 1 < len(matches) else len(text)
         region = text[start:end]
         # Capture the labeled metadata block (effective date, authority, etc.)
-        # BEFORE cleaning, so nothing is lost — it becomes structured metadata.
+        # BEFORE cleaning, so nothing is lost - it becomes structured metadata.
         meta = _extract_rule_meta(region)
         body = _strip_metadata(region)
         for trail in ("\nView ", "\nLast updated"):

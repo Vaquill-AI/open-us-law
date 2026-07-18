@@ -8,7 +8,7 @@ Casetext / ZenRows / etc.).
 The SRCA web app exposes the NMAC as a hierarchy of Title -> Chapter -> Part ->
 Section, with the citable unit being the *Section* (cite form: "T.C.P.S NMAC",
 e.g. "20.11.42.1 NMAC"). The chapter and Part landing pages on srca.nm.gov are
-informational only — they list reserved/vacant slots but DO NOT enumerate live
+informational only - they list reserved/vacant slots but DO NOT enumerate live
 Parts. The actual rule text lives as one PDF per Part at the deterministic URL
 
     https://www.srca.nm.gov/parts/title{TT}/{TT}.{CCC}.{PPPP}.pdf
@@ -292,7 +292,7 @@ def _collect_year_index_pdfs() -> list[str]:
 
 
 def _pdf_text(pdf_bytes: bytes) -> str:
-    # pymupdf (fitz) — 5-10x faster + doesn't leak page trees like pdfplumber
+    # pymupdf (fitz) - 5-10x faster + doesn't leak page trees like pdfplumber
     # at scale (the pdfplumber leak took RSS to ~5.8 GB on this scraper).
     import fitz  # pymupdf
 
@@ -307,7 +307,7 @@ def _pdf_text(pdf_bytes: bytes) -> str:
 
 def discover_part_triples_from_indexes() -> set[tuple[int, int, int]]:
     """Return the union set of (title, chapter, part) found in every NMAC
-    Index PDF. Each Index PDF lists every Part touched in that year — across
+    Index PDF. Each Index PDF lists every Part touched in that year - across
     2001-current that union is effectively the master list of live Parts.
     """
     triples: set[tuple[int, int, int]] = set()
@@ -490,7 +490,7 @@ def parse_part_pdf(
         section_histories[sec_num] = history_raw
 
     # Section .1 = ISSUING AGENCY ; Section .3 = STATUTORY AUTHORITY (per NMAC
-    # "Anatomy of a Rule" — the seven mandatory sections start every Part).
+    # "Anatomy of a Rule" - the seven mandatory sections start every Part).
     issuing_agency = section_bodies.get(1, "")[:1500]
     statutory_authority = section_bodies.get(3, "")[:2000]
 

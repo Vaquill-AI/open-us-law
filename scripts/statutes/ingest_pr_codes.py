@@ -7,9 +7,9 @@ instead each major Code is its own multi-part PDF set. We ingest the codes
 most useful for legal research:
 
     Civil Code 2020       (Código Civil)        — 7 PDF "Libros"
-    Penal Code 2012       (Código Penal)        — 1 PDF
-    Internal Revenue 2011 (Código de Rentas)    — 1 PDF
-    Incentives Code 2019  (Código de Incentivos)— 1 HTML/PDF
+    Penal Code 2012       (Código Penal)        - 1 PDF
+    Internal Revenue 2011 (Código de Rentas)    - 1 PDF
+    Incentives Code 2019  (Código de Incentivos)- 1 HTML/PDF
 
 The content is in SPANISH (Voyage's multilingual embedder handles this well).
 Each code's body is split on "Artículo N.-<heading>" markers into one chunk

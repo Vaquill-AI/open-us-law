@@ -4,7 +4,7 @@
 OFFICIAL SOURCE ONLY: law.lis.virginia.gov. Virginia's Division of Legislative
 Automated Systems (DLAS) exposes a public RESTful JSON web service (linked from
 https://law.lis.virginia.gov/developers via /jsonapi/), so this scraper hits the
-structured API directly instead of parsing HTML — far faster and lossless.
+structured API directly instead of parsing HTML - far faster and lossless.
 
 API base: https://law.lis.virginia.gov/api
     AdministrativeCodeGetTitleListOfJson

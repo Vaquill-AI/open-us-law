@@ -1,11 +1,11 @@
 # Open US Law
 
-**Open, structured US primary law — plus the scrapers that build it.**  
-State statutory codes, the US Code, the Code of Federal Regulations, state administrative regulations, state and federal constitutions, and court rules — normalized to JSONL, from official government sources only.
+**Open, structured US primary law - plus the scrapers that build it.**  
+State statutory codes, the US Code, the Code of Federal Regulations, state administrative regulations, state and federal constitutions, and court rules - normalized to JSONL, from official government sources only.
 
-US law is public domain. In *Georgia v. Public.Resource.Org* (2020) the Supreme Court reaffirmed the government-edicts doctrine: statutes, regulations, constitutions, and the official materials legislators produce cannot be copyrighted. Yet clean, structured, bulk access to the **compiled 50-state statutory codes** does not exist in the open — case law (CourtListener, the Caselaw Access Project) and federal law (govinfo USLM XML) are open, but the state codes sit behind commercial APIs. This project publishes that missing layer, and the tooling to reproduce it.
+US law is public domain. In *Georgia v. Public.Resource.Org* (2020) the Supreme Court reaffirmed the government-edicts doctrine: statutes, regulations, constitutions, and the official materials legislators produce cannot be copyrighted. Yet clean, structured, bulk access to the **compiled 50-state statutory codes** does not exist in the open - case law (CourtListener, the Caselaw Access Project) and federal law (govinfo USLM XML) are open, but the state codes sit behind commercial APIs. This project publishes that missing layer, and the tooling to reproduce it.
 
-This README doubles as the **table of contents** — the file tree is deep, so every scraper is linked below.
+This README doubles as the **table of contents** - the file tree is deep, so every scraper is linked below.
 
 ## Contents
 
@@ -31,17 +31,17 @@ pip install -r requirements.txt
 python scripts/federal/download_usc_zips.py --help
 python scripts/federal/parse_ecfr_streaming.py --help
 
-# A state statutory code (Colorado, HTTP — no browser needed):
+# A state statutory code (Colorado, HTTP - no browser needed):
 cd scripts/state_scrapers
 OUT_DIR=./data python -m src.scrapers.us.states.co.statutes.scrapeCO
 #   -> ./data/us_co_statutes.jsonl   (one JSON object per statutory node)
 ```
 
-Swap `co` / `scrapeCO` for any state in the table below. Each script is self-documenting — run it with `--help`, or read its module docstring for the exact source and options.
+Swap `co` / `scrapeCO` for any state in the table below. Each script is self-documenting - run it with `--help`, or read its module docstring for the exact source and options.
 
 ## What you get (output format)
 
-Every scraper writes **JSONL** — one normalized node/section per line — to `$OUT_DIR` (default `./data`). No database, no cloud storage, no credentials. Typical fields:
+Every scraper writes **JSONL** - one normalized node/section per line - to `$OUT_DIR` (default `./data`). No database, no cloud storage, no credentials. Typical fields:
 
 | Field | Meaning |
 |---|---|
@@ -58,8 +58,8 @@ Every scraper writes **JSONL** — one normalized node/section per line — to `
 
 | Source | Script |
 |---|---|
-| US Code — download USLM XML zips | [download_usc_zips.py](scripts/federal/download_usc_zips.py) |
-| US Code — extract zips | [extract_usc_zips.py](scripts/federal/extract_usc_zips.py) |
+| US Code - download USLM XML zips | [download_usc_zips.py](scripts/federal/download_usc_zips.py) |
+| US Code - extract zips | [extract_usc_zips.py](scripts/federal/extract_usc_zips.py) |
 | Code of Federal Regulations (eCFR) | [parse_ecfr_streaming.py](scripts/federal/parse_ecfr_streaming.py) |
 | Federal Register (rules) | [ingest_federal_register_bulk.py](scripts/federal/ingest_federal_register_bulk.py) |
 | IRS Internal Revenue Bulletin | [ingest_irs_irb.py](scripts/federal/ingest_irs_irb.py) |
@@ -67,7 +67,7 @@ Every scraper writes **JSONL** — one normalized node/section per line — to `
 
 ### State statutes (all 50 states)
 
-Run via `cd scripts/state_scrapers && OUT_DIR=./data python -m src.scrapers.us.states.<xx>.statutes.scrape<XX>`. States marked **proxy** geo-restrict non-US IPs — see [caveats](#important-caveats-please-read). A few states also have an **official-source** alternative scraper noted in the last column.
+Run via `cd scripts/state_scrapers && OUT_DIR=./data python -m src.scrapers.us.states.<xx>.statutes.scrape<XX>`. States marked **proxy** geo-restrict non-US IPs - see [caveats](#important-caveats-please-read). A few states also have an **official-source** alternative scraper noted in the last column.
 
 | State | Statute scraper | Notes |
 |---|---|---|
@@ -126,7 +126,7 @@ Run via `cd scripts/state_scrapers && OUT_DIR=./data python -m src.scrapers.us.s
 
 ### State regulations
 
-State administrative codes. Some geo-restrict — see [caveats](#important-caveats-please-read).
+State administrative codes. Some geo-restrict - see [caveats](#important-caveats-please-read).
 
 | State | Regulations scraper |
 |---|---|
@@ -160,32 +160,32 @@ State administrative codes. Some geo-restrict — see [caveats](#important-cavea
 
 ## Important caveats (please read)
 
-**1. Some sources need a US IP / proxy.** A number of state sites geo-restrict non-US traffic or throttle aggressively. Those scripts read `WEBSHARE_USERNAME` / `WEBSHARE_PASSWORD` (a US rotating proxy) from the environment — see [`.env.example`](.env.example) — or you can run from a US host. State **statute** scrapers currently needing a proxy: **AL, CT, IN, NH, NY** (several regulation scrapers too, e.g. MN, WA, WI). If a run returns almost nothing, geo-blocking is the usual cause.
+**1. Some sources need a US IP / proxy.** A number of state sites geo-restrict non-US traffic or throttle aggressively. Those scripts read `WEBSHARE_USERNAME` / `WEBSHARE_PASSWORD` (a US rotating proxy) from the environment - see [`.env.example`](.env.example) - or you can run from a US host. State **statute** scrapers currently needing a proxy: **AL, CT, IN, NH, NY** (several regulation scrapers too, e.g. MN, WA, WI). If a run returns almost nothing, geo-blocking is the usual cause.
 
-**2. Some scripts may stop working over time.** These scrapers target **live government websites**. Those sites get redesigned, move URLs, change HTML, or add anti-bot measures — so a scraper that worked at publish time can break later. When that happens it usually needs a small parser update, not a rewrite. If you hit one, please [open an issue or PR](#contributing); fixes to individual state parsers are exactly where community help compounds.
+**2. Some scripts may stop working over time.** These scrapers target **live government websites**. Those sites get redesigned, move URLs, change HTML, or add anti-bot measures - so a scraper that worked at publish time can break later. When that happens it usually needs a small parser update, not a rewrite. If you hit one, please [open an issue or PR](#contributing); fixes to individual state parsers are exactly where community help compounds.
 
-**3. A browser is needed for a few states.** Most states use plain HTTP (`requests`/`BeautifulSoup`). A handful render statutes via JavaScript and use **Selenium** — you'll need Chrome/Chromium + `chromedriver` on your `PATH` for those. If a scraper imports Selenium and no driver is found, that's why.
+**3. A browser is needed for a few states.** Most states use plain HTTP (`requests`/`BeautifulSoup`). A handful render statutes via JavaScript and use **Selenium** - you'll need Chrome/Chromium + `chromedriver` on your `PATH` for those. If a scraper imports Selenium and no driver is found, that's why.
 
-**4. Snapshots are point-in-time, not current law.** Statutes change continuously. Output is an archive as of the run date — **always verify a section against its official source** before relying on it. This is **not legal advice**.
+**4. Snapshots are point-in-time, not current law.** Statutes change continuously. Output is an archive as of the run date - **always verify a section against its official source** before relying on it. This is **not legal advice**.
 
 ## Licensing & commercial use
 
-The **law itself is public domain** (US government edicts — *Georgia v. Public.Resource.Org*). On top of that:
+The **law itself is public domain** (US government edicts - *Georgia v. Public.Resource.Org*). On top of that:
 
-- **Scripts** — Apache-2.0 ([`LICENSE`](LICENSE)). Free, including commercial use.
-- **Data / compilation** — CC BY 4.0 ([`data/LICENSE.md`](data/LICENSE.md)). Free with attribution.
+- **Scripts** - Apache-2.0 ([`LICENSE`](LICENSE)). Free, including commercial use.
+- **Data / compilation** - CC BY 4.0 ([`data/LICENSE.md`](data/LICENSE.md)). Free with attribution.
 
 **Need more than the open scrapers?** Email **contact@vaquill.ai**:
 
-- **Live, always-fresh data + API** — no scraping, no breakage; current law, low latency.
-- **Retrieval-ready data** — pre-chunked, embedded, and citation-linked for RAG.
+- **Live, always-fresh data + API** - no scraping, no breakage; current law, low latency.
+- **Retrieval-ready data** - pre-chunked, embedded, and citation-linked for RAG.
 - **Bulk delivery, SLA, and support.**
-- **Custom coverage** — a jurisdiction or corpus you don't see here.
-- **Commercial data license** — an attribution waiver and/or warranty & indemnity, if CC BY 4.0's terms don't fit your compliance needs.
+- **Custom coverage** - a jurisdiction or corpus you don't see here.
+- **Commercial data license** - an attribution waiver and/or warranty & indemnity, if CC BY 4.0's terms don't fit your compliance needs.
 
 ## Contributing
 
-New-jurisdiction parsers, coverage fixes, and — especially — **repairs to state scrapers that broke when a government site changed** are welcome. Open a PR against the relevant script in the tables above.
+New-jurisdiction parsers, coverage fixes, and - especially - **repairs to state scrapers that broke when a government site changed** are welcome. Open a PR against the relevant script in the tables above.
 
 ## Provenance
 
@@ -193,7 +193,7 @@ All data derives from official government sources (state legislature / secretary
 
 ## Maintained by
 
-[Vaquill](https://www.vaquill.ai). This open corpus is the substrate; Vaquill's API adds continuous freshness, retrieval, and citation resolution on top of it.
+[Vaquill AI](https://www.vaquill.ai). This open corpus is the substrate; Vaquill AI's API adds continuous freshness, retrieval, and citation resolution on top of it.
 
 ---
 

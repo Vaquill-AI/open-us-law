@@ -147,9 +147,9 @@ _AGENCY_HREF_RE = re.compile(r"/CCR/NumericalCCRDocList\.do\?deptID=(\d+)[^\"']*
 _RULE_HREF_RE = re.compile(
     r"/CCR/DisplayRule\.do\?action=ruleinfo&ruleId=(\d+)[^\"']*?seriesNum=([^\"'&]+)"
 )
-# OpenRuleWindow('<ruleVersionId>', '<cite>') — the active version's PDF id.
+# OpenRuleWindow('<ruleVersionId>', '<cite>') - the active version's PDF id.
 _VERSION_RE = re.compile(r"OpenRuleWindow\(\s*'(\d+)'\s*,\s*'([^']+)'\s*\)")
-# "<cite> effective MM/DD/YYYY (PDF)" — the active version's effective date.
+# "<cite> effective MM/DD/YYYY (PDF)" - the active version's effective date.
 _EFF_DATE_RE = re.compile(
     r"effective\s+(\d{1,2}/\d{1,2}/\d{4})\s*\(PDF\)",
     re.IGNORECASE,
@@ -262,7 +262,7 @@ def parse_rule_info(rule: RuleRef, html: str) -> RuleVersion | None:
     m_title = _TITLE_ROW_RE.search(html)
     if m_title:
         raw = html_lib.unescape(m_title.group(1))
-        # raw is "<cite>   <TITLE>" — strip the citation prefix.
+        # raw is "<cite>   <TITLE>" - strip the citation prefix.
         raw = raw.replace("\xa0", " ").strip()
         # Drop a leading copy of the citation (matched loosely so "Part NN"
         # variants are handled).
@@ -307,7 +307,7 @@ _EDITORS_NOTES_RE = re.compile(
 
 
 def _pdf_text(pdf_bytes: bytes) -> str:
-    # pymupdf (fitz) — 5-10x faster than pdfplumber and doesn't leak page
+    # pymupdf (fitz) - 5-10x faster than pdfplumber and doesn't leak page
     # trees the way pdfplumber does at scale. Confirmed OK on this scraper's
     # PDFs after the earlier out-of-memory incident with pdfplumber.
     import fitz  # pymupdf
@@ -395,7 +395,7 @@ def _strip_pdf_header(
             cut = i + 1
             continue
         if any(s.startswith(t.split()[0]) for t in skip_terms if t):
-            # don't be too aggressive — only skip if short
+            # don't be too aggressive - only skip if short
             if len(s) < 80:
                 cut = i + 1
                 continue

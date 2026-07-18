@@ -17,13 +17,13 @@ text are licensed under the **Creative Commons Attribution 4.0 International Lic
 
 You are free to:
 
-- **Share** — copy and redistribute the material in any medium or format.
-- **Adapt** — remix, transform, and build upon the material for any purpose, including
+- **Share** - copy and redistribute the material in any medium or format.
+- **Adapt** - remix, transform, and build upon the material for any purpose, including
   commercially.
 
 Under the following term:
 
-- **Attribution** — You must give appropriate credit, provide a link to the license, and
+- **Attribution** - You must give appropriate credit, provide a link to the license, and
   indicate if changes were made. You may do so in any reasonable manner, but not in any
   way that suggests the licensor endorses you or your use.
 
@@ -32,7 +32,7 @@ Human-readable summary: https://creativecommons.org/licenses/by/4.0/
 
 ### Suggested attribution
 
-> Structured US primary-law data from the Open US Law corpus by Vaquill
+> Structured US primary-law data from the Open US Law corpus by Vaquill AI
 > (https://github.com/Vaquill-AI/open-us-law), used under CC BY 4.0.
 
 ## No warranty; not legal advice
@@ -45,4 +45,4 @@ government source before relying on it.
 ---
 
 SPDX-License-Identifier: CC-BY-4.0
-Copyright (c) 2026 Vaquill AI — compilation and metadata only; the underlying legal text is public domain.
+Copyright (c) 2026 Vaquill AI - compilation and metadata only; the underlying legal text is public domain.

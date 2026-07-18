@@ -7,7 +7,7 @@ the Revisor of Statutes). No aggregators (no Justia/ZenRows/etc.).
 Bulk XML / API: NONE. The Revisor portal serves the statutes/rules as a
 server-rendered HTML application. Every XML/JSON probe 404s
 (/rules/<ch>/full/xml, /rules/xml/<ch>, /rules/<part>/xml,
-/static/data/rules/<ch>.xml). So this scraper parses HTML — but the markup is
+/static/data/rules/<ch>.xml). So this scraper parses HTML - but the markup is
 highly structured, which makes extraction lossless and lets us pull a whole
 chapter (all parts + metadata) in a SINGLE request via the "Full Chapter Text"
 view:

@@ -129,7 +129,7 @@ def fetch(url: str, retries: int = 8) -> str | None:
     last_status = None
     for attempt in range(retries):
         try:
-            # Note: do NOT pass custom Accept/Accept-Language headers — they
+            # Note: do NOT pass custom Accept/Accept-Language headers - they
             # override the impersonation profile's fingerprint and Cloudflare
             # returns 403.
             r = cf_requests.get(
@@ -308,7 +308,7 @@ def discover_rule_set_docs(slug: str) -> list[DocRef]:
         slug, meta["name"], meta["citation_prefix"], meta["guid"],
         [], set(), out,
     )
-    # The TOC commonly emits "Refs & Annos" and "Disposition Table" leaves —
+    # The TOC commonly emits "Refs & Annos" and "Disposition Table" leaves -
     # keep them but tag them so we can filter at chunk-emit time if they have
     # no useful body. (No filtering here; the document parser drops empties.)
     return out
@@ -387,7 +387,7 @@ def parse_document(html: str, ref: DocRef) -> Rule | None:
     body_el = soup.find("div", class_="co_body")
     body_text = _text(body_el)
     if not body_text:
-        # "Refs & Annos" and "Disposition Table" pages — skip
+        # "Refs & Annos" and "Disposition Table" pages - skip
         return None
 
     eff = _text(soup.find("div", class_="co_effectiveDate"))
@@ -558,7 +558,7 @@ def to_chunk_record(r: Rule) -> dict:
         "act_id": act_id,
         "corpus_type": "state_rules",
         # Canonical value per CANONICAL_CATEGORIES; see
-        # app/services/us_statutes_taxonomy.py (was 'state_court_rule' —
+        # app/services/us_statutes_taxonomy.py (was 'state_court_rule' -
         # 2026-07-16 audit fix).
         "category": "state_rules",
         "document_type": "court_rule",

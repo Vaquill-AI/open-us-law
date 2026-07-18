@@ -74,7 +74,7 @@ def insert_node(node: Node, table_name: str, ignore_duplicate=False, debug_mode=
         psycopg.errors.UniqueViolation: If a duplicate node insertion is attempted and `ignore_duplicate` is set to False, this error is raised.
     """
     # Storage: each node is appended to $OUT_DIR/<table>.jsonl by util.pydantic_insert.
-    # Duplicates are handled by deterministic point_ids downstream — we do not
+    # Duplicates are handled by deterministic point_ids downstream - we do not
     # need the original Postgres UniqueViolation/version-tag dance.
     if debug_mode:
         print(f"-Inserting: {node.node_id}")
@@ -83,7 +83,7 @@ def insert_node(node: Node, table_name: str, ignore_duplicate=False, debug_mode=
 
 
 # Vaquill: convenience aliases that the older upstream scrapers reference.
-# All routes end up in the same JSONL sink — the flag names only matter for
+# All routes end up in the same JSONL sink - the flag names only matter for
 # the obsolete Postgres path, which is disabled.
 def insert_node_ignore_duplicate(node: Node, table_name: str, debug_mode: bool = False) -> Node:
     return insert_node(node=node, table_name=table_name, ignore_duplicate=True, debug_mode=debug_mode)

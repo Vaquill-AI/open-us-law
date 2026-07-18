@@ -10,7 +10,7 @@ detail endpoints currently return a soft-404 error template.
 Fortunately, JCAR also exposes the SAME data as a flat HTML mirror on its FTP
 tree under https://ilga.gov/ftp/JCAR/AdminCode/. Every section is its own
 plain HTML file generated from the official Word source. We harvest that tree
-directly — no aggregators, no Justia/ZenRows/etc. (DOCX mirrors of all parts
+directly - no aggregators, no Justia/ZenRows/etc. (DOCX mirrors of all parts
 sit alongside under /ftp/JCAR/AdminCodeDoc/<title>/, but we don't need them:
 the HTML is lossless.)
 
@@ -175,7 +175,7 @@ def list_sections_in_title(title: str) -> list[tuple[str, str]]:
     """Return list of (section_url, filename) tuples for a title directory.
 
     Only includes "R" files (Rule/section content). P/A/E/G/I/K/L/M files
-    are not published as HTML — they are .docx-only and live under
+    are not published as HTML - they are .docx-only and live under
     /ftp/JCAR/AdminCodeDoc/<title>/.
     """
     url = f"{IL_ROOT}{title}/"
@@ -354,7 +354,7 @@ def parse_section(html: str, fn: str, url: str) -> Section | None:
         heading_div.decompose()
 
     body_full = soup.get_text("\n", strip=True)
-    # Skip placeholder / repealed / reserved pages — they carry no rule text.
+    # Skip placeholder / repealed / reserved pages - they carry no rule text.
     if _RESERVED_PAT.search(body_full[:300]):
         return None
 

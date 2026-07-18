@@ -49,7 +49,7 @@ TOC_URLS = (
 
 RESERVED_KEYWORDS = ["repealed", "expired", "reserved", "renumbered", "transferred"]
 
-# Last-resort fallback — verified against the live TOC select on 2026-05-12
+# Last-resort fallback - verified against the live TOC select on 2026-05-12
 # (138 chapters). Only consulted when *all* live TOC URLs fail. Kept current
 # so a network outage cannot silently shrink the corpus by 18 chapters as the
 # previous 131-entry snapshot did.

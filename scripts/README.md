@@ -1,7 +1,7 @@
 # Scripts
 
 Each script fetches a source from its **official government origin**, parses it, and
-writes **JSONL** — one normalized section per line. Nothing here uploads anywhere or
+writes **JSONL** - one normalized section per line. Nothing here uploads anywhere or
 depends on hosted infrastructure; you run it, you get files.
 
 ## Output contract
@@ -21,14 +21,14 @@ Every emitted record uses the same shape:
 
 ## Layout
 
-- **`federal/`** — US Code (download → extract → parse) and the eCFR.
-- **`statutes/`** — state statutory codes *(being added)*.
-- **`regulations/`** — state administrative codes *(being added)*.
-- **`court_rules/`** — state court rules *(being added)*.
+- **`federal/`** - US Code (download → extract → parse) and the eCFR.
+- **`statutes/`** - state statutory codes *(being added)*.
+- **`regulations/`** - state administrative codes *(being added)*.
+- **`court_rules/`** - state court rules *(being added)*.
 
 ## Running
 
-Each script is standalone and self-documenting — start with `--help`:
+Each script is standalone and self-documenting - start with `--help`:
 
 ```bash
 python scripts/federal/download_usc_zips.py --help

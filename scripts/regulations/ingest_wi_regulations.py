@@ -6,7 +6,7 @@ OFFICIAL SOURCE ONLY: https://docs.legis.wisconsin.gov/code/admin_code
 
 The portal does NOT expose per-chapter or bulk XML/JSON (Tax 11.xml, ch.
 Tax 11.xml etc. all 404). It is a server-rendered HTML application, so we
-scrape HTML — but the markup is highly structured, which makes per-section
+scrape HTML - but the markup is highly structured, which makes per-section
 extraction reliable:
 
     /code/admin_code                          → 87 agency links
@@ -140,7 +140,7 @@ _CHAPTER_HREF_RE = re.compile(
     r"^/document/administrativecode/(ch\.%20[^/?]+?)(?:\.pdf)?$"
 )
 # Large agencies group chapters under subchapter-group pages, e.g.
-# /document/administrativecode/Chs.%20ATCP%201-9;%20General — these must be
+# /document/administrativecode/Chs.%20ATCP%201-9;%20General - these must be
 # followed one level deeper to reach the individual "ch. ATCP N" links.
 _CHAPTER_GROUP_HREF_RE = re.compile(
     r"^/document/administrativecode/(Chs\.%20[^/?]+?)(?:\.pdf)?$"
