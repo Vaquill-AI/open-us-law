@@ -1,0 +1,10 @@
+# Dependencies for the currently published (federal) scripts.
+httpx>=0.27
+
+# Added as the state statute / regulation / court-rule scrapers land:
+#   requests
+#   beautifulsoup4
+#   lxml
+#   curl_cffi
+#   playwright        # (+ `playwright install chromium`) for JS-rendered sources
+#   selenium          # for the Selenium-based state statute scrapers

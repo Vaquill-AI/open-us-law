@@ -1,0 +1,411 @@
+# Coverage manifest for the Open US Statute Corpus.
+#
+# This file is the GATE that decides which jurisdictions may appear in a
+# public data dump. A jurisdiction is dump-eligible ONLY when BOTH hold:
+#   1. section_count >= policy.min_sections_floor
+#   2. coverage_verified == true
+#
+# A high section_count does NOT prove completeness: a code can be missing
+# whole titles and still look large. coverage_verified must be set by a human
+# AFTER running the completeness audit (containers present, no missing codes),
+# not from raw counts. Until then a jurisdiction stays out of the dump.
+#
+# dump_ready is computed as (section_count >= floor) AND coverage_verified.
+# Everything below is coverage_verified: false on purpose — nothing ships
+# until it has been verified and flipped to true in a reviewed commit.
+
+snapshot:
+  version: "unpublished"          # set to e.g. "2026Q3" when the first dump is cut
+  source: "Vaquill live jurisdiction counts, 2026-07-18"
+  disclaimer: >-
+    Point-in-time archive of US primary law. NOT current law and NOT legal
+    advice. The statutory text is public domain (US government edicts); the
+    compilation and structure are licensed CC BY 4.0. Always verify a section
+    against its official government source before relying on it.
+
+policy:
+  min_sections_floor: 8000       # below this a jurisdiction is auto 'hold' (thin)
+  requires_human_verification: true
+  status_meaning:
+    ready:          "completeness verified; included in the public dump"
+    pending_review: "meets the floor but completeness NOT verified; excluded"
+    hold:           "below floor / known-thin; excluded until backfilled"
+
+summary:
+  total_jurisdictions: 53
+  dump_ready: 0                    # none until verified
+  pending_review: 48
+  hold: 5                        # ia, pr, mo, ar, in
+
+jurisdictions:
+  - code: federal
+    name: "Federal (USC + CFR)"
+    kind: federal
+    section_count: 813234
+    coverage_verified: false
+    status: pending_review
+    dump_ready: false
+  - code: ms
+    name: "Mississippi"
+    kind: state
+    section_count: 184865
+    coverage_verified: false
+    status: pending_review
+    dump_ready: false
+  - code: ca
+    name: "California"
+    kind: state
+    section_count: 177726
+    coverage_verified: false
+    status: pending_review
+    dump_ready: false
+  - code: nj
+    name: "New Jersey"
+    kind: state
+    section_count: 158903
+    coverage_verified: false
+    status: pending_review
+    dump_ready: false
+  - code: wa
+    name: "Washington"
+    kind: state
+    section_count: 140326
+    coverage_verified: false
+    status: pending_review
+    dump_ready: false
+  - code: tx
+    name: "Texas"
+    kind: state
+    section_count: 126456
+    coverage_verified: false
+    status: pending_review
+    dump_ready: false
+  - code: md
+    name: "Maryland"
+    kind: state
+    section_count: 58296
+    coverage_verified: false
+    status: pending_review
+    dump_ready: false
+  - code: mn
+    name: "Minnesota"
+    kind: state
+    section_count: 54302
+    coverage_verified: false
+    status: pending_review
+    dump_ready: false
+  - code: ny
+    name: "New York"
+    kind: state
+    section_count: 52923
+    coverage_verified: false
+    status: pending_review
+    dump_ready: false
+  - code: oh
+    name: "Ohio"
+    kind: state
+    section_count: 52698
+    coverage_verified: false
+    status: pending_review
+    dump_ready: false
+  - code: ga
+    name: "Georgia"
+    kind: state
+    section_count: 52012
+    coverage_verified: false
+    status: pending_review
+    dump_ready: false
+  - code: nv
+    name: "Nevada"
+    kind: state
+    section_count: 51665
+    coverage_verified: false
+    status: pending_review
+    dump_ready: false
+  - code: al
+    name: "Alabama"
+    kind: state
+    section_count: 50943
+    coverage_verified: false
+    status: pending_review
+    dump_ready: false
+  - code: nm
+    name: "New Mexico"
+    kind: state
+    section_count: 50419
+    coverage_verified: false
+    status: pending_review
+    dump_ready: false
+  - code: co
+    name: "Colorado"
+    kind: state
+    section_count: 44731
+    coverage_verified: false
+    status: pending_review
+    dump_ready: false
+  - code: ok
+    name: "Oklahoma"
+    kind: state
+    section_count: 42867
+    coverage_verified: false
+    status: pending_review
+    dump_ready: false
+  - code: or
+    name: "Oregon"
+    kind: state
+    section_count: 41072
+    coverage_verified: false
+    status: pending_review
+    dump_ready: false
+  - code: sc
+    name: "South Carolina"
+    kind: state
+    section_count: 39965
+    coverage_verified: false
+    status: pending_review
+    dump_ready: false
+  - code: ma
+    name: "Massachusetts"
+    kind: state
+    section_count: 36439
+    coverage_verified: false
+    status: pending_review
+    dump_ready: false
+  - code: fl
+    name: "Florida"
+    kind: state
+    section_count: 34574
+    coverage_verified: false
+    status: pending_review
+    dump_ready: false
+  - code: me
+    name: "Maine"
+    kind: state
+    section_count: 33595
+    coverage_verified: false
+    status: pending_review
+    dump_ready: false
+  - code: mt
+    name: "Montana"
+    kind: state
+    section_count: 33220
+    coverage_verified: false
+    status: pending_review
+    dump_ready: false
+  - code: nc
+    name: "North Carolina"
+    kind: state
+    section_count: 32932
+    coverage_verified: false
+    status: pending_review
+    dump_ready: false
+  - code: nd
+    name: "North Dakota"
+    kind: state
+    section_count: 31084
+    coverage_verified: false
+    status: pending_review
+    dump_ready: false
+  - code: ne
+    name: "Nebraska"
+    kind: state
+    section_count: 30634
+    coverage_verified: false
+    status: pending_review
+    dump_ready: false
+  - code: wv
+    name: "West Virginia"
+    kind: state
+    section_count: 30393
+    coverage_verified: false
+    status: pending_review
+    dump_ready: false
+  - code: va
+    name: "Virginia"
+    kind: state
+    section_count: 30002
+    coverage_verified: false
+    status: pending_review
+    dump_ready: false
+  - code: ky
+    name: "Kentucky"
+    kind: state
+    section_count: 29632
+    coverage_verified: false
+    status: pending_review
+    dump_ready: false
+  - code: az
+    name: "Arizona"
+    kind: state
+    section_count: 29311
+    coverage_verified: false
+    status: pending_review
+    dump_ready: false
+  - code: ks
+    name: "Kansas"
+    kind: state
+    section_count: 28162
+    coverage_verified: false
+    status: pending_review
+    dump_ready: false
+  - code: nh
+    name: "New Hampshire"
+    kind: state
+    section_count: 27852
+    coverage_verified: false
+    status: pending_review
+    dump_ready: false
+  - code: ut
+    name: "Utah"
+    kind: state
+    section_count: 26822
+    coverage_verified: false
+    status: pending_review
+    dump_ready: false
+  - code: vt
+    name: "Vermont"
+    kind: state
+    section_count: 26449
+    coverage_verified: false
+    status: pending_review
+    dump_ready: false
+  - code: il
+    name: "Illinois"
+    kind: state
+    section_count: 25538
+    coverage_verified: false
+    status: pending_review
+    dump_ready: false
+  - code: de
+    name: "Delaware"
+    kind: state
+    section_count: 25309
+    coverage_verified: false
+    status: pending_review
+    dump_ready: false
+  - code: pa
+    name: "Pennsylvania"
+    kind: state
+    section_count: 24941
+    coverage_verified: false
+    status: pending_review
+    dump_ready: false
+  - code: ri
+    name: "Rhode Island"
+    kind: state
+    section_count: 22994
+    coverage_verified: false
+    status: pending_review
+    dump_ready: false
+  - code: ct
+    name: "Connecticut"
+    kind: state
+    section_count: 21831
+    coverage_verified: false
+    status: pending_review
+    dump_ready: false
+  - code: hi
+    name: "Hawaii"
+    kind: state
+    section_count: 21797
+    coverage_verified: false
+    status: pending_review
+    dump_ready: false
+  - code: mi
+    name: "Michigan"
+    kind: state
+    section_count: 21024
+    coverage_verified: false
+    status: pending_review
+    dump_ready: false
+  - code: ak
+    name: "Alaska"
+    kind: state
+    section_count: 19441
+    coverage_verified: false
+    status: pending_review
+    dump_ready: false
+  - code: wi
+    name: "Wisconsin"
+    kind: state
+    section_count: 18663
+    coverage_verified: false
+    status: pending_review
+    dump_ready: false
+  - code: dc
+    name: "District of Columbia"
+    kind: territory
+    section_count: 16775
+    coverage_verified: false
+    status: pending_review
+    dump_ready: false
+  - code: sd
+    name: "South Dakota"
+    kind: state
+    section_count: 13007
+    coverage_verified: false
+    status: pending_review
+    dump_ready: false
+  - code: tn
+    name: "Tennessee"
+    kind: state
+    section_count: 12917
+    coverage_verified: false
+    status: pending_review
+    dump_ready: false
+  - code: wy
+    name: "Wyoming"
+    kind: state
+    section_count: 11836
+    coverage_verified: false
+    status: pending_review
+    dump_ready: false
+  - code: la
+    name: "Louisiana"
+    kind: state
+    section_count: 11221
+    coverage_verified: false
+    status: pending_review
+    dump_ready: false
+  - code: id
+    name: "Idaho"
+    kind: state
+    section_count: 11027
+    coverage_verified: false
+    status: pending_review
+    dump_ready: false
+  - code: ia
+    name: "Iowa"
+    kind: state
+    section_count: 7373
+    coverage_verified: false
+    status: hold
+    dump_ready: false
+  - code: pr
+    name: "Puerto Rico"
+    kind: territory
+    section_count: 2922
+    coverage_verified: false
+    status: hold
+    dump_ready: false
+  - code: mo
+    name: "Missouri"
+    kind: state
+    section_count: 796
+    coverage_verified: false
+    status: hold
+    dump_ready: false
+  - code: ar
+    name: "Arkansas"
+    kind: state
+    section_count: 308
+    coverage_verified: false
+    status: hold
+    dump_ready: false
+  - code: in
+    name: "Indiana"
+    kind: state
+    section_count: 52
+    coverage_verified: false
+    status: hold
+    dump_ready: false
