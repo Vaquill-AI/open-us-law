@@ -27,11 +27,15 @@
 #                    publishes an official aggregate section total, so this is a
 #                    reasoned band, not authoritative. Container counts are exact.
 #   official_source  the state's own government portal
-#   bulk_source      best source to (re)build this jurisdiction
+#   bulk_source      best source to (re)build this jurisdiction, with the concrete
+#                    endpoint template where one exists
 #   source_tier      bulk_zip | git | api | ftp | bulk_pdf | html | pdf
-#   citation_scheme  section id form + whether it is deterministic (drives
-#                    idempotent re-ingest)
-#   notes            heads-up: gaps, geo/anti-bot, structural quirks, freshness
+#   access           operational heads-up: API/zip availability, geo/anti-bot,
+#                    browser needs, and citation-id determinism (drives idempotent
+#                    re-ingest). Access status is stated as a durable source
+#                    property, not a one-time fetch result.
+#   citation_scheme  section id form + whether it is deterministic
+#   notes            coverage verdict and any structural / freshness heads-up
 #
 # Access heads-up mirror the README: some sources are US-geo-restricted or
 # anti-bot; a few are JavaScript/Selenium. See README "Important caveats".
@@ -73,10 +77,11 @@ jurisdictions:
     containers: "USC: 54 titles; CFR: 50 titles"
     est_sections: "USC 54,855 + CFR 219,745 (official ingest counts); + FR rules 121,214, EOs 3,593, agency guidance 2,509, FRCP 526, US Const 74 tracked separately"
     official_source: "https://uscode.house.gov , https://www.ecfr.gov , https://www.federalregister.gov"
-    bulk_source: "govinfo USLM XML (USC) + eCFR bulk/API + federalregister.gov API"
+    bulk_source: "uscode.house.gov USLM XML zips (per title) + eCFR bulk XML (ecfr.gov / govinfo) + federalregister.gov API"
     source_tier: bulk_zip
+    access: "Official bulk XML + API, public domain, no key, no geo-block. Cleanest corpus in the set."
     citation_scheme: "USC title-section; CFR title-part-section - deterministic"
-    notes: "Sourced from authoritative federal bulk; the cleanest corpus in the set. Completeness sign-off pending (not part of the 50-state audit)."
+    notes: "Sourced from authoritative federal bulk. Completeness sign-off pending (not part of the 50-state audit)."
 
   - code: ca
     name: "California"
@@ -89,8 +94,9 @@ jurisdictions:
     containers: "29 codes"
     est_sections: "~156,266 (community tally, Jun 2022)"
     official_source: "https://leginfo.legislature.ca.gov/faces/codes.xhtml"
-    bulk_source: "https://downloads.leginfo.legislature.ca.gov/ (pubinfo zip)"
+    bulk_source: "https://downloads.leginfo.legislature.ca.gov/pubinfo_{year}.zip"
     source_tier: bulk_zip
+    access: "Official bulk zip, no key, no geo-block. CAML markup; exclude CONS (that is the constitution)."
     citation_scheme: "code + section (e.g. Lab. Code 1194) - deterministic"
     notes: "Complete via official bulk; about 103% of the June 2022 tally, consistent with new sections since."
 
@@ -105,10 +111,11 @@ jurisdictions:
     containers: "Miss. Code 1972: titles 1-99 (~49 populated)"
     est_sections: "no official aggregate; complete"
     official_source: "https://legislature.ms.gov/"
-    bulk_source: "no first-party bulk; per-section (Lexis-hosted public access)"
+    bulk_source: "no first-party bulk; per-section via billstatus.ls.state.ms.us + Lexis-hosted MS Code; community parse unicourt/cic-code-ms"
     source_tier: html
+    access: "No official zip/API - the weakest refresh path in the set."
     citation_scheme: "title-chapter-section - deterministic"
-    notes: "Complete, but the count is subsection/leaf grain (not cross-state comparable). No official bulk file - weakest refresh path in the set."
+    notes: "Complete, but the count is subsection/leaf grain (not cross-state comparable)."
 
   - code: tx
     name: "Texas"
@@ -121,8 +128,9 @@ jurisdictions:
     containers: "27 codes (+ legacy uncodified)"
     est_sections: "~130,000-150,000 (est.)"
     official_source: "https://statutes.capitol.texas.gov/"
-    bulk_source: "ftp://ftp.legis.state.tx.us + per-code HTML zips"
+    bulk_source: "ftp://ftp.legis.state.tx.us + per-code HTML zips (legis.state.tx.us/billlookup/filedownloads.aspx)"
     source_tier: ftp
+    access: "Official FTP/zip, free, no key. Per-code granularity."
     citation_scheme: "code + section (e.g. Penal 19.02) - deterministic"
     notes: "Complete. Residual to verify: Vernon's Civil Statutes, a small, shrinking uncodified remnant."
 
@@ -139,8 +147,9 @@ jurisdictions:
     official_source: "https://iga.in.gov/laws/current/ic"
     bulk_source: "https://iga.in.gov/ic/{year}/{year}-Indiana-Code-html.zip"
     source_tier: bulk_zip
+    access: "Official year-templated zip. US-geo-fenced: non-US IPs get a decoy HTML shell, so validate the zip magic bytes and fetch from a US IP. No key."
     citation_scheme: "title-article-chapter-section - deterministic"
-    notes: "Complete by construction from the official year-templated ZIP; count is subsection grain. ZIP is US-geo-fenced (proxy)."
+    notes: "Complete by construction from the official ZIP; count is subsection grain."
 
   - code: wa
     name: "Washington"
@@ -153,8 +162,9 @@ jurisdictions:
     containers: "91 titles (RCW)"
     est_sections: "~45,000-55,000 active (est.); ours is subsection-grain"
     official_source: "https://app.leg.wa.gov/rcw/"
-    bulk_source: "https://app.leg.wa.gov/rcw/ + Code Reviser RCW archive (PDF)"
+    bulk_source: "https://app.leg.wa.gov/rcw/ (per-title) + Code Reviser RCW Archive PDFs"
     source_tier: bulk_pdf
+    access: "Official, free, no key, no geo-block, updated ~twice a year."
     citation_scheme: "title.chapter.section - deterministic"
     notes: "Complete; grain-inflated. Verify it is not counting repealed/reserved stubs as live sections."
 
@@ -169,10 +179,11 @@ jurisdictions:
     containers: "67 chapters / ~2,000 acts"
     est_sections: "~65,000-80,000 (est.)"
     official_source: "https://www.ilga.gov/legislation/ilcs/ilcs.asp"
-    bulk_source: "https://www.ilga.gov/ftp/ILCS/ + 'Section Sequence.txt' manifest"
+    bulk_source: "https://www.ilga.gov/ftp/ILCS/ static tree + aReadMe/'Section Sequence.txt' manifest"
     source_tier: ftp
+    access: "Static file tree (no API/zip); use the manifest to enumerate every section. Site US-geo-restricts (proxy)."
     citation_scheme: "chapter ILCS act/section (e.g. 720 ILCS 5/9-1) - deterministic"
-    notes: "Complete. Site geo-restricts non-US IPs (proxy)."
+    notes: "Complete."
 
   - code: nj
     name: "New Jersey"
@@ -185,8 +196,9 @@ jurisdictions:
     containers: "58 titles"
     est_sections: "~45,000-56,000 (est.)"
     official_source: "https://lis.njleg.state.nj.us/nxt/gateway.dll/statutes"
-    bulk_source: "https://www.njleg.gov/legislative-downloads?downloadType=Statutes (daily zip)"
+    bulk_source: "https://www.njleg.gov/legislative-downloads?downloadType=Statutes (daily zip -> STATUTES.RTF)"
     source_tier: bulk_zip
+    access: "Official daily zip; parse the RTF (style tags disambiguate title/section/body). Proxy only for the initial download."
     citation_scheme: "title:chapter-section (NJSA) - deterministic"
     notes: "Complete via the official daily zip. Old snapshot count (158,903) was a pre-dedup point count."
 
@@ -201,8 +213,9 @@ jurisdictions:
     containers: "59 titles / ~300 chapters"
     est_sections: "~24,000-28,000 (est.) - ours far exceeds this"
     official_source: "https://www.leg.state.nv.us/NRS/"
-    bulk_source: "per-chapter HTML (NRS-{chapter}.html)"
+    bulk_source: "https://www.leg.state.nv.us/NRS/NRS-{chapter}.html (per-chapter HTML)"
     source_tier: html
+    access: "No API/zip, no geo-block. Dedupe to distinct NRS x.y before counting."
     citation_scheme: "chapter.section (e.g. 200.010) - deterministic"
     notes: "DATA-QUALITY HOLD: 48,190 is ~2x a plausible NRS universe and exceeds our larger MD code. Audit for duplicate / non-section nodes before dumping - a dedupe, not a re-crawl."
 
@@ -217,10 +230,11 @@ jurisdictions:
     containers: "~45 titles (incl. 10A, 13A)"
     est_sections: "~45,000-50,000 (est.)"
     official_source: "https://alison.legislature.state.al.us/code-of-alabama"
-    bulk_source: "per-section HTML"
+    bulk_source: "alison.legislature.state.al.us (per-section HTML) + Local_Laws_Index.pdf"
     source_tier: html
+    access: "No official zip. Anti-bot moderate (proxy)."
     citation_scheme: "title-chapter-section (e.g. 13A-6-2) - deterministic"
-    notes: "Complete and legitimately large: Title 45 codifies county local laws (a new volume every year). Geo-restricted (proxy)."
+    notes: "Complete and legitimately large: Title 45 codifies county local laws (a new volume every year)."
 
   - code: la
     name: "Louisiana"
@@ -233,10 +247,11 @@ jurisdictions:
     containers: "RS titles 1-56 + 5 civil-law codes"
     est_sections: "~45,000-52,000 (est.)"
     official_source: "https://legis.la.gov/legis/LawsContents.aspx"
-    bulk_source: "legis.la.gov (direct-serving HTML)"
+    bulk_source: "legis.la.gov (per-section HTML)"
     source_tier: html
+    access: "Direct-serving (no proxy). No zip/API."
     citation_scheme: "RS title:section + per-code article - deterministic"
-    notes: "Civil-law: RS plus Civil Code, C.C.P., C.Cr.P., Code of Evidence, Children's Code. Direct-serving source (no proxy)."
+    notes: "Civil-law: RS plus Civil Code, C.C.P., C.Cr.P., Code of Evidence, Children's Code."
 
   - code: md
     name: "Maryland"
@@ -249,8 +264,9 @@ jurisdictions:
     containers: "36 subject Articles"
     est_sections: "~38,000-44,000 (est.)"
     official_source: "https://mgaleg.maryland.gov/mgawebsite/laws/statutes"
-    bulk_source: "per-section HTML/PDF keyed by article code"
+    bulk_source: "mgaleg.maryland.gov (per-section HTML + PDF, keyed by article code gag/gcl/grp/gtr/...)"
     source_tier: html
+    access: "No bulk zip/XML, no geo-block. Article + section is the citation key."
     citation_scheme: "article + section - deterministic"
     notes: "Complete; recodified into 36 named Articles."
 
@@ -265,8 +281,9 @@ jurisdictions:
     containers: "838 chapters"
     est_sections: "~37,000-42,000 (est.)"
     official_source: "https://www.oregonlegislature.gov/bills_laws/pages/ors.aspx"
-    bulk_source: "per-chapter HTML (orsNNN.html)"
+    bulk_source: "https://www.oregonlegislature.gov/bills_laws/ors/ors{NNN}.html (per-chapter) + volume PDFs"
     source_tier: html
+    access: "No zip/API/FTP, no geo-block."
     citation_scheme: "chapter.section (e.g. 164.055) - deterministic"
     notes: "Complete to marginal (~86-98%); large 838-chapter code, so the mildest thin-risk among the complete set."
 
@@ -281,10 +298,11 @@ jurisdictions:
     containers: "44 titles"
     est_sections: "exactly countable from SGML; ~32,000-38,000"
     official_source: "https://leg.colorado.gov/colorado-revised-statutes"
-    bulk_source: "https://content.leg.colorado.gov/ (official CRS SGML zip)"
+    bulk_source: "https://content.leg.colorado.gov/ (official CRS SGML zip; a few Title 8/14/30/39 sections are PDF-only)"
     source_tier: bulk_zip
+    access: "Official SGML zip, public domain / no fee since 2016, no key, no geo-block. Best refresh path of any state."
     citation_scheme: "title-article-section (e.g. 18-3-102) - deterministic"
-    notes: "Complete. Official SGML zip, public domain / no fee since 2016 - the cleanest refresh path of any state."
+    notes: "Complete."
 
   - code: va
     name: "Virginia"
@@ -297,10 +315,11 @@ jurisdictions:
     containers: "76 titles"
     est_sections: "~30,000-40,000 (est.)"
     official_source: "https://law.lis.virginia.gov/vacode/"
-    bulk_source: "law.lis.virginia.gov vacode HTML + JSON"
+    bulk_source: "law.lis.virginia.gov/vacode (HTML + JSON)"
     source_tier: html
+    access: "No zip. Reconcile by node id, not by state tag (va also holds the Admin Code ~22k and the constitution)."
     citation_scheme: "title.chapter-section (e.g. 8.01-271.1) - deterministic"
-    notes: "Complete. Reconcile by node id, not by state tag: va also holds the Admin Code (~22k) and the constitution."
+    notes: "Complete."
 
   - code: oh
     name: "Ohio"
@@ -313,10 +332,11 @@ jurisdictions:
     containers: "31 titles"
     est_sections: "~33,000-37,000 (est.)"
     official_source: "https://codes.ohio.gov/ohio-revised-code"
-    bulk_source: "per-section HTML (LAWriter); official-source ingest script available"
+    bulk_source: "codes.ohio.gov (per-section HTML, LAWriter) + certified per-page PDF on demand"
     source_tier: html
+    access: "No zip/API. US-only geo-block (proxy). Official-source ingest script available."
     citation_scheme: "title.section (e.g. 2903.01) - deterministic"
-    notes: "Complete. codes.ohio.gov is US-geo-blocked (proxy)."
+    notes: "Complete."
 
   - code: mt
     name: "Montana"
@@ -329,10 +349,11 @@ jurisdictions:
     containers: "titles 1-90"
     est_sections: "~28,000-31,000 (est.)"
     official_source: "https://mca.legmt.gov/bills/mca/index.html"
-    bulk_source: "per-section HTML (official bulk is a paid Folio product)"
+    bulk_source: "mca.legmt.gov (per-section HTML); the official bulk is a paid Folio product (free only to MT/tribal govt)"
     source_tier: html
+    access: "No free zip/API. Deep paths are anti-bot (headers/proxy)."
     citation_scheme: "title-chapter-part-section (e.g. 45-5-102) - deterministic"
-    notes: "Complete. No free official bulk; per-section HTML is anti-bot (proxy/headers)."
+    notes: "Complete."
 
   - code: sc
     name: "South Carolina"
@@ -345,8 +366,9 @@ jurisdictions:
     containers: "63 titles"
     est_sections: "~30,000-33,000 (est.)"
     official_source: "https://www.scstatehouse.gov/code/statmast.php"
-    bulk_source: "per-title then per-section HTML"
+    bulk_source: "https://www.scstatehouse.gov/code/title{NN}.php -> per-section .php"
     source_tier: html
+    access: "No zip/API. Decimal title-chapter-section numbering."
     citation_scheme: "title-chapter-section (e.g. 16-3-20) - deterministic"
     notes: "Complete."
 
@@ -361,10 +383,11 @@ jurisdictions:
     containers: "~46 titles"
     est_sections: "~29,000-31,000 (est.)"
     official_source: "https://revisor.mo.gov/main/Home.aspx"
-    bulk_source: "per-section / per-title HTML"
+    bulk_source: "https://revisor.mo.gov/main/OneSection.aspx?section={c.s} (per-section) / OneTitle.aspx?title="
     source_tier: html
+    access: "No zip/API. Each chapter renders as ~8 tables - read all of them, not just the first (old scraper bug)."
     citation_scheme: "chapter.section - deterministic"
-    notes: "Complete. Chapters render as ~8 tables each - read all of them, not just the first (old scraper bug)."
+    notes: "Complete."
 
   - code: nd
     name: "North Dakota"
@@ -377,8 +400,9 @@ jurisdictions:
     containers: "65 titles"
     est_sections: "~27,000-30,000 (est.)"
     official_source: "https://ndlegis.gov/cencode/"
-    bulk_source: "per-chapter HTML + PDF (tNcCC.html / .pdf)"
+    bulk_source: "https://ndlegis.gov/cencode/t{N}c{CC}.html and .pdf (per-chapter HTML + PDF)"
     source_tier: html
+    access: "No zip/API, no geo-block."
     citation_scheme: "title-chapter-section (e.g. 12.1-16-01) - deterministic"
     notes: "Complete."
 
@@ -393,10 +417,11 @@ jurisdictions:
     containers: "16 titles / ~900-1,000 chapters"
     est_sections: "~28,000-30,000 (est.)"
     official_source: "https://www.legis.iowa.gov/law/iowaCode"
-    bulk_source: "per-chapter XML/HTML (+ per-chapter PDF/RTF)"
+    bulk_source: "legis.iowa.gov (per-chapter XML/HTML) + 8-vol PDF / per-chapter PDF-RTF"
     source_tier: html
+    access: "No single zip/API. Geo-fenced but not bot-walled (proxy)."
     citation_scheme: "chapter.section - deterministic"
-    notes: "Complete. Geo-fenced but not bot-walled (proxy)."
+    notes: "Complete."
 
   - code: ga
     name: "Georgia"
@@ -409,10 +434,11 @@ jurisdictions:
     containers: "53 titles"
     est_sections: "~28,000-31,000 (est.)"
     official_source: "https://www.legis.ga.gov/ (OCGA, Lexis-hosted)"
-    bulk_source: "https://archive.org/details/gov.ga.ocga.2024 (unrestricted OCR, patchwork vintages)"
+    bulk_source: "https://archive.org/details/gov.ga.ocga.2024 (unrestricted OCR bulk, mixed vintages); clean feed is Lexis-hosted"
     source_tier: html
+    access: "Free bulk is OCR with patchwork per-volume vintages; the clean feed is anti-bot. Freshness gap, not a coverage gap."
     citation_scheme: "title-chapter-section (e.g. 16-5-1) - deterministic"
-    notes: "Structurally complete. The only free bulk is stale, OCR'd, mixed-vintage; the clean feed is Lexis anti-bot. This is a freshness gap, not a coverage gap."
+    notes: "Structurally complete."
 
   - code: mn
     name: "Minnesota"
@@ -425,8 +451,9 @@ jurisdictions:
     containers: "~700 chapters"
     est_sections: "~28,000-32,000 (est.)"
     official_source: "https://www.revisor.mn.gov/statutes/"
-    bulk_source: "per-section HTML (DB sold commercially; no free bulk)"
+    bulk_source: "https://www.revisor.mn.gov/statutes/cite/{chap.sec} (per-section) + authenticated per-chapter/volume PDFs"
     source_tier: html
+    access: "DB sold commercially, so no free zip/API. No geo-block."
     citation_scheme: "chapter.section (e.g. 216B.164) - deterministic"
     notes: "Complete."
 
@@ -441,8 +468,9 @@ jurisdictions:
     containers: "chapters 1-169 (~155 active)"
     est_sections: "~26,000-30,000 (est.)"
     official_source: "https://www.ncleg.gov/Laws/GeneralStatutesTOC"
-    bulk_source: "per-chapter HTML (ByChapter/Chapter_N.html) - bulk-friendly"
+    bulk_source: "https://www.ncleg.gov/EnactedLegislation/Statutes/HTML/ByChapter/Chapter_{N}.html (per-chapter, bulk-friendly)"
     source_tier: html
+    access: "No zip/API. Mirror ncleg.net."
     citation_scheme: "chapter-section (e.g. 14-17) - deterministic"
     notes: "Complete to near-complete."
 
@@ -457,10 +485,11 @@ jurisdictions:
     containers: "~90 chapters + UCC"
     est_sections: "~26,000-28,000 (est.)"
     official_source: "https://nebraskalegislature.gov/laws/browse-statutes.php"
-    bulk_source: "per-section HTML (+ PDF volumes)"
+    bulk_source: "https://nebraskalegislature.gov/laws/statute.php?statute={chapter-section} (per-section) + search_range_statute.php (range) + PDF volumes"
     source_tier: html
+    access: "No API/zip. US-geo/bot-restricted, needs a US IP/proxy. Citation-keyed URLs, deterministic."
     citation_scheme: "chapter-section (e.g. 30-2201) - deterministic"
-    notes: "Complete. Geo/bot-restricted (proxy)."
+    notes: "Complete."
 
   - code: ut
     name: "Utah"
@@ -473,10 +502,11 @@ jurisdictions:
     containers: "~81 titles"
     est_sections: "~26,000-29,000 (est.)"
     official_source: "https://le.utah.gov/xcode/code.html"
-    bulk_source: "https://le.utah.gov/data/developer.htm (official XML API)"
+    bulk_source: "https://le.utah.gov/data/developer.htm (official XML API, by title/chapter/section) + per-section HTML/PDF"
     source_tier: api
+    access: "Official XML API is the 'official electronic record'; no key, soft guidance <=1 query/day. US-geo-block (proxy). Official-source ingest script available."
     citation_scheme: "title-chapter-section (e.g. 63A-16-107) - deterministic"
-    notes: "Complete. Official XML API is the cleanest source; official-source ingest script available. US-geo-blocked (proxy)."
+    notes: "Complete."
 
   - code: wv
     name: "West Virginia"
@@ -489,8 +519,9 @@ jurisdictions:
     containers: "64 chapters"
     est_sections: "~27,000-30,000 (est.)"
     official_source: "https://code.wvlegislature.gov/"
-    bulk_source: "per-section HTML + full-code dump (wvcodeentire.htm)"
+    bulk_source: "https://code.wvlegislature.gov/{c-a-s}/ (per-section) + wvcodeentire.htm (full-code dump)"
     source_tier: html
+    access: "No API/zip. Bot user-agent gets 403 (realistic headers/proxy)."
     citation_scheme: "chapter-article-section (e.g. 2-2-10) - deterministic"
     notes: "Complete."
 
@@ -505,10 +536,11 @@ jurisdictions:
     containers: "~64 titles"
     est_sections: "~23,000-25,000 (est.)"
     official_source: "https://www.gc.nh.gov/rsa/html/nhtoc.htm"
-    bulk_source: "full static HTML tree (mirrorable) + data downloads"
+    bulk_source: "https://www.gc.nh.gov/rsa/html/ (full static HTML tree, mirrorable) + gencourt.state.nh.us/downloads/ (data/SQL exports)"
     source_tier: html
+    access: "Mirrorable HTML tree + data downloads. US-geo-restricted (proxy)."
     citation_scheme: "chapter:section (RSA) - deterministic"
-    notes: "Complete. Geo-restricted (proxy)."
+    notes: "Complete."
 
   - code: me
     name: "Maine"
@@ -521,8 +553,9 @@ jurisdictions:
     containers: "~55 titles (numbered + alpha)"
     est_sections: "~29,000-33,000 (est.) - ours ~80%"
     official_source: "https://legislature.maine.gov/statutes/"
-    bulk_source: "official per-title Word/PDF + per-section HTML"
+    bulk_source: "legislature.maine.gov/statutes (official per-title PDF + MS Word RTF/DOC) + per-section HTML"
     source_tier: bulk_pdf
+    access: "Predictable per-title document URLs. No zip/API."
     citation_scheme: "title-section - deterministic"
     notes: "SECTION-THIN. Re-crawl the large alpha titles (24-A Insurance, 20-A Education, 30-A Municipalities, 36 Taxation)."
 
@@ -537,10 +570,11 @@ jurisdictions:
     containers: "49 titles"
     est_sections: "~35,000-45,000 (est.) - ours ~54-70%"
     official_source: "https://www.leg.state.fl.us/statutes/"
-    bulk_source: "per-section HTML (leg.state.fl.us or flsenate.gov/.../Chapter{N}/All)"
+    bulk_source: "leg.state.fl.us per-section (.../{range}/{chapter}/Sections/{ch}.{sec}.html) OR flsenate.gov/Laws/Statutes/2025/Chapter{N}/All"
     source_tier: html
+    access: "Official 'Statutes Download' is FLLawDL2025.zip -> setup.exe (Windows installer, dead-end). Use per-section HTML. No data API."
     citation_scheme: "chapter.section (e.g. 316.193) - deterministic"
-    notes: "SECTION-THIN and a Tier-1 state. Missing dense chapters (Insurance 624-651, Education Code 1000-1013). The official 'download' is a Windows .exe - use per-section HTML."
+    notes: "SECTION-THIN and a Tier-1 state. Missing dense chapters (Insurance 624-651, Education Code 1000-1013)."
 
   - code: ks
     name: "Kansas"
@@ -553,10 +587,11 @@ jurisdictions:
     containers: "84 chapters"
     est_sections: "~25,000-27,000 (est.)"
     official_source: "https://www.ksrevisor.gov/ksa.html"
-    bulk_source: "per-section HTML (path encodes chapter/article/section)"
+    bulk_source: "https://www.ksrevisor.gov/statutes/chapters/ch{NN}/{path}.html (path encodes chapter/article/section)"
     source_tier: html
+    access: "No zip/API (SoS sells print). Fully deterministic per-section URL tree."
     citation_scheme: "chapter-article-section - deterministic"
-    notes: "Complete. Fully deterministic per-section URL tree."
+    notes: "Complete."
 
   - code: nm
     name: "New Mexico"
@@ -569,10 +604,11 @@ jurisdictions:
     containers: "79 chapters"
     est_sections: "~26,000-30,000 (est.) - ours ~80-90%"
     official_source: "https://nmonesource.com/"
-    bulk_source: "per-section HTML (fragile SPA; no bulk)"
+    bulk_source: "nmonesource.com (per-section HTML, Lexum SPA)"
     source_tier: html
+    access: "JavaScript SPA (Selenium/headless), fragile. No public bulk/API. No geo-block."
     citation_scheme: "chapter-article-section (e.g. 30-3-2 NMSA) - deterministic"
-    notes: "SECTION-THIN (mild). JavaScript SPA source, so scraping is fragile."
+    notes: "SECTION-THIN (mild)."
 
   - code: vt
     name: "Vermont"
@@ -585,8 +621,9 @@ jurisdictions:
     containers: "~34 titles"
     est_sections: "~22,000-24,000 (est.)"
     official_source: "https://legislature.vermont.gov/statutes/"
-    bulk_source: "per-section HTML"
+    bulk_source: "https://legislature.vermont.gov/statutes/section/{title}/{chapter}/{section} (per-section) + per-title TOC"
     source_tier: html
+    access: "No zip/API. Deterministic slugs."
     citation_scheme: "title-chapter-section - deterministic"
     notes: "Complete (a genuinely small code)."
 
@@ -601,10 +638,11 @@ jurisdictions:
     containers: "4 Parts / 282 chapters"
     est_sections: "~22,000-24,000 (est.; exact via API)"
     official_source: "https://malegislature.gov/Laws/GeneralLaws"
-    bulk_source: "https://malegislature.gov/api (official REST API)"
+    bulk_source: "https://malegislature.gov/api (official REST API; Swagger at /api/swagger/, Chapters/Sections endpoints)"
     source_tier: api
+    access: "Official REST API, no key, no geo-block. The macode.org mirror is stale - do not use."
     citation_scheme: "chapter section (e.g. c.276 s.2) - deterministic"
-    notes: "Complete. The 4-Part top level is correct, not a gap. Official API is the clean source."
+    notes: "Complete. The 4-Part top level is correct, not a gap."
 
   - code: id
     name: "Idaho"
@@ -617,10 +655,11 @@ jurisdictions:
     containers: "73 titles"
     est_sections: "~22,000-24,000 (est.)"
     official_source: "https://legislature.idaho.gov/statutesrules/idstat/"
-    bulk_source: "per-title / per-chapter HTML"
+    bulk_source: "legislature.idaho.gov/statutesrules/idstat (per-title / per-chapter HTML)"
     source_tier: html
+    access: "No zip/API. Title 15 (UPC) nests Chapter>Part>Section (flatten). id tag also holds IDAPA regs + constitution - reconcile by node id."
     citation_scheme: "title-chapter-section (e.g. 18-4003) - deterministic"
-    notes: "Complete. Title 15 (UPC) nests Chapter>Part>Section (flatten). id tag also holds IDAPA regs + constitution - reconcile by node id."
+    notes: "Complete."
 
   - code: az
     name: "Arizona"
@@ -633,8 +672,9 @@ jurisdictions:
     containers: "47 active titles"
     est_sections: "~25,000-29,000 (est.) - ours ~78-90%"
     official_source: "https://www.azleg.gov/arstitle/"
-    bulk_source: "whole-title HTML (arsDetail) + ROC statute-book PDF"
+    bulk_source: "https://www.azleg.gov/arsDetail/?title={NN} (whole-title HTML) + ROC combined statute-book PDF (roc.az.gov)"
     source_tier: html
+    access: "No API/zip, no block. Site is maintained for drafting (points to Thomson Reuters for the official version)."
     citation_scheme: "title-section (e.g. 13-1105) - deterministic"
     notes: "SECTION-THIN (mild). Recount the heavy titles (32 Professions, 42/43 Taxation) before treating as complete."
 
@@ -649,10 +689,11 @@ jurisdictions:
     containers: "31 titles"
     est_sections: "~22,000-25,000 (est.)"
     official_source: "https://delcode.delaware.gov/"
-    bulk_source: "per-chapter HTML + JSON search API"
+    bulk_source: "https://delcode.delaware.gov/title{N}/c{NNN}/index.html (per-chapter) + legis.delaware.gov/json/DelCodeSearch/GetDelCodeSearchResults (JSON API)"
     source_tier: html
+    access: "No bulk zip, no geo-block. Title 8 is the DGCL."
     citation_scheme: "title + section (e.g. 8 Del. C. 102) - deterministic"
-    notes: "Complete. Title 8 is the DGCL (corporate law)."
+    notes: "Complete."
 
   - code: ri
     name: "Rhode Island"
@@ -665,8 +706,9 @@ jurisdictions:
     containers: "47 titles"
     est_sections: "~20,000-25,000 (est.)"
     official_source: "https://webserver.rilegislature.gov/statutes/Statutes.html"
-    bulk_source: "per-title/chapter HTML (deterministic paths)"
+    bulk_source: "https://webserver.rilegislature.gov/Statutes/TITLE{NN}/INDEX.HTM (per-title/chapter HTML)"
     source_tier: html
+    access: "No zip/API, no geo/bot. Deterministic paths."
     citation_scheme: "title-chapter-section (e.g. 11-1-1) - deterministic"
     notes: "Complete. All 47 titles present, section-deep (a granular small-state code)."
 
@@ -681,10 +723,11 @@ jurisdictions:
     containers: "51 titles"
     est_sections: "~24,000-28,000 (est.; exactly countable from XML)"
     official_source: "https://code.dccouncil.gov/us/dc/council/code"
-    bulk_source: "https://github.com/DCCouncil/law-xml-codified (official open-data XML)"
+    bulk_source: "https://github.com/DCCouncil/law-xml-codified (official open-data XML, 569+ releases) + law-xml / dc-law-html"
     source_tier: git
+    access: "Best-tier git/zip, public, no key, no geo-block. Section total is exactly recountable."
     citation_scheme: "title-section (e.g. 51-127) - deterministic"
-    notes: "Complete. Best-tier bulk (GitHub XML). Count sits slightly low - worth an exact recount against the XML."
+    notes: "Complete. Count sits slightly low - worth an exact recount against the XML."
 
   - code: wi
     name: "Wisconsin"
@@ -697,10 +740,11 @@ jurisdictions:
     containers: "~450 active chapters"
     est_sections: "~18,000-19,500 (est.)"
     official_source: "https://docs.legis.wisconsin.gov/statutes/prefaces/toc"
-    bulk_source: "per-chapter HTML + PDF"
+    bulk_source: "docs.legis.wisconsin.gov/statutes (per-chapter HTML + PDF; no single bulk file)"
     source_tier: html
+    access: "No zip/API. Proxy concurrency ceiling ~20; phase-separate crawl then chunk."
     citation_scheme: "chapter.section (mixed-decimal) - deterministic"
-    notes: "Complete. Proxy concurrency ceiling ~20; phase-separate crawl then chunk."
+    notes: "Complete."
 
   - code: ak
     name: "Alaska"
@@ -713,10 +757,11 @@ jurisdictions:
     containers: "47 titles"
     est_sections: "~18,000-21,000 (est.)"
     official_source: "https://www.akleg.gov/basis/statutes.asp"
-    bulk_source: "per-title HTML (BASIS, JavaScript-rendered)"
+    bulk_source: "https://www.akleg.gov/basis/statutes.asp?title={N} (per-title HTML, BASIS)"
     source_tier: html
+    access: "JS-rendered BASIS tree (Selenium/headless). No bulk zip/API. Geo (proxy)."
     citation_scheme: "AS title.chapter.section (e.g. 11.41.100) - deterministic"
-    notes: "Complete. BASIS tree is JS-driven (Selenium/headless). Geo (proxy)."
+    notes: "Complete."
 
   - code: mi
     name: "Michigan"
@@ -729,10 +774,11 @@ jurisdictions:
     containers: "~830 MCL chapter numbers (~150-180 named)"
     est_sections: "~28,000-35,000 (est.) - ours ~50-65%"
     official_source: "https://www.legislature.mi.gov/Laws/ChapterIndex"
-    bulk_source: "https://www.legislature.mi.gov/documents/mcl/ (per-chapter XML tree)"
+    bulk_source: "https://www.legislature.mi.gov/documents/mcl/ (per-chapter XML tree) + per-section RTF/PDF + annual MCLT PDF (enumerates every section)"
     source_tier: html
+    access: "Near-bulk XML tree. Host TLS chain is incomplete (pin the chain or use a tolerant client). No geo-block."
     citation_scheme: "act.section (e.g. 750.316) - deterministic"
-    notes: "SECTION-THIN. A large industrial code sitting implausibly below Rhode Island. Backfill from the MCL XML tree; confirm the exact total from the annual MCL Table."
+    notes: "SECTION-THIN. A large industrial code sitting implausibly below Rhode Island. Confirm the exact total from the annual MCL Table."
 
   - code: hi
     name: "Hawaii"
@@ -745,8 +791,9 @@ jurisdictions:
     containers: "5 divisions / 38 titles / 600+ chapters"
     est_sections: "~15,000-18,000 (est.)"
     official_source: "https://www.capitol.hawaii.gov/hrsall/"
-    bulk_source: "per-chapter HTML + LRB DOCX volumes"
+    bulk_source: "https://www.capitol.hawaii.gov/hrsall/ (per-chapter HTML, ChaptersByVolume.aspx?id={NN}) + LRB DOCX volumes"
     source_tier: html
+    access: "No zip/API, no geo/bot."
     citation_scheme: "chapter-section (e.g. 706-660) - deterministic"
     notes: "Complete. Full title range present, section-deep."
 
@@ -761,10 +808,11 @@ jurisdictions:
     containers: "56 titles"
     est_sections: "~17,000-20,000 (est.)"
     official_source: "https://www.cga.ct.gov/current/pub/titles.htm"
-    bulk_source: "https://data.ct.gov/d/7qmh-sgdi (Socrata open-data API)"
+    bulk_source: "https://data.ct.gov/d/7qmh-sgdi (Socrata open-data API) + cga.ct.gov/current/pub/titles.htm (per-title HTM)"
     source_tier: api
+    access: "Socrata API is the clean bulk source. cga.ct.gov is WAF/anti-bot (headers/proxy). US-geo-restricted."
     citation_scheme: "title-section (e.g. 53a-54a) - deterministic"
-    notes: "Complete to marginal (~80-95%). Socrata API is the clean bulk source. cga.ct.gov is WAF/anti-bot (proxy). Geo-restricted."
+    notes: "Complete to marginal (~80-95%)."
 
   - code: ky
     name: "Kentucky"
@@ -777,10 +825,11 @@ jurisdictions:
     containers: "51 titles / ~280 active chapters"
     est_sections: "~21,000-24,000 (est.)"
     official_source: "https://apps.legislature.ky.gov/law/statutes/"
-    bulk_source: "per-section HTML (opaque numeric id)"
+    bulk_source: "https://apps.legislature.ky.gov/law/statutes/statute.aspx?id={id} (per-section HTML)"
     source_tier: html
-    citation_scheme: "KRS chapter.section stable; internal page id is NOT derivable (needs an index crawl)"
-    notes: "Complete to near-complete (lowest ratio, mild watch). Refresh must crawl the chapter index to map KRS cites to page ids."
+    access: "No zip/API. The page id is an opaque internal number NOT derivable from the KRS cite - crawl the chapter index each run to map cites to ids."
+    citation_scheme: "KRS chapter.section (cite deterministic; page id is not)"
+    notes: "Complete to near-complete (lowest ratio, mild watch)."
 
   - code: sd
     name: "South Dakota"
@@ -793,10 +842,11 @@ jurisdictions:
     containers: "62+ titles"
     est_sections: "~22,000-27,000 (est.) - ours ~47-57%"
     official_source: "https://sdlegislature.gov/Statutes"
-    bulk_source: "https://sdlegislature.gov/api/Statutes/{title}-{chapter}.html (JSON-backed)"
+    bulk_source: "https://sdlegislature.gov/api/Statutes/{title}-{chapter}.html (per-chapter TOC, JSON-backed) + DisplayStatute.aspx (per section)"
     source_tier: api
+    access: "Clean deterministic API. The .html suffix is the content path; bare /api/Statutes/{id} returns the SPA shell. Not blocked."
     citation_scheme: "title-chapter-section (e.g. 22-40-1) - deterministic (strongest in the set)"
-    notes: "PARTIAL: only ~18 of 62+ titles held (missing Motor Vehicles, Insurance, Labor, Commercial). Clean deterministic API - a low-effort backfill."
+    notes: "PARTIAL: only ~18 of 62+ titles held (missing Motor Vehicles, Insurance, Labor, Commercial). A low-effort backfill."
 
   - code: tn
     name: "Tennessee"
@@ -809,10 +859,11 @@ jurisdictions:
     containers: "71 titles"
     est_sections: "~40,000-48,000 (est.) - ours ~23-28%"
     official_source: "http://www.lexisnexis.com/hottopics/tncode/ (official free public access)"
-    bulk_source: "per-section HTML (Lexis anti-bot; no bulk/API)"
+    bulk_source: "lexisnexis.com/hottopics/tncode (per-section HTML)"
     source_tier: html
+    access: "JS/anti-bot Lexis portal, no zip/API - needs a headless browser or a licensed feed."
     citation_scheme: "TCA title-chapter-section (e.g. 39-13-202) - deterministic on the cite"
-    notes: "PARTIAL: missing titles 41-71 (Motor Vehicles 55, Insurance 56, Property 66, Taxes 67). Source is a Lexis anti-bot portal - needs headless browser."
+    notes: "PARTIAL: missing titles 41-71 (Motor Vehicles 55, Insurance 56, Property 66, Taxes 67)."
 
   - code: wy
     name: "Wyoming"
@@ -825,10 +876,11 @@ jurisdictions:
     containers: "43 titles"
     est_sections: "~13,000-16,000 (est.) - ours ~64-78%"
     official_source: "https://wyoleg.gov/StateStatutes/StatutesConstitution"
-    bulk_source: "https://wyoleg.gov/statutes/compress/title{01..43}.pdf (official per-title PDFs)"
+    bulk_source: "https://wyoleg.gov/statutes/compress/title{01..43}.pdf (official per-title PDFs) + NXT gateway HTML fallback"
     source_tier: bulk_pdf
+    access: "Official per-title PDFs, US-hosted, not anti-bot. Parse the PDF. Deterministic W.S. cites."
     citation_scheme: "W.S. title-chapter-section (e.g. 6-2-101) - deterministic"
-    notes: "SECTION-THIN: all 43 titles present but light. Clean official per-title PDFs (US-hosted, not anti-bot) - an easy top-up."
+    notes: "SECTION-THIN: all 43 titles present but light. An easy top-up."
 
   - code: ok
     name: "Oklahoma"
@@ -843,8 +895,9 @@ jurisdictions:
     official_source: "https://www.oklegislature.gov/osstatuestitle.html"
     bulk_source: "https://www.oklegislature.gov/OK_Statutes/CompleteTitles/os{NN}.pdf (official per-title PDFs)"
     source_tier: bulk_pdf
+    access: "Official per-title PDFs; OSCN per-section HTML is the structured fallback. No data API."
     citation_scheme: "title O.S. section (e.g. 21 O.S. 701.7) - deterministic"
-    notes: "SECTION-THIN: ~90 titles, several very large; recount against the official per-title PDFs before trusting."
+    notes: "SECTION-THIN: ~90 titles, several very large; recount against the per-title PDFs before trusting."
 
   - code: pa
     name: "Pennsylvania"
@@ -857,10 +910,11 @@ jurisdictions:
     containers: "79 consolidated + 77 unconsolidated titles"
     est_sections: "~30,000-40,000 full (est.); consolidated ~12,500 held"
     official_source: "https://www.palegis.us/statutes"
-    bulk_source: "consolidated: view-statute HTML/PDF (deterministic); unconsolidated: by Act Year / P.L. (NOT deterministic)"
+    bulk_source: "consolidated: palegis.us view-statute?ttl={NN}&chpt=&sctn= (HTML/PDF/Word, deterministic); unconsolidated: browse by Act Year / P.L."
     source_tier: html
+    access: "No statute bulk (the /data page is only bill-history XML). WAF (proxy). Unconsolidated ids (Act Year / P.L.) are NOT reproducible."
     citation_scheme: "consolidated title.section deterministic; unconsolidated Act/P.L. numbering non-deterministic"
-    notes: "PARTIAL: holds the Consolidated Statutes (Pa.C.S.) ~100%, but the entire UNconsolidated body is missing (Public School Code, Tax Reform Code, Fiscal Code, Insurance Company Law, Workers Comp, Unemployment). WAF (proxy)."
+    notes: "PARTIAL: holds the Consolidated Statutes (Pa.C.S.) ~100%, but the entire UNconsolidated body is missing (Public School Code, Tax Reform Code, Fiscal Code, Insurance Company Law, Workers Comp, Unemployment)."
 
   - code: ny
     name: "New York"
@@ -873,10 +927,11 @@ jurisdictions:
     containers: "123 consolidated laws"
     est_sections: "~80,000-100,000 (est.) - ours ~40-50%"
     official_source: "https://www.nysenate.gov/legislation/laws/CONSOLIDATED"
-    bulk_source: "https://legislation.nysenate.gov/ (OpenLegislation API, free key, point-in-time)"
+    bulk_source: "https://legislation.nysenate.gov/ OpenLegislation API (/api/3/laws, ?full=true, ?date= point-in-time, /updates)"
     source_tier: api
+    access: "Free API key; full lettered-section coverage. Firewalled from non-US (US IP/proxy). This is the fix for the section-thinness."
     citation_scheme: "law-id + section (e.g. TAX 606) - deterministic"
-    notes: "SECTION-THIN and the single highest-value backfill: all 123 laws present but thin inside them (Tax holds 521 of ~1,100-1,400 real). Fix via the OpenLegislation API. Geo-restricted (proxy)."
+    notes: "SECTION-THIN and the single highest-value backfill: all 123 laws present but thin inside them (Tax holds 521 of ~1,100-1,400 real)."
 
   - code: pr
     name: "Puerto Rico"
@@ -889,10 +944,11 @@ jurisdictions:
     containers: "34 LPRA titles"
     est_sections: "~12,000-16,000 (est.) - ours ~18-24%"
     official_source: "https://www.statedepartment.pr.gov/laws-of-puerto-rico"
-    bulk_source: "LexJuris PDFs (per-title); bilingual"
+    bulk_source: "LexJuris per-title PDFs (lexjuris.com) + statedepartment.pr.gov"
     source_tier: pdf
+    access: "Per-title PDFs, anti-bot, bilingual (Spanish/English duplication hazard on ingest). No API/zip."
     citation_scheme: "Titulo X seccion Y - deterministic on the cite"
-    notes: "PARTIAL: only 3 of 34 LPRA titles held (Civil, Tax, Penal). Bilingual (Spanish/English) duplication hazard on ingest."
+    notes: "PARTIAL: only 3 of 34 LPRA titles held (Civil, Tax, Penal)."
 
   - code: ar
     name: "Arkansas"
@@ -905,7 +961,8 @@ jurisdictions:
     containers: "28 titles"
     est_sections: "~33,000-38,000 (est.) - ours 0.13%"
     official_source: "http://www.lexisnexis.com/hottopics/arcode/ (official free public access)"
-    bulk_source: "per-section HTML (Lexis anti-bot; no bulk/API)"
+    bulk_source: "lexisnexis.com/hottopics/arcode (per-section HTML)"
     source_tier: html
+    access: "JS/anti-bot Lexis portal, no zip/API (FindLaw/Justia mirrors are Cloudflare-blocked) - needs a headless browser or a licensed feed."
     citation_scheme: "ACA title-chapter-section (e.g. 5-4-401) - deterministic on the cite"
-    notes: "BROKEN (~0.13%): 24 titles each holding 1-18 sections. Source is a Lexis anti-bot portal with no bulk - needs a headless browser or a licensed feed. Label partial until rebuilt."
+    notes: "BROKEN (~0.13%): 24 titles each holding 1-18 sections. Label partial until rebuilt."
