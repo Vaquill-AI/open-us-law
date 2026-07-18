@@ -6,7 +6,7 @@ US law is public domain. In *Georgia v. Public.Resource.Org* (2020) the Supreme 
 
 ## Status
 
-Published incrementally. **Federal USC + CFR ingestion is here now**; the state statute, regulation, and court-rule scrapers are being added as their public editions land. The [coverage manifest](coverage.yml) tracks what is dump-ready.
+Published incrementally. Here now: **federal** USC + CFR ingestion and federal-agency guidance, **14 state administrative-regulation** scrapers, **6 state court-rule** scrapers, and a first set of **state statute** scrapers (OH, UT, PR). The **50-state statutory-code** scrapers are next. The [coverage manifest](coverage.yml) tracks what is dump-ready.
 
 ## What's here
 
