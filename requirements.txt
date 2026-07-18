@@ -11,3 +11,8 @@ playwright>=1.40        # JS-rendered sources (run: playwright install chromium)
 
 # Added when the 50-state statute scrapers (state_scrapers/) land:
 #   selenium
+
+# For the 50-state statute scrapers (scripts/state_scrapers/):
+pydantic>=2.0
+tenacity>=8.0
+selenium>=4.0           # only the 11 Selenium states (+ chromedriver on PATH)
