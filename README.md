@@ -67,62 +67,62 @@ Every scraper writes **JSONL** - one normalized node/section per line - to `$OUT
 
 ### State statutes (all 50 states)
 
-Run via `cd scripts/state_scrapers && OUT_DIR=./data python -m src.scrapers.us.states.<xx>.statutes.scrape<XX>`. States marked **proxy** geo-restrict non-US IPs - see [caveats](#important-caveats-please-read). A few states also have an **official-source** alternative scraper noted in the last column.
+Run via `cd scripts/state_scrapers && OUT_DIR=./data python -m src.scrapers.us.states.<xx>.statutes.scrape<XX>`. States marked **proxy** geo-restrict non-US IPs - see [caveats](#important-caveats-please-read). A few states also have an **official-source** alternative scraper noted in the last column. The **Coverage** column is this dataset's per-jurisdiction completeness from the audit in [`coverage.yml`](coverage.yml): `complete`, `thin` (containers present, sections missing), `partial` (whole titles missing), or `broken`; only `complete` jurisdictions are dump-eligible.
 
-| State | Statute scraper | Notes |
-|---|---|---|
-| Alaska (`ak`) | [scrapeAK.py](scripts/state_scrapers/src/scrapers/us/states/ak/statutes/scrapeAK.py) |  |
-| Alabama (`al`) | [scrapeAL.py](scripts/state_scrapers/src/scrapers/us/states/al/statutes/scrapeAL.py) | proxy |
-| Arkansas (`ar`) | [scrapeAR.py](scripts/state_scrapers/src/scrapers/us/states/ar/statutes/scrapeAR.py) |  |
-| Arizona (`az`) | [scrapeAZ.py](scripts/state_scrapers/src/scrapers/us/states/az/statutes/scrapeAZ.py) |  |
-| California (`ca`) | [scrapeCA.py](scripts/state_scrapers/src/scrapers/us/states/ca/statutes/scrapeCA.py) |  |
-| Colorado (`co`) | [scrapeCO.py](scripts/state_scrapers/src/scrapers/us/states/co/statutes/scrapeCO.py) |  |
-| Connecticut (`ct`) | [scrapeCT.py](scripts/state_scrapers/src/scrapers/us/states/ct/statutes/scrapeCT.py) | proxy |
-| Delaware (`de`) | [scrapeDE.py](scripts/state_scrapers/src/scrapers/us/states/de/statutes/scrapeDE.py) |  |
-| Florida (`fl`) | [scrapeFL.py](scripts/state_scrapers/src/scrapers/us/states/fl/statutes/scrapeFL.py) |  |
-| Georgia (`ga`) | [scrapeGA.py](scripts/state_scrapers/src/scrapers/us/states/ga/statutes/scrapeGA.py) |  |
-| Hawaii (`hi`) | [scrapeHI.py](scripts/state_scrapers/src/scrapers/us/states/hi/statutes/scrapeHI.py) |  |
-| Iowa (`ia`) | [scrapeIA.py](scripts/state_scrapers/src/scrapers/us/states/ia/statutes/scrapeIA.py) |  |
-| Idaho (`id`) | [scrapeID.py](scripts/state_scrapers/src/scrapers/us/states/id/statutes/scrapeID.py) |  |
-| Illinois (`il`) | [scrapeIL.py](scripts/state_scrapers/src/scrapers/us/states/il/statutes/scrapeIL.py) |  |
-| Indiana (`in`) | [scrapeIN.py](scripts/state_scrapers/src/scrapers/us/states/in/statutes/scrapeIN.py) | proxy |
-| Kansas (`ks`) | [scrapeKS.py](scripts/state_scrapers/src/scrapers/us/states/ks/statutes/scrapeKS.py) |  |
-| Kentucky (`ky`) | [scrapeKY.py](scripts/state_scrapers/src/scrapers/us/states/ky/statutes/scrapeKY.py) |  |
-| Louisiana (`la`) | [scrapeLA.py](scripts/state_scrapers/src/scrapers/us/states/la/statutes/scrapeLA.py) |  |
-| Massachusetts (`ma`) | [scrapeMA.py](scripts/state_scrapers/src/scrapers/us/states/ma/statutes/scrapeMA.py) |  |
-| Maryland (`md`) | [scrapeMD.py](scripts/state_scrapers/src/scrapers/us/states/md/statutes/scrapeMD.py) |  |
-| Maine (`me`) | [scrapeME.py](scripts/state_scrapers/src/scrapers/us/states/me/statutes/scrapeME.py) |  |
-| Michigan (`mi`) | [scrapeMI.py](scripts/state_scrapers/src/scrapers/us/states/mi/statutes/scrapeMI.py) |  |
-| Minnesota (`mn`) | [scrapeMN.py](scripts/state_scrapers/src/scrapers/us/states/mn/statutes/scrapeMN.py) |  |
-| Missouri (`mo`) | [scrapeMO.py](scripts/state_scrapers/src/scrapers/us/states/mo/statutes/scrapeMO.py) |  |
-| Mississippi (`ms`) | [scrapeMS.py](scripts/state_scrapers/src/scrapers/us/states/ms/statutes/scrapeMS.py) |  |
-| Montana (`mt`) | [scrapeMT.py](scripts/state_scrapers/src/scrapers/us/states/mt/statutes/scrapeMT.py) |  |
-| North Carolina (`nc`) | [scrapeNC.py](scripts/state_scrapers/src/scrapers/us/states/nc/statutes/scrapeNC.py) |  |
-| North Dakota (`nd`) | [scrapeND.py](scripts/state_scrapers/src/scrapers/us/states/nd/statutes/scrapeND.py) |  |
-| Nebraska (`ne`) | [scrapeNE.py](scripts/state_scrapers/src/scrapers/us/states/ne/statutes/scrapeNE.py) |  |
-| New Hampshire (`nh`) | [scrapeNH.py](scripts/state_scrapers/src/scrapers/us/states/nh/statutes/scrapeNH.py) | proxy |
-| New Jersey (`nj`) | [scrapeNJ.py](scripts/state_scrapers/src/scrapers/us/states/nj/statutes/scrapeNJ.py) |  |
-| New Mexico (`nm`) | [scrapeNM.py](scripts/state_scrapers/src/scrapers/us/states/nm/statutes/scrapeNM.py) |  |
-| Nevada (`nv`) | [scrapeNV.py](scripts/state_scrapers/src/scrapers/us/states/nv/statutes/scrapeNV.py) |  |
-| New York (`ny`) | [scrapeNY.py](scripts/state_scrapers/src/scrapers/us/states/ny/statutes/scrapeNY.py) | proxy |
-| Ohio (`oh`) | [scrapeOH.py](scripts/state_scrapers/src/scrapers/us/states/oh/statutes/scrapeOH.py) | also [official-source](scripts/statutes/ingest_oh_statutes.py) |
-| Oklahoma (`ok`) | [scrapeOK.py](scripts/state_scrapers/src/scrapers/us/states/ok/statutes/scrapeOK.py) |  |
-| Oregon (`or`) | [scrapeOR.py](scripts/state_scrapers/src/scrapers/us/states/or/statutes/scrapeOR.py) |  |
-| Pennsylvania (`pa`) | [scrapePA.py](scripts/state_scrapers/src/scrapers/us/states/pa/statutes/scrapePA.py) |  |
-| Rhode Island (`ri`) | [scrapeRI.py](scripts/state_scrapers/src/scrapers/us/states/ri/statutes/scrapeRI.py) |  |
-| South Carolina (`sc`) | [scrapeSC.py](scripts/state_scrapers/src/scrapers/us/states/sc/statutes/scrapeSC.py) |  |
-| South Dakota (`sd`) | [scrapeSD.py](scripts/state_scrapers/src/scrapers/us/states/sd/statutes/scrapeSD.py) |  |
-| Tennessee (`tn`) | [scrapeTN.py](scripts/state_scrapers/src/scrapers/us/states/tn/statutes/scrapeTN.py) |  |
-| Texas (`tx`) | [scrapeTX.py](scripts/state_scrapers/src/scrapers/us/states/tx/statutes/scrapeTX.py) |  |
-| Utah (`ut`) | [scrapeUT.py](scripts/state_scrapers/src/scrapers/us/states/ut/statutes/scrapeUT.py) | also [official-source](scripts/statutes/ingest_ut_statutes.py) |
-| Virginia (`va`) | [scrapeVA.py](scripts/state_scrapers/src/scrapers/us/states/va/statutes/scrapeVA.py) |  |
-| Vermont (`vt`) | [scrapeVT.py](scripts/state_scrapers/src/scrapers/us/states/vt/statutes/scrapeVT.py) |  |
-| Washington (`wa`) | [scrapeWA.py](scripts/state_scrapers/src/scrapers/us/states/wa/statutes/scrapeWA.py) |  |
-| Wisconsin (`wi`) | [scrapeWI.py](scripts/state_scrapers/src/scrapers/us/states/wi/statutes/scrapeWI.py) |  |
-| West Virginia (`wv`) | [scrapeWV.py](scripts/state_scrapers/src/scrapers/us/states/wv/statutes/scrapeWV.py) |  |
-| Wyoming (`wy`) | [scrapeWY.py](scripts/state_scrapers/src/scrapers/us/states/wy/statutes/scrapeWY.py) |  |
+| State | Statute scraper | Coverage | Notes |
+|---|---|---|---|
+| Alaska (`ak`) | [scrapeAK.py](scripts/state_scrapers/src/scrapers/us/states/ak/statutes/scrapeAK.py) | complete |  |
+| Alabama (`al`) | [scrapeAL.py](scripts/state_scrapers/src/scrapers/us/states/al/statutes/scrapeAL.py) | complete | proxy |
+| Arkansas (`ar`) | [scrapeAR.py](scripts/state_scrapers/src/scrapers/us/states/ar/statutes/scrapeAR.py) | broken |  |
+| Arizona (`az`) | [scrapeAZ.py](scripts/state_scrapers/src/scrapers/us/states/az/statutes/scrapeAZ.py) | thin (~78-90%) |  |
+| California (`ca`) | [scrapeCA.py](scripts/state_scrapers/src/scrapers/us/states/ca/statutes/scrapeCA.py) | complete |  |
+| Colorado (`co`) | [scrapeCO.py](scripts/state_scrapers/src/scrapers/us/states/co/statutes/scrapeCO.py) | complete |  |
+| Connecticut (`ct`) | [scrapeCT.py](scripts/state_scrapers/src/scrapers/us/states/ct/statutes/scrapeCT.py) | complete | proxy |
+| Delaware (`de`) | [scrapeDE.py](scripts/state_scrapers/src/scrapers/us/states/de/statutes/scrapeDE.py) | complete |  |
+| Florida (`fl`) | [scrapeFL.py](scripts/state_scrapers/src/scrapers/us/states/fl/statutes/scrapeFL.py) | thin (~54-70%) |  |
+| Georgia (`ga`) | [scrapeGA.py](scripts/state_scrapers/src/scrapers/us/states/ga/statutes/scrapeGA.py) | complete |  |
+| Hawaii (`hi`) | [scrapeHI.py](scripts/state_scrapers/src/scrapers/us/states/hi/statutes/scrapeHI.py) | complete |  |
+| Iowa (`ia`) | [scrapeIA.py](scripts/state_scrapers/src/scrapers/us/states/ia/statutes/scrapeIA.py) | complete |  |
+| Idaho (`id`) | [scrapeID.py](scripts/state_scrapers/src/scrapers/us/states/id/statutes/scrapeID.py) | complete |  |
+| Illinois (`il`) | [scrapeIL.py](scripts/state_scrapers/src/scrapers/us/states/il/statutes/scrapeIL.py) | complete |  |
+| Indiana (`in`) | [scrapeIN.py](scripts/state_scrapers/src/scrapers/us/states/in/statutes/scrapeIN.py) | complete | proxy |
+| Kansas (`ks`) | [scrapeKS.py](scripts/state_scrapers/src/scrapers/us/states/ks/statutes/scrapeKS.py) | complete |  |
+| Kentucky (`ky`) | [scrapeKY.py](scripts/state_scrapers/src/scrapers/us/states/ky/statutes/scrapeKY.py) | complete |  |
+| Louisiana (`la`) | [scrapeLA.py](scripts/state_scrapers/src/scrapers/us/states/la/statutes/scrapeLA.py) | complete |  |
+| Massachusetts (`ma`) | [scrapeMA.py](scripts/state_scrapers/src/scrapers/us/states/ma/statutes/scrapeMA.py) | complete |  |
+| Maryland (`md`) | [scrapeMD.py](scripts/state_scrapers/src/scrapers/us/states/md/statutes/scrapeMD.py) | complete |  |
+| Maine (`me`) | [scrapeME.py](scripts/state_scrapers/src/scrapers/us/states/me/statutes/scrapeME.py) | thin (~80%) |  |
+| Michigan (`mi`) | [scrapeMI.py](scripts/state_scrapers/src/scrapers/us/states/mi/statutes/scrapeMI.py) | thin (~50-65%) |  |
+| Minnesota (`mn`) | [scrapeMN.py](scripts/state_scrapers/src/scrapers/us/states/mn/statutes/scrapeMN.py) | complete |  |
+| Missouri (`mo`) | [scrapeMO.py](scripts/state_scrapers/src/scrapers/us/states/mo/statutes/scrapeMO.py) | complete |  |
+| Mississippi (`ms`) | [scrapeMS.py](scripts/state_scrapers/src/scrapers/us/states/ms/statutes/scrapeMS.py) | complete |  |
+| Montana (`mt`) | [scrapeMT.py](scripts/state_scrapers/src/scrapers/us/states/mt/statutes/scrapeMT.py) | complete |  |
+| North Carolina (`nc`) | [scrapeNC.py](scripts/state_scrapers/src/scrapers/us/states/nc/statutes/scrapeNC.py) | complete |  |
+| North Dakota (`nd`) | [scrapeND.py](scripts/state_scrapers/src/scrapers/us/states/nd/statutes/scrapeND.py) | complete |  |
+| Nebraska (`ne`) | [scrapeNE.py](scripts/state_scrapers/src/scrapers/us/states/ne/statutes/scrapeNE.py) | complete |  |
+| New Hampshire (`nh`) | [scrapeNH.py](scripts/state_scrapers/src/scrapers/us/states/nh/statutes/scrapeNH.py) | complete | proxy |
+| New Jersey (`nj`) | [scrapeNJ.py](scripts/state_scrapers/src/scrapers/us/states/nj/statutes/scrapeNJ.py) | complete |  |
+| New Mexico (`nm`) | [scrapeNM.py](scripts/state_scrapers/src/scrapers/us/states/nm/statutes/scrapeNM.py) | thin (~80-90%) |  |
+| Nevada (`nv`) | [scrapeNV.py](scripts/state_scrapers/src/scrapers/us/states/nv/statutes/scrapeNV.py) | review (over-count) |  |
+| New York (`ny`) | [scrapeNY.py](scripts/state_scrapers/src/scrapers/us/states/ny/statutes/scrapeNY.py) | thin (~40-50%) | proxy |
+| Ohio (`oh`) | [scrapeOH.py](scripts/state_scrapers/src/scrapers/us/states/oh/statutes/scrapeOH.py) | complete | also [official-source](scripts/statutes/ingest_oh_statutes.py) |
+| Oklahoma (`ok`) | [scrapeOK.py](scripts/state_scrapers/src/scrapers/us/states/ok/statutes/scrapeOK.py) | thin (~71-84%) |  |
+| Oregon (`or`) | [scrapeOR.py](scripts/state_scrapers/src/scrapers/us/states/or/statutes/scrapeOR.py) | complete |  |
+| Pennsylvania (`pa`) | [scrapePA.py](scripts/state_scrapers/src/scrapers/us/states/pa/statutes/scrapePA.py) | partial (consolidated only) |  |
+| Rhode Island (`ri`) | [scrapeRI.py](scripts/state_scrapers/src/scrapers/us/states/ri/statutes/scrapeRI.py) | complete |  |
+| South Carolina (`sc`) | [scrapeSC.py](scripts/state_scrapers/src/scrapers/us/states/sc/statutes/scrapeSC.py) | complete |  |
+| South Dakota (`sd`) | [scrapeSD.py](scripts/state_scrapers/src/scrapers/us/states/sd/statutes/scrapeSD.py) | partial (~18 of 62 titles) |  |
+| Tennessee (`tn`) | [scrapeTN.py](scripts/state_scrapers/src/scrapers/us/states/tn/statutes/scrapeTN.py) | partial (missing 41-71) |  |
+| Texas (`tx`) | [scrapeTX.py](scripts/state_scrapers/src/scrapers/us/states/tx/statutes/scrapeTX.py) | complete |  |
+| Utah (`ut`) | [scrapeUT.py](scripts/state_scrapers/src/scrapers/us/states/ut/statutes/scrapeUT.py) | complete | also [official-source](scripts/statutes/ingest_ut_statutes.py) |
+| Virginia (`va`) | [scrapeVA.py](scripts/state_scrapers/src/scrapers/us/states/va/statutes/scrapeVA.py) | complete |  |
+| Vermont (`vt`) | [scrapeVT.py](scripts/state_scrapers/src/scrapers/us/states/vt/statutes/scrapeVT.py) | complete |  |
+| Washington (`wa`) | [scrapeWA.py](scripts/state_scrapers/src/scrapers/us/states/wa/statutes/scrapeWA.py) | complete |  |
+| Wisconsin (`wi`) | [scrapeWI.py](scripts/state_scrapers/src/scrapers/us/states/wi/statutes/scrapeWI.py) | complete |  |
+| West Virginia (`wv`) | [scrapeWV.py](scripts/state_scrapers/src/scrapers/us/states/wv/statutes/scrapeWV.py) | complete |  |
+| Wyoming (`wy`) | [scrapeWY.py](scripts/state_scrapers/src/scrapers/us/states/wy/statutes/scrapeWY.py) | thin (~64-78%) |  |
 
-> Puerto Rico statutes: [ingest_pr_codes.py](scripts/statutes/ingest_pr_codes.py) (LexJuris PDFs).
+> Puerto Rico statutes: [ingest_pr_codes.py](scripts/statutes/ingest_pr_codes.py) (LexJuris PDFs). Coverage: **partial** (3 of 34 LPRA titles).
 
 ### State regulations
 
