@@ -1,14 +1,38 @@
 # Open US Law
 
 **Open, structured US primary law - plus the scrapers that build it.**  
-State statutory codes, the US Code, the Code of Federal Regulations, state administrative regulations, state and federal constitutions, and court rules - normalized to JSONL, from official government sources only.
+State statutory codes, the US Code, the Code of Federal Regulations, state administrative regulations, state and federal constitutions, and court rules - normalized to a single schema, overwhelmingly from official government sources.
 
 US law is public domain. In *Georgia v. Public.Resource.Org* (2020) the Supreme Court reaffirmed the government-edicts doctrine: statutes, regulations, constitutions, and the official materials legislators produce cannot be copyrighted. Yet clean, structured, bulk access to the **compiled 50-state statutory codes** does not exist in the open - case law (CourtListener, the Caselaw Access Project) and federal law (govinfo USLM XML) are open, but the state codes sit behind commercial APIs. This project publishes that missing layer, and the tooling to reproduce it.
+
+## Download the data
+
+The built snapshot is published on Hugging Face. **You do not need to run any of the scrapers below to use it** - they are here so the corpus is reproducible and auditable.
+
+### **[huggingface.co/datasets/vaquill/open-us-law](https://huggingface.co/datasets/vaquill/open-us-law)**
+
+```python
+from datasets import load_dataset
+
+ds = load_dataset("vaquill/open-us-law", "statutes", split="train")
+ca = load_dataset("vaquill/open-us-law", data_files="us_ca_statutes.parquet")
+```
+
+Snapshot `v2026.07` contains **2,046,009 sections**:
+
+| Corpus | Sections | Jurisdictions |
+|---|---:|---|
+| State & territorial statutes | 1,983,394 | 50 states + DC + Puerto Rico |
+| United States Code | 54,853 | federal |
+| Constitutions | 7,762 | 52 |
+
+Parquet, one 24-column schema across every jurisdiction, CC BY 4.0. Sections carry `act_status` (`in_force`, `repealed`, `reserved`, `renumbered`, …), citation, full title/chapter hierarchy, and cross-references into the USC and CFR. New dated snapshots quarterly.
 
 This README doubles as the **table of contents** - the file tree is deep, so every scraper is linked below.
 
 ## Contents
 
+- [Download the data](#download-the-data)
 - [Quick start](#quick-start)
 - [What you get (output format)](#what-you-get-output-format)
 - [Coverage & script index](#coverage--script-index)
@@ -189,7 +213,9 @@ New-jurisdiction parsers, coverage fixes, and - especially - **repairs to state 
 
 ## Provenance
 
-All data derives from official government sources (state legislature / secretary-of-state sites, uscode.house.gov, the eCFR, the Federal Register, GPO govinfo). Each record keeps the source URL it was ingested from. The retrieval layer (embeddings, semantic index, citation graph) is intentionally out of scope here.
+Most data derives from official government sources (state legislature / secretary-of-state sites, uscode.house.gov, the eCFR, the Federal Register, GPO govinfo), and those records keep the exact source URL they were ingested from.
+
+A minority of state statutory codes were obtained from commercial aggregators rather than an official publisher. In the published dataset those records carry **no** `source_url` rather than linking to a third party, and the per-jurisdiction table in the [dataset card](https://huggingface.co/datasets/vaquill/open-us-law) marks them. We would rather state that plainly than imply the whole corpus is officially sourced. The retrieval layer (embeddings, semantic index, citation graph) is intentionally out of scope here.
 
 ## Maintained by
 
