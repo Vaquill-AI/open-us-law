@@ -42,6 +42,7 @@ This README doubles as the **table of contents** - the file tree is deep, so eve
   - [State statutes (all 50 states)](#state-statutes-all-50-states)
   - [State regulations](#state-regulations)
   - [State court rules](#state-court-rules)
+  - [State constitutions](#state-constitutions)
 - [Important caveats (proxies, breakage)](#important-caveats-please-read)
 - [Licensing & commercial use](#licensing--commercial-use)
 - [Contributing](#contributing)
@@ -90,10 +91,18 @@ Every scraper writes **JSONL** - one normalized node/section per line - to `$OUT
 | Federal Register (rules) | [ingest_federal_register_bulk.py](scripts/federal/ingest_federal_register_bulk.py) |
 | IRS Internal Revenue Bulletin | [ingest_irs_irb.py](scripts/federal/ingest_irs_irb.py) |
 | SSA rulings (SSR/AR) | [ingest_ssa_rulings.py](scripts/federal/ingest_ssa_rulings.py) |
+| US Code - GovInfo API downloader | [download_usc.py](scripts/federal/download_usc.py) |
+| US Code - parse ZIPs to JSONL | [parse_usc_zip.py](scripts/federal/parse_usc_zip.py) |
+| eCFR - API downloader | [download_ecfr.py](scripts/federal/download_ecfr.py) |
+| Presidential docs (EOs, proclamations) | [ingest_federal_register_presidential.py](scripts/federal/ingest_federal_register_presidential.py) |
+| Public-law cite parser (USC) | [parse_public_law_cites.py](scripts/federal/parse_public_law_cites.py) |
+| eCFR authority-cite parser | [parse_authority_citations.py](scripts/federal/parse_authority_citations.py) |
 
 ### State statutes (all 50 states)
 
 Run via `cd scripts/state_scrapers && OUT_DIR=./data python -m src.scrapers.us.states.<xx>.statutes.scrape<XX>`. States marked **proxy** geo-restrict non-US IPs - see [caveats](#important-caveats-please-read). A few states also have an **official-source** alternative scraper noted in the last column. All 50 states plus DC and Puerto Rico have complete statutory coverage, with one exception: Pennsylvania, whose Consolidated Statutes are complete but whose older unconsolidated (Purdon's) statutes are a separate backfill. The **Sections** column is the section count in the published `v2026.07` snapshot; the live count is always available from the API.
+
+Many states also have a newer **bulk-source ingester** at [`scripts/statutes/ingest_<state>_bulk.py`](scripts/statutes/) that pulls from an official bulk source (XML zip, API, or PDF) instead of scraping HTML. These share a small pipeline in [`scripts/state_scrapers/vaquill_pipeline/`](scripts/state_scrapers/vaquill_pipeline/) (fetch, chunk, record-build) and per-state parsers in `scripts/statutes/<state>_bulk/`. Run e.g. `OUT_DIR=./data python scripts/statutes/ingest_ny_bulk.py`.
 
 | State | Statute scraper | Sections (v2026.07) | Notes |
 |---|---|---|---|
@@ -180,7 +189,17 @@ State administrative codes. Some geo-restrict - see [caveats](#important-caveats
 | Minnesota (`mn`) | [ingest_mn_court_rules.py](scripts/court_rules/ingest_mn_court_rules.py) |
 | Nevada (`nv`) | [ingest_nv_court_rules.py](scripts/court_rules/ingest_nv_court_rules.py) |
 | New York (`ny`) | [ingest_ny_court_rules.py](scripts/court_rules/ingest_ny_court_rules.py) |
+| Florida (`fl`) | [ingest_fl_court_rules.py](scripts/court_rules/ingest_fl_court_rules.py) |
+| Texas (`tx`) | [ingest_tx_court_rules.py](scripts/court_rules/ingest_tx_court_rules.py) |
+| New Jersey (`nj`) | [ingest_nj_court_rules.py](scripts/court_rules/ingest_nj_court_rules.py) |
 | Multi-state (CA, MT, …) | [ingest_state_court_rules.py](scripts/court_rules/ingest_state_court_rules.py) |
+
+### State constitutions
+
+| Source | Script |
+|---|---|
+| 50 state constitutions | [ingest_state_constitutions.py](scripts/constitutions/ingest_state_constitutions.py) |
+| US Constitution + federal court rules | [ingest_const_rules_v2.py](scripts/constitutions/ingest_const_rules_v2.py) |
 
 ---
 
