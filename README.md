@@ -18,6 +18,8 @@ ds = load_dataset("vaquill/open-us-law", "statutes", split="train")
 ca = load_dataset("vaquill/open-us-law", data_files="us_ca_statutes.parquet")
 ```
 
+Prefer a direct download? Everything is mirrored on Cloudflare R2 (zero egress, range-request friendly): browse **[oss-data-us.vaquill.ai](https://oss-data-us.vaquill.ai)**, grab the [combined tarball](https://oss-data-us.vaquill.ai/v2026.07/open-us-law-v2026.07-parquet.tar), or read the [manifest](https://oss-data-us.vaquill.ai/index.json).
+
 Snapshot `v2026.07` contains **2,046,009 sections**:
 
 | Corpus | Sections | Jurisdictions |
