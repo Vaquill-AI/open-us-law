@@ -56,7 +56,7 @@ from pathlib import Path
 
 sys.stdout.reconfigure(line_buffering=True)  # type: ignore[attr-defined]
 
-_PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent
+_PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 PARSED_DIR = _PROJECT_ROOT / "data" / "us_corpus" / "parsed"
 
 
