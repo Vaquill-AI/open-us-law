@@ -36,6 +36,8 @@ Snapshot `v2026.07` contains **2,046,009 sections**:
 
 Parquet, one 24-column schema across every jurisdiction, CC BY 4.0. Sections carry `act_status` (`in_force`, `repealed`, `reserved`, `renumbered`, …), citation, full title/chapter hierarchy, and cross-references into the USC and CFR. New dated snapshots quarterly.
 
+**Coming next:** federal agency rules and guidance, and more corpora to fill the remaining gaps. See what's being added on the [coverage roadmap](https://www.vaquill.ai/docs/api-guide/coverage#coming-next).
+
 This README doubles as the **table of contents** - the file tree is deep, so every scraper is linked below.
 
 ## Contents
@@ -251,6 +253,8 @@ A minority of state statutory codes were obtained from commercial aggregators ra
 ## Maintained by
 
 [Vaquill AI](https://www.vaquill.ai). This open corpus is the substrate; Vaquill AI's API adds continuous freshness, retrieval, and citation resolution on top of it.
+
+Questions, ideas, or want to help? DM me on [LinkedIn](https://www.linkedin.com/in/zriyansh/).
 
 ---
 
