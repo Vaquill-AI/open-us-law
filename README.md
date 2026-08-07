@@ -239,6 +239,7 @@ We also run a hosted API: the same law, kept up to date and searchable section b
 
   Tell us briefly who you are and what you are building. The free key is best-effort and rate-limited, with no uptime guarantee. The dataset itself has none of those limits.
 - **Commercial use is paid.** Details at **[vaquill.ai/legal-api](https://www.vaquill.ai/legal-api)**. This covers live always-fresh data, retrieval-ready delivery (pre-chunked, embedded, citation-linked for RAG), bulk export, SLA and support, custom coverage, and a commercial data license (an attribution waiver and/or warranty & indemnity, if CC BY 4.0's terms don't fit your compliance needs).
+- **Want it built for you?** If you want a product, a workflow, or a data pipeline built on top of this, we take on that work. Email contact@vaquill.ai.
 
 ## Contributing
 
