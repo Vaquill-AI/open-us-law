@@ -1,15 +1,15 @@
 {
   "id": "2026-08-08-open-us-law-source-integrity",
-  "status": "dev-complete",
-  "current_role": "qa",
+  "status": "review",
+  "current_role": "planner",
   "locked_by": "codex:qa",
   "locked_at": "2026-08-08T19:55:33Z",
-  "last_agent": "codex:manager",
-  "last_updated": "2026-08-08T19:55:33Z",
+  "last_agent": "codex:qa2",
+  "last_updated": "2026-08-08T19:57:24Z",
   "contract_path": "docs/sprint/sprints/2026-08-08-open-us-law-source-integrity.md",
   "total_items": 4,
-  "completed_items": 3,
-  "dev_complete_items": 1,
-  "qa_cycles": 1,
+  "completed_items": 4,
+  "dev_complete_items": 0,
+  "qa_cycles": 2,
   "evaluator_command": ".venv/bin/python -m unittest discover -s tests/source_integrity -t . -v"
 }

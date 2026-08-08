@@ -1,19 +1,19 @@
 ---
 id: "2026-08-08-open-us-law-source-integrity"
-status: dev-complete
-current_role: qa
+status: review
+current_role: planner
 branch: sprint/2026-08-08-open-us-law-source-integrity
 locked_by: "codex:qa"
 locked_at: "2026-08-08T19:55:33Z"
-last_agent: "codex:manager"
-last_updated: "2026-08-08T19:55:33Z"
+last_agent: "codex:qa2"
+last_updated: "2026-08-08T19:57:24Z"
 lint: PASS
 evaluator: unittest
 evaluator_command: ".venv/bin/python -m unittest discover -s tests/source_integrity -t . -v"
 total_items: 4
-completed_items: 3
-dev_complete_items: 1
-qa_cycles: 1
+completed_items: 4
+dev_complete_items: 0
+qa_cycles: 2
 prd_sections:
   - docs/sprint/sprints/2026-08-08-open-us-law-source-integrity-review.md
 design_sections: []
@@ -47,12 +47,11 @@ branches, locks, tests, Developers, and QA verdicts.
 
 ## Next Steps
 
-None — SI-2 has returned to independent QA.
+None — all source-integrity items are complete and await planner review.
 
 ## Dev Complete
 
-- SI-2 — Deterministic release materializer: QA-cycle-1 repair `351b824`;
-  pinned Alaska dotted structural ID now passes while suffix agreement remains.
+None.
 
 ## Completed
 
@@ -65,6 +64,9 @@ None — SI-2 has returned to independent QA.
 - SI-4 — Offline publishable dry-run: fresh local artifact has the exact
   24-column Parquet schema, deterministic bytes/hashes/lineage, explicit
   target binding, and `upload_performed: false`; non-dry-run is refused.
+- SI-2 — Deterministic release materializer: QA-cycle-2 confirmed the pinned
+  Alaska dotted structural ID, required terminal-section agreement, collision
+  handling, provenance validation, and offline artifact contract.
 
 ## Evaluation Notes
 
@@ -81,14 +83,15 @@ committed Alaska regression passes and the diff is one production line.
 - Final evaluator: 25 run, 23 pass, 1 QA RED failure, 1 opt-in live skip.
 - External blockers remain: complete corrected HI capture and maintainer
   write credential/target are absent; no publication was attempted.
+- QA cycle 2: SI-2 PASS. Baseline was 25 run / 24 pass / 1 opt-in skip; final
+  authoritative evaluator was 26 run / 25 pass / 1 opt-in skip after one
+  focused Alaska dotted-prefix terminal-mismatch regression. No HF upload or
+  credentials were used.
 
 ## Context Dump
 
-- QA cycle 2 re-verifies SI-2 and runs the complete evaluator independently.
-- Confirm the Alaska pinned-HF regression and terminal section agreement.
-- Recheck a fresh dry-run Parquet/manifest/lineage/quarantine artifact set.
-- No HF upload: trusted complete HI capture and maintainer credentials are absent.
-- LexGraph downstream B1 work resumes only after the upstream QA verdict.
+- QA cycle 2 completed SI-2 independently; planner review may now hand off the
+  upstream verdict to LexGraph downstream B1 work.
 
 ## Planner evidence and verified boundary
 

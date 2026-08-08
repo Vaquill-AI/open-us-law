@@ -2,6 +2,28 @@
 
 Append-only evidence and role roster for the cross-repo repair.
 
+## QA cycle 2 — 2026-08-08
+
+- `/root/open_us_law_qa2` — QA — `gpt-5.6-terra`, high; Haiku was considered
+  and rejected because full artifact/identity regression adjudication and
+  pinned-source compatibility require high QA judgment.
+- Started clean at local/fork `7394ba5a1c06894aadde166fded55d2d148b891e` on
+  the required sprint branch. Confirmed QA RED `6ed1900` and repair `351b824`
+  in history; the repair is one production grammar-line change allowing dotted
+  structural tokens before the terminal `_S{section}` capture.
+- Baseline evaluator: 25 run, 24 pass, 1 opt-in live skip, no failures/errors.
+  SI-2 pinned `STATE_AK_T11_C11.76_S11.76.115` / `11.76.115` passes. Numeric,
+  hyphen, colon, and dotted compatibility; provenance; and duplicate/error and
+  quarantine collision behavior remain green.
+- Fresh offline dry-run under an unreachable HF endpoint produced real 2-row
+  Parquet (`81062957e6accf6b0caefe6650ee4731c75fd1e4584bfe5ea899a147a8c969e5`),
+  manifest, two-line lineage, and empty quarantine. Manifest records
+  `upload_performed: false`; no credentials or upload were used.
+- Added QA-only regression rejecting a mismatched terminal section despite the
+  dotted Alaska structural prefix. Final evaluator: 26 run, 25 pass, 1 opt-in
+  live skip, no failures/errors. Contract lint PASS. SI-2 is Completed;
+  sprint state is `review` / `planner`, `qa_cycles: 2`; lock fields unchanged.
+
 ## QA cycle 1 — 2026-08-08
 
 - `/root/open_us_law_final_qa` — QA — `gpt-5.6-terra`, high; Haiku rejected

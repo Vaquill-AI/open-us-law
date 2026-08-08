@@ -138,6 +138,20 @@ class ReleaseContractTests(unittest.TestCase):
             source_url="https://www.akleg.gov/basis/statutes.asp?title=11#11.76.115",
         ))
 
+    def test_dotted_structural_prefix_still_requires_terminal_section_agreement(self) -> None:
+        """Accepting dotted structural tokens must not relax the terminal section check."""
+        release = release_module(self)
+        with self.assertRaises(release.IdentityError):
+            release.materialize_rows(
+                [valid_row(
+                    act_id="STATE_AK_T11_C11.76_S11.76.116", section_number="11.76.115",
+                    citation="Alaska Stat. § 11.76.115", state="ak", jurisdiction="US",
+                    title_number="11", chapter="11.76",
+                    source_url="https://www.akleg.gov/basis/statutes.asp?title=11#11.76.115",
+                )],
+                producer={"code_revision": "test"},
+            )
+
     def test_duplicate_normalized_identity_fails_closed_without_text_merge(self) -> None:
         release = release_module(self)
         first = valid_row(text="first statutory body")
