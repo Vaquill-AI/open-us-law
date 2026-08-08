@@ -1,18 +1,18 @@
 ---
 id: "2026-08-08-open-us-law-source-integrity"
-status: planned
-current_role: developer
+status: planning
+current_role: planner
 branch: sprint/2026-08-08-open-us-law-source-integrity
-locked_by: "codex:developer"
-locked_at: "2026-08-08T19:19:13Z"
-last_agent: "codex:planner"
-last_updated: "2026-08-08T19:23:23Z"
+locked_by: "codex:planner"
+locked_at: "2026-08-08T19:28:49Z"
+last_agent: "codex:manager"
+last_updated: "2026-08-08T19:28:49Z"
 lint: PASS
 evaluator: unittest
 evaluator_command: ".venv/bin/python -m unittest discover -s tests/source_integrity -t . -v"
 total_items: 4
 completed_items: 0
-dev_complete_items: 0
+dev_complete_items: 2
 qa_cycles: 0
 prd_sections:
   - docs/sprint/sprints/2026-08-08-open-us-law-source-integrity-review.md
@@ -38,17 +38,22 @@ branches, locks, tests, Developers, and QA verdicts.
   owns SI-3 and 4 expected REDs plus the opt-in live skip.
 - Parallel Developers never edit this contract or another track's files and
   push only their own fork branches; the manager owns integration/bookkeeping.
+- SI-1 and SI-3 are integrated and manager-smoke-green. SI-2/SI-4 returned to
+  Planner because its validator rejects legitimate plain-numeric section IDs;
+  release branch `1e6b07b` remains unmerged.
 
 ## Next Steps
 
-Developer handoff is ready. The Planner-owned test/fixture estate is frozen;
-run the contract lint and complete source-integrity suite before production
-edits, and keep the release dry-run offline until trusted HI input and
-publication credentials are supplied.
+Replan only SI-2/SI-4: preserve ordinary numeric section IDs, replace the
+HI-specific `_S431` syntax assertion with source/field-consistency evidence,
+and keep collision handling fail-closed. Freeze accepted SI-1/SI-3 behavior.
 
 ## Dev Complete
 
-None.
+- SI-1 — Hawaii canonical identities: `ef488ab`, merged as `99d03d0`; 4/4
+  focused tests pass under manager verification.
+- SI-3 — Typed USC statutory body: `6ad0aef`, merged as `0707786`; 4/4
+  non-live tests pass and the opt-in network check remains skipped.
 
 ## Completed
 
