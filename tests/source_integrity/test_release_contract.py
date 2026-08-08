@@ -6,12 +6,14 @@ import importlib
 import hashlib
 import json
 import os
+import platform
 import subprocess
 import sys
 import tempfile
 import unittest
 from pathlib import Path
 
+import pyarrow as pa
 import pyarrow.parquet as pq
 
 
@@ -24,6 +26,14 @@ PARQUET_SCHEMA = [
     "source_url", "last_amended_year", "subsection_count", "cross_references_usc",
     "cross_references_cfr", "public_laws_referenced", "year",
 ]
+PARQUET_ENCODING = {
+    "compression": "NONE",
+    "use_dictionary": False,
+    "write_statistics": False,
+    "version": "2.6",
+    "data_page_version": "1.0",
+    "row_group_size": 65536,
+}
 
 
 def release_module(testcase: unittest.TestCase):
@@ -63,6 +73,61 @@ def valid_row(**overrides):
 
 
 class ReleaseContractTests(unittest.TestCase):
+    def assert_identity_accepted(self, row) -> None:
+        release = release_module(self)
+        try:
+            result = release.materialize_rows([row], producer={"code_revision": "test"})
+        except Exception as error:
+            self.fail(
+                f"well-formed {row['section_number']!r} identity was rejected: "
+                f"{type(error).__name__}: {error}"
+            )
+        self.assertEqual(result.rows[0]["act_id"], row["act_id"])
+        self.assertEqual(result.rows[0]["section_number"], row["section_number"])
+        self.assertEqual(result.rows[0]["citation"], row["citation"])
+
+    def assert_reproducibility_binding(self, producer) -> None:
+        self.assertEqual(
+            producer,
+            {
+                "code_revision": producer.get("code_revision"),
+                "materializer": {
+                    "name": "scripts.release.materialize_snapshot",
+                    "version": "1",
+                    "python_version": platform.python_version(),
+                    "pyarrow_version": pa.__version__,
+                },
+                "parquet_encoding": PARQUET_ENCODING,
+            },
+        )
+
+    def test_plain_numeric_identity_remains_compatible(self) -> None:
+        self.assert_identity_accepted(valid_row(
+            act_id="STATE_PA_T3_C15_S1521", section_number="1521",
+            citation="3 Pa.C.S. § 1521", state="pa", jurisdiction="PA",
+            title_number="3", chapter="15", section_title="Purpose.",
+            source_url="https://www.palegis.us/statutes/consolidated/view-statute?txtType=HTM&ttl=03",
+        ))
+
+    def test_hyphenated_identity_remains_compatible(self) -> None:
+        self.assert_identity_accepted(valid_row(
+            act_id="STATE_ID_T18_C40_S18-4003", section_number="18-4003",
+            citation="Idaho Code § 18-4003", state="id", jurisdiction="ID",
+            title_number="18", chapter="40", section_title="Degrees of murder.",
+            source_url="https://legislature.idaho.gov/statutesrules/idstat/title18/t18ch40/sect18-4003/",
+        ))
+
+    def test_colon_identity_remains_compatible(self) -> None:
+        self.assert_identity_accepted(valid_row())
+
+    def test_dotted_identity_remains_compatible(self) -> None:
+        self.assert_identity_accepted(valid_row(
+            act_id="STATE_WI_C940_S940.01", section_number="940.01",
+            citation="Wis. Stat. § 940.01", state="wi", jurisdiction="WI",
+            title_number="", chapter="940", section_title="First-degree intentional homicide.",
+            source_url="https://docs.legis.wisconsin.gov/statutes/statutes/940/i/01",
+        ))
+
     def test_duplicate_normalized_identity_fails_closed_without_text_merge(self) -> None:
         release = release_module(self)
         first = valid_row(text="first statutory body")
@@ -87,10 +152,13 @@ class ReleaseContractTests(unittest.TestCase):
         with self.assertRaises(release.ProvenanceError):
             release.materialize_rows([valid_row(source_url="")], producer={"code_revision": "test"})
 
-    def test_malformed_identity_is_rejected_before_output(self) -> None:
+    def test_inconsistent_identity_is_rejected_before_output(self) -> None:
         release = release_module(self)
         with self.assertRaises(release.IdentityError):
-            release.materialize_rows([valid_row(act_id="STATE_HI_D2_T24_C431_S431")], producer={"code_revision": "test"})
+            release.materialize_rows(
+                [valid_row(act_id="STATE_HI_D2_T24_C431_S431:15-305")],
+                producer={"code_revision": "test"},
+            )
 
     def test_well_formed_row_preserves_bytes_and_deterministic_order(self) -> None:
         release = release_module(self)
@@ -112,6 +180,7 @@ class ReleaseContractTests(unittest.TestCase):
         two = release.materialize_rows([corrected], producer={"code_revision": "abc123", "input_sha256": "0" * 64})
         self.assertEqual(one.manifest, two.manifest)
         self.assertEqual(one.manifest["producer"]["code_revision"], "abc123")
+        self.assert_reproducibility_binding(one.manifest["producer"])
         self.assertEqual(one.manifest["row_count"], 1)
         self.assertEqual(
             set(one.manifest),
@@ -123,6 +192,14 @@ class ReleaseContractTests(unittest.TestCase):
         self.assertEqual(one.manifest["inputs"]["input_sha256"], "0" * 64)
         self.assertIn("rows_sha256", one.manifest["outputs"])
         self.assertEqual(one.lineage, [{"old_id": old_id, "new_id": corrected["act_id"]}])
+
+    def test_production_pyarrow_runtime_is_exactly_pinned(self) -> None:
+        pins = [
+            line.split("#", 1)[0].strip()
+            for line in (ROOT / "requirements.txt").read_text(encoding="utf-8").splitlines()
+            if line.split("#", 1)[0].strip().lower().startswith("pyarrow")
+        ]
+        self.assertEqual(pins, [f"pyarrow=={pa.__version__}"])
 
     def test_cli_materializes_deterministically_quarantines_and_dry_runs_offline(self) -> None:
         """Exercise the planned executable seam without mocking release output."""
@@ -154,6 +231,7 @@ class ReleaseContractTests(unittest.TestCase):
             self.assertEqual({path.name for path in first.iterdir()}, expected)
             manifest = json.loads((first / "producer-manifest.json").read_text())
             self.assertEqual(manifest["producer"]["code_revision"], "test-revision")
+            self.assert_reproducibility_binding(manifest["producer"])
             self.assertEqual(
                 manifest["publication_target"],
                 {

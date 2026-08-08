@@ -36,9 +36,13 @@ from xml.etree import ElementTree as ET
 sys.stdout.reconfigure(line_buffering=True)  # type: ignore[attr-defined]
 
 _PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
-# Reuse the HTML extractor from the sibling download_usc.py
+# Reuse the USC section record and the typed GovInfo statutory-body extractor.
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from download_usc import USCSection, html_to_text  # noqa: E402
+from download_usc import USCSection  # noqa: E402
+try:
+    from scripts.federal.usc_source_segments import extract_statutory_body as html_to_text
+except ModuleNotFoundError:  # Supports direct execution from scripts/federal.
+    from usc_source_segments import extract_statutory_body as html_to_text
 
 # ---------------------------------------------------------------------------
 # Config

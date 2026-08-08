@@ -3,5 +3,16 @@
   "hf_file": "us_hi_statutes.parquet",
   "hf_file_sha256": "169c2bf075fb8681b92ce4d950444536be3087bc0250e7d4edead0948341222c",
   "official_source_url": "http://www.capitol.hawaii.gov/hrscurrent/Vol09_Ch0431-0435H/HRS0431/HRS_0431-0015-0304.htm",
-  "access_note": "Direct HTTP and HTTPS access from the Planner environment returned 403 on 2026-08-08; live acquisition needs the existing configured browser/proxy path or an archived source artifact."
+  "access_note": "Direct HTTP and HTTPS access from the Planner environment returned 403 on 2026-08-08; live acquisition needs the existing configured browser/proxy path or an archived source artifact.",
+  "published_numeric_identity": {
+    "hf_snapshot": "301000fc3465374ee0f23c3c6953a8a861e95cad",
+    "hf_file": "us_pa_statutes.parquet",
+    "hf_file_sha256": "4b78240c493ce6ddb458203a4276865b6da43c3e195dcbeb53a0519fdaaf29f2",
+    "hf_file_rows": 14547,
+    "matching_plain_numeric_rows": 13060,
+    "act_id": "STATE_PA_T3_C15_S1521",
+    "section_number": "1521",
+    "citation": "3 Pa.C.S. § 1521",
+    "official_source_url": "https://www.palegis.us/statutes/consolidated/view-statute?txtType=HTM&ttl=03"
+  }
 }
