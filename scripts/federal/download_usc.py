@@ -42,6 +42,11 @@ from pathlib import Path
 
 import httpx
 
+try:
+    from scripts.federal.usc_source_segments import extract_statutory_body
+except ModuleNotFoundError:  # Supports direct execution from scripts/federal.
+    from usc_source_segments import extract_statutory_body
+
 # Force unbuffered output for background/pipe execution
 sys.stdout.reconfigure(line_buffering=True)  # type: ignore[attr-defined]
 sys.stderr.reconfigure(line_buffering=True)  # type: ignore[attr-defined]
@@ -163,10 +168,8 @@ class HTMLTextExtractor(HTMLParser):
 
 
 def html_to_text(html: str) -> str:
-    """Convert HTML to clean text."""
-    parser = HTMLTextExtractor()
-    parser.feed(html)
-    return parser.get_text()
+    """Convert the typed GovInfo statute segment to clean text."""
+    return extract_statutory_body(html)
 
 
 # ---------------------------------------------------------------------------
