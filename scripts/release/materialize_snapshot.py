@@ -10,6 +10,7 @@ import argparse
 import hashlib
 import json
 import os
+import platform
 import re
 import sys
 import tempfile
@@ -74,8 +75,16 @@ PARQUET_SCHEMA = pa.schema([
 ])
 
 # The final segment must be a section identity, rather than a chapter-level ID.
-_ACT_ID = re.compile(r"^[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)*_S[^_]*[:.-][^_]+$")
+_ACT_ID = re.compile(r"^[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)*_S(?P<section>[A-Z0-9]+(?:[.:-][A-Z0-9]+)*)$")
 _SHA256 = re.compile(r"^[0-9a-f]{64}$")
+PARQUET_ENCODING = {
+    "compression": "NONE",
+    "use_dictionary": False,
+    "write_statistics": False,
+    "version": "2.6",
+    "data_page_version": "1.0",
+    "row_group_size": 65536,
+}
 
 
 @dataclass(frozen=True)
@@ -115,7 +124,9 @@ def _validate_provenance(row: Mapping[str, Any]) -> None:
 def _validate_identity(row: Mapping[str, Any]) -> str:
     act_id = _require_text(row, "act_id")
     normalized = _normalized_identity(act_id)
-    if not _ACT_ID.fullmatch(normalized):
+    match = _ACT_ID.fullmatch(normalized)
+    section_number = _require_text(row, "section_number")
+    if not match or match.group("section") != _normalized_identity(section_number):
         raise IdentityError(f"malformed act_id: {act_id!r}")
     return normalized
 
@@ -166,6 +177,19 @@ def _schema_description() -> list[dict[str, str]]:
     return [{"name": field.name, "type": str(field.type)} for field in PARQUET_SCHEMA]
 
 
+def _producer_binding(code_revision: str) -> dict[str, Any]:
+    return {
+        "code_revision": code_revision,
+        "materializer": {
+            "name": "scripts.release.materialize_snapshot",
+            "version": "1",
+            "python_version": platform.python_version(),
+            "pyarrow_version": pa.__version__,
+        },
+        "parquet_encoding": PARQUET_ENCODING,
+    }
+
+
 def materialize_rows(
     rows: Iterable[Mapping[str, Any]],
     *,
@@ -212,7 +236,7 @@ def materialize_rows(
         raise ProvenanceError("producer input_sha256 must be a lowercase SHA-256 digest")
     input_hash = supplied_input_hash or _sha256(_canonical_bytes(source_rows))
     manifest = {
-        "producer": {"code_revision": code_revision},
+        "producer": _producer_binding(code_revision),
         "inputs": {"input_sha256": input_hash},
         "schema": _schema_description(),
         "outputs": {"rows_sha256": _sha256(_canonical_bytes(output_rows))},
@@ -250,10 +274,7 @@ def _write_jsonl(path: Path, values: Iterable[Any]) -> None:
 def _write_parquet(path: Path, rows: list[dict[str, Any]]) -> None:
     columns = {field.name: [row[field.name] for row in rows] for field in PARQUET_SCHEMA}
     table = pa.Table.from_pydict(columns, schema=PARQUET_SCHEMA)
-    pq.write_table(
-        table, path, compression="NONE", use_dictionary=False, write_statistics=False,
-        version="2.6", data_page_version="1.0", row_group_size=65536,
-    )
+    pq.write_table(table, path, **PARQUET_ENCODING)
 
 
 def materialize_file(
