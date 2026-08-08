@@ -1,0 +1,7 @@
+{
+  "hf_snapshot": "301000fc3465374ee0f23c3c6953a8a861e95cad",
+  "hf_file": "us_hi_statutes.parquet",
+  "hf_file_sha256": "169c2bf075fb8681b92ce4d950444536be3087bc0250e7d4edead0948341222c",
+  "official_source_url": "http://www.capitol.hawaii.gov/hrscurrent/Vol09_Ch0431-0435H/HRS0431/HRS_0431-0015-0304.htm",
+  "access_note": "Direct HTTP and HTTPS access from the Planner environment returned 403 on 2026-08-08; live acquisition needs the existing configured browser/proxy path or an archived source artifact."
+}
