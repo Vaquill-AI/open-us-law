@@ -528,7 +528,7 @@ def _chapter_number_from_url(url: str) -> Optional[str]:
 
 def _extract_section_number(text: str) -> Optional[str]:
     normalised = re.sub(r"(\w)\s+-\s+(\w)", r"\1-\2", text)
-    m = re.search(r"§\s*([\d][\w\-\.]*)", normalised)
+    m = re.search(r"§\s*([\d][\w:\-\.]*)", normalised)
     if m:
         return m.group(1).rstrip(".")
     return None
@@ -536,7 +536,7 @@ def _extract_section_number(text: str) -> Optional[str]:
 
 def _extract_section_name(text: str) -> Optional[str]:
     text = re.sub(r"(\w)\s+-\s+(\w)", r"\1-\2", text)
-    stripped = re.sub(r"^\s*\[?§\s*[\d][\w\-\.]*\]?\s*", "", text).strip()
+    stripped = re.sub(r"^\s*\[?§\s*[\d][\w:\-\.]*\]?\s*", "", text).strip()
     m = re.match(r"^([^.]{1,150})\.\s+[A-Z(]", stripped)
     if m:
         return m.group(1).strip() + "."
@@ -549,7 +549,7 @@ def _extract_section_name(text: str) -> Optional[str]:
 def _strip_section_heading(text: str) -> str:
     text = re.sub(r"(\w)\s+-\s+(\w)", r"\1-\2", text)
     m = re.match(
-        r"^\s*\[?§\s*[\d][\w\-\.]*\]?\s+[^.]{1,200}\.\s+(.*)",
+        r"^\s*\[?§\s*[\d][\w:\-\.]*\]?\s+[^.]{1,200}\.\s+(.*)",
         text,
         re.DOTALL,
     )
