@@ -207,6 +207,10 @@ State administrative codes. Some geo-restrict - see [caveats](#important-caveats
 |---|---|
 | 50 state constitutions | [ingest_state_constitutions.py](scripts/constitutions/ingest_state_constitutions.py) |
 
+38 of the 47 jurisdictions in that script are scraped from the state's own official publisher (its legislature or secretary of state).
+The remaining 9 - **AK, CO, CT, DE, GA, NC, NH, SC, SD** - fall back to an open mirror, because no reproducible official source was found for them.
+Each fallback carries its reason inline in `_WS_INLINE_STATES`, and the fallbacks are open sources, not commercial ones.
+
 ---
 
 ## Important caveats (please read)
@@ -250,6 +254,10 @@ New-jurisdiction parsers, coverage fixes, and - especially - **repairs to state 
 Most data derives from official government sources (state legislature / secretary-of-state sites, uscode.house.gov, the eCFR, the Federal Register, GPO govinfo), and those records keep the exact source URL they were ingested from.
 
 A minority of state statutory codes were obtained from commercial aggregators rather than an official publisher. In the published dataset those records carry **no** `source_url` rather than linking to a third party, and the per-jurisdiction table in the [dataset card](https://huggingface.co/datasets/vaquill/open-us-law) marks them. We would rather state that plainly than imply the whole corpus is officially sourced. The retrieval layer (embeddings, semantic index, citation graph) is intentionally out of scope here.
+
+Separately, 9 state constitutions (**AK, CO, CT, DE, GA, NC, NH, SC, SD**) come from an open mirror rather than the state's own publisher, and those records do keep their `source_url`, because the mirror is an open source rather than a commercial one and pointing at it is not a licensing question.
+The other 38 constitutions are scraped from official state publishers.
+Two statutory corpora likewise retain a non-government `source_url` in the `v2026.07` snapshot: all 36,202 Oregon sections, and 1,090 of Puerto Rico's. Both are queued to be re-sourced from their official publishers in a later snapshot.
 
 ## Maintained by
 
