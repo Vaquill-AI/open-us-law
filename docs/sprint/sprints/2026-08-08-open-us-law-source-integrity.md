@@ -1,12 +1,12 @@
 ---
 id: "2026-08-08-open-us-law-source-integrity"
-status: planning
-current_role: planner
+status: dev-complete
+current_role: qa
 branch: sprint/2026-08-08-open-us-law-source-integrity
-locked_by: "codex:planner"
-locked_at: "2026-08-08T19:39:04Z"
+locked_by: "codex:qa"
+locked_at: "2026-08-08T19:41:33Z"
 last_agent: "codex:manager"
-last_updated: "2026-08-08T19:39:04Z"
+last_updated: "2026-08-08T19:41:33Z"
 lint: PASS
 evaluator: unittest
 evaluator_command: ".venv/bin/python -m unittest discover -s tests/source_integrity -t . -v"
@@ -40,11 +40,12 @@ branches, locks, tests, Developers, and QA verdicts.
   push only their own fork branches; the manager owns integration/bookkeeping.
 - SI-1/SI-3 and corrected SI-2/SI-4 are integrated. Manager verification is
   20 passes plus the single opt-in live skip; no publication was performed.
+- Contract lint now accepts the full sprint state machine and QA-cycle range;
+  exhaustive 55-case tooling verification passed at `c3069cc`.
 
 ## Next Steps
 
-Tooling-only pre-QA fix: make the repository contract linter accept every
-status in the sprint-harness state machine, including `dev-complete`.
+None — all four items are integrated and await independent QA.
 
 ## Dev Complete
 

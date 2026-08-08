@@ -10,6 +10,8 @@ Append-only evidence and role roster for the cross-repo repair.
   `gpt-5.6-terra`, medium; Haiku rejected for artifact/schema/CLI safety work.
 - `/root/open_us_law_dev_usc` — Developer SI-3 — `gpt-5.6-terra`, medium;
   Haiku rejected for source-structure parsing and two live call sites.
+- `/root/open_us_law_lint_microfix` — Planner-role sprint-tooling fix —
+  `gpt-5.6-terra`, low; Haiku-eligible but unavailable.
 
 ## Roster
 
