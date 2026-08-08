@@ -6,7 +6,7 @@ branch: sprint/2026-08-08-open-us-law-source-integrity
 locked_by: "codex:planner"
 locked_at: "2026-08-08T19:06:14Z"
 last_agent: "codex:planner"
-last_updated: "2026-08-08T19:13:18Z"
+last_updated: "2026-08-08T19:17:54Z"
 lint: PASS
 evaluator: unittest
 evaluator_command: ".venv/bin/python -m unittest discover -s tests/source_integrity -t . -v"
@@ -36,9 +36,10 @@ branches, locks, tests, Developers, and QA verdicts.
 
 ## Next Steps
 
-Developer handoff is ready. Run the contract lint and the source-integrity
-suite before production edits; keep the release dry-run offline until a trusted
-HI source artifact and publication credentials are supplied.
+Developer handoff is ready. The Planner-owned test/fixture estate is frozen;
+run the contract lint and complete source-integrity suite before production
+edits, and keep the release dry-run offline until trusted HI input and
+publication credentials are supplied.
 
 ## Dev Complete
 
@@ -50,11 +51,16 @@ None.
 
 ## Evaluation Notes
 
-Planner baseline: `.venv/bin/python -m unittest discover -s
-tests/source_integrity -t . -v` runs 13 tests: 3 failures (the HI colon-identity
-defect), 8 errors (missing release and typed-USC production components), 1
-preservation green, and 1 opt-in live GovInfo test skipped. The errors are
-feature-absence evidence, not an environmental import failure.
+Planner RED census (zero errors): `.venv/bin/python -m unittest discover -s
+tests/source_integrity -t . -v` runs 16 tests: 14 failures, 1 preservation
+green, 1 opt-in live GovInfo skip. Expected RED by file: `test_hi_identity.py`
+has 3 parser/emitted-Node failures and 1 hyphenated-ID GREEN;
+`test_release_contract.py` has 7 failures (6 API contracts plus the actual CLI
+materializer/dry-run/collision integration path); `test_usc_source_segments.py`
+has 4 failures (2 helper contracts and both existing `download_usc` and
+`parse_usc_zip` call seams) plus the opt-in live source test. Missing planned
+modules are converted into assertion failures which continue into behavior
+assertions once implemented; no existence-only test is used.
 
 ## QA Notes
 
@@ -140,7 +146,12 @@ Write only:
   changes in `scripts/federal/download_usc.py` and
   `scripts/federal/parse_usc_zip.py`
 - `requirements.txt` only if a release-only dependency is necessary
-- this sprint's tests/fixtures and sprint documentation.
+- `README.md` and/or `scripts/README.md` only for the release CLI/runbook and
+  provenance-publication instructions required by the new production path.
+
+The Planner-owned files under `tests/source_integrity/` (including fixtures) are
+frozen: Developer must not edit them. Sprint contract bookkeeping follows the
+assigned role workflow and is not part of the production write set.
 
 Commands: run the contract lint; run the complete unittest command; then run
 the materializer with a checked-in test fixture and `--dry-run`. Run the live

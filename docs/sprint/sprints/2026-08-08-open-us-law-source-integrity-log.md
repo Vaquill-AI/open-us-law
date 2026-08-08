@@ -37,3 +37,23 @@ Append-only evidence and role roster for the cross-repo repair.
   eight errors prove the absent release/typed-USC components; the hyphenated-ID
   preservation control is GREEN. `LIVE_SOURCE_INTEGRITY=1` is deliberately
   opt-in and targets the pinned public GovInfo section. Contract lint PASS.
+
+## Planner RED-gate correction — 2026-08-08
+
+- Replaced all new-module `ModuleNotFoundError` outcomes with `TestCase.fail`
+  assertions that retain their behavioral assertions after the module exists.
+  No collection or test errors remain.
+- Added source-faithful `release_rows.jsonl` and an actual subprocess contract
+  for `python -m scripts.release.materialize_snapshot`: it requires local
+  Parquet/manifest/lineage/quarantine outputs, content hashes, deterministic
+  rerun bytes, collision fatal/quarantine behavior, and `--dry-run` with an
+  unreachable HF endpoint (therefore no upload may be attempted).
+- Added direct existing-call-site tests for `download_usc.html_to_text` and
+  `parse_usc_zip.html_to_text`; both now prove the present generic extractor
+  captures `Editorial Notes`, so a helper-only repair cannot satisfy the gate.
+- Final RED census: `Ran 16 tests`; `FAILED (failures=14, skipped=1)`, **zero
+  errors**. File census: HI 3 RED/1 GREEN; release 7 RED; USC 4 RED/1 skipped
+  live test. Test root/evaluator unchanged: `tests/source_integrity` / stdlib
+  unittest. Contract lint PASS after the role handoff.
+- Stale-pin sweep repeated across the only test root: two intentional matching
+  snapshot references and zero stale/mismatched pins.
