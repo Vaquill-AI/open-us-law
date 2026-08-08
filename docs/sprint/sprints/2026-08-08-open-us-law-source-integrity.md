@@ -1,12 +1,12 @@
 ---
 id: "2026-08-08-open-us-law-source-integrity"
-status: planning
-current_role: planner
+status: planned
+current_role: developer
 branch: sprint/2026-08-08-open-us-law-source-integrity
 locked_by: "codex:planner"
 locked_at: "2026-08-08T19:28:49Z"
-last_agent: "codex:manager"
-last_updated: "2026-08-08T19:28:49Z"
+last_agent: "codex:planner"
+last_updated: "2026-08-08T19:34:11Z"
 lint: PASS
 evaluator: unittest
 evaluator_command: ".venv/bin/python -m unittest discover -s tests/source_integrity -t . -v"
@@ -44,9 +44,10 @@ branches, locks, tests, Developers, and QA verdicts.
 
 ## Next Steps
 
-Replan only SI-2/SI-4: preserve ordinary numeric section IDs, replace the
-HI-specific `_S431` syntax assertion with source/field-consistency evidence,
-and keep collision handling fail-closed. Freeze accepted SI-1/SI-3 behavior.
+Implement only replanned SI-2/SI-4. Preserve numeric, hyphenated, colon, and
+dotted section identities; enforce structured identity-field consistency;
+bind the exact materializer/PyArrow runtime and Parquet encoding to the
+manifest; keep collision handling fail-closed. SI-1/SI-3 are frozen.
 
 ## Dev Complete
 
@@ -61,21 +62,23 @@ None.
 
 ## Evaluation Notes
 
-Planner RED census (zero errors): `.venv/bin/python -m unittest discover -s
-tests/source_integrity -t . -v` runs 16 tests: 14 failures, 1 preservation
-green, 1 opt-in live GovInfo skip. Expected RED by file: `test_hi_identity.py`
-has 3 parser/emitted-Node failures and 1 hyphenated-ID GREEN;
-`test_release_contract.py` has 7 failures (6 API contracts plus the actual CLI
-materializer/dry-run/collision integration path). The CLI integration opens the
-emitted artifact with the Planner-pinned PyArrow verifier and requires the
-published 24-column schema, two distinct corrected HI IDs, exact statutory
-body text, deterministic bytes/hash, and no collision-body merge. It also
-requires explicit test-only HF repository/revision inputs bound to the manifest
-with `upload_performed: false`; `test_usc_source_segments.py`
-has 4 failures (2 helper contracts and both existing `download_usc` and
-`parse_usc_zip` call seams) plus the opt-in live source test. Missing planned
-modules are converted into assertion failures which continue into behavior
-assertions once implemented; no existence-only test is used.
+Current-branch RED census (zero errors): `.venv/bin/python -m unittest discover
+-s tests/source_integrity -t . -v` runs 21 tests: 12 SI-2/SI-4 failures, 8
+integrated SI-1/SI-3 greens, and 1 opt-in GovInfo skip. Per file:
+`test_hi_identity.py` is 4/4 GREEN; `test_release_contract.py` is 12 expected
+REDs because the release module/runtime pin is absent; and
+`test_usc_source_segments.py` is 4/4 non-live GREEN plus 1 skip.
+
+Held-implementation audit (`1e6b07b` production over current tests) is also
+zero-error: 21 run, 5 failures, 15 greens, 1 skip. Exact held REDs are:
+`test_plain_numeric_identity_remains_compatible`,
+`test_inconsistent_identity_is_rejected_before_output`,
+`test_manifest_and_lineage_are_deterministic_and_bind_outputs`,
+`test_production_pyarrow_runtime_is_exactly_pinned`, and
+`test_cli_materializes_deterministically_quarantines_and_dry_runs_offline`.
+Hyphenated, colon, and dotted identity controls are GREEN there, as are the
+existing collision, quarantine, provenance, row-byte/order, Parquet, lineage,
+HF-target, and offline behavior before the new manifest assertion.
 
 ## QA Notes
 
@@ -125,6 +128,21 @@ None.
   `producer-manifest.json`, `identity-lineage.jsonl`, and optional
   `quarantine.jsonl`. Final cross-repo adjudication remains manager/LexGraph
   Planner-owned.
+- A checksum-verified selective read of pinned
+  `us_pa_statutes.parquet` (`4b78240c493ce6ddb458203a4276865b6da43c3e195dcbeb53a0519fdaaf29f2`,
+  14,547 rows, 8,543,572 bytes) found 13,060 rows whose published `act_id` ends
+  in a plain numeric `_S…` matching `section_number`. Representative official
+  row: `STATE_PA_T3_C15_S1521`, section `1521`, citation `3 Pa.C.S. § 1521`.
+  Repository source contracts independently specify exact hyphenated (ID),
+  colon (HI), and dotted (WI/PA) section suffixes. Thus punctuation after `_S`
+  is not a valid global requirement.
+- The historical `STATE_HI_D2_T24_C431_S431` row cannot be reconstructed or
+  safely rejected solely from its internally truncated `act_id`, section, and
+  citation: `_S431` is syntactically legitimate for a plain-numeric section in
+  other jurisdictions. Its known corruption is established by external source
+  URL/heading evidence and collision history. A trusted corrected HI source
+  capture remains mandatory; the release validator must not guess from prose
+  or URL shape.
 
 ## Developer items and acceptance criteria
 
@@ -138,8 +156,12 @@ None.
    normalized identity collision, and supports explicit quarantine without body
    merging. It must write a versioned manifest binding producer/code revision,
    input hashes, schema, output hashes/counts, collisions/quarantine, and
-   old-to-new identity lineage. A well-formed row's statutory body bytes must
-   pass through unchanged.
+   old-to-new identity lineage. Plain numeric, hyphenated, colon, and dotted
+   section identifiers are all valid. For the repository-specified common
+   mapping, the terminal `_S{section}` token must agree with structured
+   `section_number`; a provable mismatch fails closed. Punctuation absence is
+   never itself malformed. A well-formed row's statutory body bytes must pass
+   through unchanged.
 3. **SI-3 — Typed USC statutory body.** Add a source-segment extractor and
    route both USC paths through it. It must consume only GovInfo's typed statute
    segment, preserve that segment's text, reject a missing/malformed statutory
@@ -149,27 +171,31 @@ None.
    deterministic manifest, and record `upload_performed: false` for `--dry-run`.
    A real upload requires an external `HF_TOKEN` with dataset-write scope and a
    trusted, complete HI input capture; it must neither overwrite `301000fc…`
-   nor claim a corrected snapshot before checksums and manifest are built.
+   nor claim a corrected snapshot before checksums and manifest are built. The
+   producer manifest must bind materializer name/version, exact Python and
+   PyArrow versions, and all deterministic Parquet controls: compression,
+   dictionary encoding, statistics, Parquet version, data-page version, and
+   row-group size. Production PyArrow must use an exact pin; `>=` is not a
+   reproducibility claim.
 
 ## Exact Developer write set, commands, and stop rules
 
 Write only:
 
-- `scripts/state_scrapers/src/scrapers/us/states/hi/statutes/scrapeHI.py`
 - new `scripts/release/__init__.py` and `scripts/release/materialize_snapshot.py`
-- new `scripts/federal/usc_source_segments.py`, plus the minimal call-site
-  changes in `scripts/federal/download_usc.py` and
-  `scripts/federal/parse_usc_zip.py`
-- `requirements.txt` only if a release-only dependency is necessary
-- `README.md` and/or `scripts/README.md` only for the release CLI/runbook and
-  provenance-publication instructions required by the new production path.
+- `requirements.txt`, adding the exact runtime pin `pyarrow==24.0.0`
+- `scripts/README.md` only for the SI-2/SI-4 release CLI, reproducibility
+  manifest, and provenance-publication instructions.
 
 The Planner-owned files under `tests/source_integrity/` (including fixtures) are
 frozen: Developer must not edit them, including the test-only pinned
 `tests/source_integrity/requirements.txt` Parquet verifier. If the production
 materializer itself needs a runtime dependency, the Developer must declare it
-independently in `requirements.txt`. Sprint contract bookkeeping follows the
-assigned role workflow and is not part of the production write set.
+independently and exactly in `requirements.txt`. SI-1 files
+(`scrapeHI.py`) and SI-3 files (`download_usc.py`, `parse_usc_zip.py`, and
+`usc_source_segments.py`) are integrated/frozen and outside this write set.
+Sprint contract bookkeeping follows the assigned role workflow and is not part
+of the production write set.
 
 Commands: run the contract lint; run the complete unittest command; then run
 the materializer with a checked-in test fixture and `--dry-run`. Run the live

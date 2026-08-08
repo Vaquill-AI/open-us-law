@@ -83,3 +83,40 @@ Append-only evidence and role roster for the cross-repo repair.
   while `HF_ENDPOINT` is unreachable. Thus a dry run must not upload. The real
   HF target decision remains external.
 - Count remains `Ran 16 tests`; `FAILED (failures=14, skipped=1)`, zero errors.
+
+## Planner SI-2/SI-4 identity/reproducibility replan — 2026-08-08
+
+- Resumed clean at manager-required/fork SHA
+  `32810817e207c2a0b98a9a03b5f6e7918b30487e`; held release commit
+  `1e6b07b` was inspected and exercised only in a disposable overlay, never
+  merged. SI-1/SI-3 production/tests were frozen.
+- Selectively downloaded pinned HF `us_pa_statutes.parquet` only: expected and
+  observed SHA-256
+  `4b78240c493ce6ddb458203a4276865b6da43c3e195dcbeb53a0519fdaaf29f2`,
+  14,547 rows / 8,543,572 bytes. 13,060 published rows have matching plain
+  numeric `_S…` and `section_number`; sample `STATE_PA_T3_C15_S1521` / `1521`
+  / `3 Pa.C.S. § 1521` points to the official PA legislature. Temporary data
+  was removed after verification.
+- Replaced the invalid `_S431`-is-malformed assumption with a structured
+  mismatch: act-id suffix `431:15-305` versus section/citation `431:15-304`.
+  Added separate compatibility controls for plain numeric, hyphen, colon, and
+  dotted legal identifiers. Repository mappings in `node_to_payload`, PA, ID,
+  HI, and WI source paths ground those cases.
+- Explicit ruling: the already-collapsed HI `_S431` row is internally
+  indistinguishable from legitimate numeric syntax. It cannot be safely split
+  or rejected without the trusted external HRS capture/heading evidence;
+  corrected source acquisition remains mandatory.
+- Held diff audit found floating `pyarrow>=24.0`, no materializer/runtime
+  version in the manifest, and no binding for its otherwise explicit Parquet
+  write controls. Tests now require `pyarrow==24.0.0` plus manifest-bound
+  materializer name/version, exact Python/PyArrow versions, compression,
+  dictionary/statistics flags, Parquet/data-page versions, and row-group size.
+- Current branch: 21 run / 12 failures / 1 skipped / **0 errors**; the 8
+  integrated SI-1/SI-3 non-live tests are GREEN. Held implementation overlay:
+  21 run / 5 failures / 1 skipped / **0 errors**; 15 GREEN. The five held REDs
+  are numeric compatibility, structured mismatch, API manifest runtime,
+  production exact pin, and CLI manifest runtime binding.
+- Stale-pin sweep over the sole test root: three intentional references to the
+  same full HF snapshot (HI fixture/provenance plus PA evidence), zero stale or
+  mismatched pins. Contract lint PASS; `dev_complete_items: 2`, `qa_cycles: 0`,
+  and manager lock fields preserved.
