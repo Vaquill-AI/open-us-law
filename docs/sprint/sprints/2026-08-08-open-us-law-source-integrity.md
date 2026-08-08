@@ -6,7 +6,7 @@ branch: sprint/2026-08-08-open-us-law-source-integrity
 locked_by: "codex:developer"
 locked_at: "2026-08-08T19:19:13Z"
 last_agent: "codex:planner"
-last_updated: "2026-08-08T19:19:13Z"
+last_updated: "2026-08-08T19:23:23Z"
 lint: PASS
 evaluator: unittest
 evaluator_command: ".venv/bin/python -m unittest discover -s tests/source_integrity -t . -v"
@@ -33,6 +33,11 @@ branches, locks, tests, Developers, and QA verdicts.
 - The cross-repo boundary remains provisional until both planning reports land.
 - No Developer starts until trusted source inputs and the publishing seam are
   identified and RED tests exist.
+- Parallel Developer tracks are file-isolated: `dev-hi` owns SI-1 and its 3
+  expected REDs; `dev-release` owns SI-2/SI-4 and 7 expected REDs; `dev-usc`
+  owns SI-3 and 4 expected REDs plus the opt-in live skip.
+- Parallel Developers never edit this contract or another track's files and
+  push only their own fork branches; the manager owns integration/bookkeeping.
 
 ## Next Steps
 
