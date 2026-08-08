@@ -1,18 +1,18 @@
 ---
 id: "2026-08-08-open-us-law-source-integrity"
-status: planned
-current_role: developer
+status: planning
+current_role: planner
 branch: sprint/2026-08-08-open-us-law-source-integrity
-locked_by: "codex:developer"
-locked_at: "2026-08-08T19:35:41Z"
-last_agent: "codex:planner"
-last_updated: "2026-08-08T19:35:41Z"
+locked_by: "codex:planner"
+locked_at: "2026-08-08T19:39:04Z"
+last_agent: "codex:manager"
+last_updated: "2026-08-08T19:39:04Z"
 lint: PASS
 evaluator: unittest
 evaluator_command: ".venv/bin/python -m unittest discover -s tests/source_integrity -t . -v"
 total_items: 4
 completed_items: 0
-dev_complete_items: 2
+dev_complete_items: 4
 qa_cycles: 0
 prd_sections:
   - docs/sprint/sprints/2026-08-08-open-us-law-source-integrity-review.md
@@ -38,16 +38,13 @@ branches, locks, tests, Developers, and QA verdicts.
   owns SI-3 and 4 expected REDs plus the opt-in live skip.
 - Parallel Developers never edit this contract or another track's files and
   push only their own fork branches; the manager owns integration/bookkeeping.
-- SI-1 and SI-3 are integrated and manager-smoke-green. SI-2/SI-4 returned to
-  Planner because its validator rejects legitimate plain-numeric section IDs;
-  release branch `1e6b07b` remains unmerged.
+- SI-1/SI-3 and corrected SI-2/SI-4 are integrated. Manager verification is
+  20 passes plus the single opt-in live skip; no publication was performed.
 
 ## Next Steps
 
-Implement only replanned SI-2/SI-4. Preserve numeric, hyphenated, colon, and
-dotted section identities; enforce structured identity-field consistency;
-bind the exact materializer/PyArrow runtime and Parquet encoding to the
-manifest; keep collision handling fail-closed. SI-1/SI-3 are frozen.
+Tooling-only pre-QA fix: make the repository contract linter accept every
+status in the sprint-harness state machine, including `dev-complete`.
 
 ## Dev Complete
 
@@ -55,6 +52,10 @@ manifest; keep collision handling fail-closed. SI-1/SI-3 are frozen.
   focused tests pass under manager verification.
 - SI-3 — Typed USC statutory body: `6ad0aef`, merged as `0707786`; 4/4
   non-live tests pass and the opt-in network check remains skipped.
+- SI-2 — Deterministic release materializer: `1e6b07b` plus correction
+  `a6303b0`; 12/12 release contracts pass, including valid numeric IDs.
+- SI-4 — Offline publishable dry-run: `1e6b07b` plus `a6303b0`; target and
+  runtime bindings are manifested and `upload_performed` remains false.
 
 ## Completed
 
@@ -62,23 +63,10 @@ None.
 
 ## Evaluation Notes
 
-Current-branch RED census (zero errors): `.venv/bin/python -m unittest discover
--s tests/source_integrity -t . -v` runs 21 tests: 12 SI-2/SI-4 failures, 8
-integrated SI-1/SI-3 greens, and 1 opt-in GovInfo skip. Per file:
-`test_hi_identity.py` is 4/4 GREEN; `test_release_contract.py` is 12 expected
-REDs because the release module/runtime pin is absent; and
-`test_usc_source_segments.py` is 4/4 non-live GREEN plus 1 skip.
-
-Held-implementation audit (`1e6b07b` production over current tests) is also
-zero-error: 21 run, 5 failures, 15 greens, 1 skip. Exact held REDs are:
-`test_plain_numeric_identity_remains_compatible`,
-`test_inconsistent_identity_is_rejected_before_output`,
-`test_manifest_and_lineage_are_deterministic_and_bind_outputs`,
-`test_production_pyarrow_runtime_is_exactly_pinned`, and
-`test_cli_materializes_deterministically_quarantines_and_dry_runs_offline`.
-Hyphenated, colon, and dotted identity controls are GREEN there, as are the
-existing collision, quarantine, provenance, row-byte/order, Parquet, lineage,
-HF-target, and offline behavior before the new manifest assertion.
+Manager authoritative pass: `.venv/bin/python -m unittest discover -s
+tests/source_integrity -t . -v` ran 21 tests: 20 passed and the opt-in live
+GovInfo test skipped. Diff audit found no Developer test/fixture edits. The
+materializer dry-run produced real deterministic Parquet and no publication.
 
 ## QA Notes
 
@@ -86,11 +74,12 @@ None.
 
 ## Context Dump
 
-- Determine the exact Hawaii scraper identity defect and its safe repair.
-- Locate or explicitly bound the unavailable post-scrape publishing pipeline.
-- Separate upstream HI/FED data work from LexGraph AR/ID/TX B1 work.
-- Preserve source bytes, ordering, identity lineage, and reproducible manifests.
-- Escalate if a corrected release cannot be produced from repository-owned code.
+- QA all four items independently; production code is frozen.
+- Exercise the real GovInfo typed-source check if network access is available.
+- Inspect a real dry-run Parquet/manifest/lineage/quarantine artifact set.
+- Confirm numeric-ID preservation beyond the Planner's PA sample.
+- No HF upload: trusted complete HI capture and maintainer credentials are absent.
+- LexGraph downstream B1 work resumes only after this upstream QA verdict.
 
 ## Planner evidence and verified boundary
 
