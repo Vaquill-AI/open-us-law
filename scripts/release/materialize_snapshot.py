@@ -75,7 +75,7 @@ PARQUET_SCHEMA = pa.schema([
 ])
 
 # The final segment must be a section identity, rather than a chapter-level ID.
-_ACT_ID = re.compile(r"^[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)*_S(?P<section>[A-Z0-9]+(?:[.:-][A-Z0-9]+)*)$")
+_ACT_ID = re.compile(r"^[A-Z][A-Z0-9]*(?:_[A-Z0-9]+(?:[.:-][A-Z0-9]+)*)*_S(?P<section>[A-Z0-9]+(?:[.:-][A-Z0-9]+)*)$")
 _SHA256 = re.compile(r"^[0-9a-f]{64}$")
 PARQUET_ENCODING = {
     "compression": "NONE",
