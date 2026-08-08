@@ -1,19 +1,19 @@
 ---
 id: "2026-08-08-open-us-law-source-integrity"
-status: dev-complete
-current_role: qa
+status: qa-fail
+current_role: developer
 branch: sprint/2026-08-08-open-us-law-source-integrity
 locked_by: "codex:qa"
 locked_at: "2026-08-08T19:41:33Z"
-last_agent: "codex:manager"
-last_updated: "2026-08-08T19:41:33Z"
+last_agent: "codex:qa"
+last_updated: "2026-08-08T19:50:00Z"
 lint: PASS
 evaluator: unittest
 evaluator_command: ".venv/bin/python -m unittest discover -s tests/source_integrity -t . -v"
 total_items: 4
-completed_items: 0
-dev_complete_items: 4
-qa_cycles: 0
+completed_items: 3
+dev_complete_items: 0
+qa_cycles: 1
 prd_sections:
   - docs/sprint/sprints/2026-08-08-open-us-law-source-integrity-review.md
 design_sections: []
@@ -45,22 +45,27 @@ branches, locks, tests, Developers, and QA verdicts.
 
 ## Next Steps
 
-None — all four items are integrated and await independent QA.
+- SI-2 — Deterministic release materializer: **[QA-FAIL: actual validator
+  rejects pinned `STATE_AK_T11_C11.76_S11.76.115` / `11.76.115` vs expected
+  preservation of valid dotted structural components while retaining the
+  terminal `_S{section_number}` agreement.]** Repair the identity grammar and
+  satisfy the committed QA RED before returning this item to QA.
 
 ## Dev Complete
 
-- SI-1 — Hawaii canonical identities: `ef488ab`, merged as `99d03d0`; 4/4
-  focused tests pass under manager verification.
-- SI-3 — Typed USC statutory body: `6ad0aef`, merged as `0707786`; 4/4
-  non-live tests pass and the opt-in network check remains skipped.
-- SI-2 — Deterministic release materializer: `1e6b07b` plus correction
-  `a6303b0`; 12/12 release contracts pass, including valid numeric IDs.
-- SI-4 — Offline publishable dry-run: `1e6b07b` plus `a6303b0`; target and
-  runtime bindings are manifested and `upload_performed` remains false.
+None.
 
 ## Completed
 
-None.
+- SI-1 — Hawaii canonical identities: parser and emitted Node retain
+  `431:15-304`; bracketed-colon QA regression passes. Live HRS source is
+  currently Cloudflare-403, so no replacement source content was inferred.
+- SI-3 — Typed USC statutory body: both production call sites use the typed
+  extractor; missing and multiple segments fail closed. Opt-in live GovInfo
+  check passed.
+- SI-4 — Offline publishable dry-run: fresh local artifact has the exact
+  24-column Parquet schema, deterministic bytes/hashes/lineage, explicit
+  target binding, and `upload_performed: false`; non-dry-run is refused.
 
 ## Evaluation Notes
 
@@ -71,7 +76,10 @@ materializer dry-run produced real deterministic Parquet and no publication.
 
 ## QA Notes
 
-None.
+- QA cycle 1: SI-1, SI-3, and SI-4 PASS; SI-2 FAIL on pinned-HF compatibility.
+- Final evaluator: 25 run, 23 pass, 1 QA RED failure, 1 opt-in live skip.
+- External blockers remain: complete corrected HI capture and maintainer
+  write credential/target are absent; no publication was attempted.
 
 ## Context Dump
 

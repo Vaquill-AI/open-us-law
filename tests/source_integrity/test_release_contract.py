@@ -128,6 +128,16 @@ class ReleaseContractTests(unittest.TestCase):
             source_url="https://docs.legis.wisconsin.gov/statutes/statutes/940/i/01",
         ))
 
+    def test_pinned_alaska_dotted_structural_component_remains_compatible(self) -> None:
+        """Preserve the pinned dataset's dotted chapter component, not just its suffix."""
+        self.assert_identity_accepted(valid_row(
+            act_id="STATE_AK_T11_C11.76_S11.76.115", section_number="11.76.115",
+            citation="Alaska Stat. § 11.76.115", state="ak", jurisdiction="US",
+            title_number="11", chapter="11.76",
+            section_title="Misconduct involving confidential information in the second degree.",
+            source_url="https://www.akleg.gov/basis/statutes.asp?title=11#11.76.115",
+        ))
+
     def test_duplicate_normalized_identity_fails_closed_without_text_merge(self) -> None:
         release = release_module(self)
         first = valid_row(text="first statutory body")
@@ -200,6 +210,16 @@ class ReleaseContractTests(unittest.TestCase):
             if line.split("#", 1)[0].strip().lower().startswith("pyarrow")
         ]
         self.assertEqual(pins, [f"pyarrow=={pa.__version__}"])
+
+    def test_materializer_refuses_any_non_dry_run_before_reading_input(self) -> None:
+        release = release_module(self)
+        with tempfile.TemporaryDirectory() as tmp:
+            with self.assertRaises(release.MaterializationError):
+                release.materialize_file(
+                    Path(tmp) / "does-not-exist.jsonl", Path(tmp) / "output",
+                    code_revision="test", hf_repo_id="owner/dataset",
+                    hf_revision="release", dry_run=False,
+                )
 
     def test_cli_materializes_deterministically_quarantines_and_dry_runs_offline(self) -> None:
         """Exercise the planned executable seam without mocking release output."""

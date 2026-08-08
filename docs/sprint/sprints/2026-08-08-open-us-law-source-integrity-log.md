@@ -2,6 +2,28 @@
 
 Append-only evidence and role roster for the cross-repo repair.
 
+## QA cycle 1 — 2026-08-08
+
+- `/root/open_us_law_final_qa` — QA — `gpt-5.6-terra`, high; Haiku rejected
+  because full cross-repo source/provenance, artifact, live-path, and
+  regression adjudication requires high QA judgment.
+- Start verified clean on the required sprint branch at local/fork
+  `efe1d68d08a8ecd7fcf805754b68f58fc3d9efbd`; required test root existed.
+  Baseline authoritative evaluator: 21 run, 20 pass, 1 opt-in skip, 0 errors.
+- SI-1 PASS: fixture emitted the full colon ID/citation/title/body/URL; direct
+  HRS request was Cloudflare-403 and therefore not guessed. SI-3 PASS: both
+  USC call sites trace to the typed extractor; live GovInfo check passed.
+- SI-4 PASS: two fresh offline dry runs produced byte-identical four-file
+  artifacts, exact 24-column Parquet, target/revision binding and
+  `upload_performed: false`; materializer contains no HF client/credential or
+  upload path and refuses non-dry-run. Production pin is `pyarrow==24.0.0`.
+- SI-2 FAIL: selective ranged reads of pinned HF revision
+  `301000fc3465374ee0f23c3c6953a8a861e95cad` found valid numeric PA,
+  hyphenated ID, dotted AK, and fixture-backed colon HI identities. The
+  committed QA RED proves the current grammar rejects actual AK
+  `STATE_AK_T11_C11.76_S11.76.115` despite matching `11.76.115`; no artifact
+  may claim full dataset compatibility until repaired. No HF upload occurred.
+
 ## Developer roster — 2026-08-08
 
 - `/root/open_us_law_dev_hi` — Developer SI-1 — `gpt-5.6-terra`, low;

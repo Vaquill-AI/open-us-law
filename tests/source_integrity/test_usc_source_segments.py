@@ -43,6 +43,14 @@ class UscSourceSegmentTests(unittest.TestCase):
         with self.assertRaises(parser.SourceStructureError):
             parser.extract_statutory_body("<p>Editorial Notes only</p>")
 
+    def test_multiple_typed_statute_segments_fail_closed(self) -> None:
+        parser = segments_module(self)
+        with self.assertRaises(parser.SourceStructureError):
+            parser.extract_statutory_body(
+                "<!-- field-start:statute --><p>First</p><!-- field-end:statute -->"
+                "<!-- field-start:statute --><p>Second</p><!-- field-end:statute -->"
+            )
+
     @unittest.skipUnless(os.environ.get("LIVE_SOURCE_INTEGRITY") == "1", "set LIVE_SOURCE_INTEGRITY=1")
     def test_live_govinfo_section_has_a_typed_statutory_body(self) -> None:
         parser = segments_module(self)

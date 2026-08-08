@@ -32,6 +32,15 @@ class HawaiiIdentityTests(unittest.TestCase):
     def test_well_formed_hyphenated_identifier_remains_compatible(self) -> None:
         self.assertEqual(scrapeHI._extract_section_number("§ 431-10 Existing form."), "431-10")
 
+    def test_bracketed_colon_heading_keeps_full_identity(self) -> None:
+        heading = "[§ 431:15-304] Actions by and against rehabilitator. (a) Body."
+        self.assertEqual(scrapeHI._extract_section_number(heading), "431:15-304")
+        self.assertEqual(
+            scrapeHI._extract_section_name(heading),
+            "Actions by and against rehabilitator.",
+        )
+        self.assertEqual(scrapeHI._strip_section_heading(heading), "(a) Body.")
+
     def test_distinct_colon_sections_remain_distinct_identities(self) -> None:
         self.assertEqual(
             scrapeHI._extract_section_number("§ 431:15-304 Actions."),
