@@ -25,6 +25,20 @@ REQUIRED = {
     "qa_cycles",
 }
 
+VALID_STATUSES = {
+    "planning",
+    "planned",
+    "in-progress",
+    "dev-complete",
+    "qa-in-progress",
+    "qa-fail",
+    "review",
+    "done",
+    "blocked",
+}
+
+VALID_CURRENT_ROLES = {"planner", "developer", "qa"}
+
 
 def front_matter(path: Path) -> dict[str, str]:
     text = path.read_text(encoding="utf-8")
@@ -51,12 +65,17 @@ def main(argv: list[str]) -> int:
     errors: list[str] = []
     if missing:
         errors.append(f"missing fields: {', '.join(missing)}")
-    if fields.get("status") not in {"planning", "planned", "in_progress", "complete", "blocked"}:
+    if fields.get("status") not in VALID_STATUSES:
         errors.append("status is not a recognized sprint state")
-    if fields.get("current_role") not in {"planner", "developer", "qa", "manager"}:
+    if fields.get("current_role") not in VALID_CURRENT_ROLES:
         errors.append("current_role is not a recognized sprint role")
-    if fields.get("qa_cycles") != "0":
-        errors.append("Planner handoff must retain qa_cycles: 0")
+    try:
+        qa_cycles = int(fields.get("qa_cycles", ""))
+    except ValueError:
+        errors.append("qa_cycles must be an integer from 0 through 5")
+    else:
+        if not 0 <= qa_cycles <= 5:
+            errors.append("qa_cycles must be an integer from 0 through 5")
     if errors:
         print("CONTRACT LINT FAIL: " + "; ".join(errors), file=sys.stderr)
         return 1
