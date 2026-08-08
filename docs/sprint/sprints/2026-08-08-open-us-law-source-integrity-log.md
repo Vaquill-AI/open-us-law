@@ -2,6 +2,15 @@
 
 Append-only evidence and role roster for the cross-repo repair.
 
+## Developer roster — 2026-08-08
+
+- `/root/open_us_law_dev_hi` — Developer SI-1 — `gpt-5.6-terra`, low;
+  Haiku-eligible but unavailable, so this is the cheapest available fit.
+- `/root/open_us_law_dev_release` — Developer SI-2/SI-4 —
+  `gpt-5.6-terra`, medium; Haiku rejected for artifact/schema/CLI safety work.
+- `/root/open_us_law_dev_usc` — Developer SI-3 — `gpt-5.6-terra`, medium;
+  Haiku rejected for source-structure parsing and two live call sites.
+
 ## Roster
 
 - Canonical task: `/root/open_us_law_source_planner`; role: Planner; model:
