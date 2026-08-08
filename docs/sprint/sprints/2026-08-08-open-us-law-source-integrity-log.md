@@ -34,6 +34,8 @@ Append-only evidence and role roster for the cross-repo repair.
   Haiku rejected for source-structure parsing and two live call sites.
 - `/root/open_us_law_lint_microfix` — Planner-role sprint-tooling fix —
   `gpt-5.6-terra`, low; Haiku-eligible but unavailable.
+- `/root/open_us_law_qa1_ak_fix` — QA-fail Developer SI-2 —
+  `gpt-5.6-terra`, low; Haiku-eligible but unavailable.
 
 ## Roster
 

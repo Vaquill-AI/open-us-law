@@ -1,18 +1,18 @@
 ---
 id: "2026-08-08-open-us-law-source-integrity"
-status: qa-fail
-current_role: developer
+status: dev-complete
+current_role: qa
 branch: sprint/2026-08-08-open-us-law-source-integrity
-locked_by: "codex:developer"
-locked_at: "2026-08-08T19:53:55Z"
+locked_by: "codex:qa"
+locked_at: "2026-08-08T19:55:33Z"
 last_agent: "codex:manager"
-last_updated: "2026-08-08T19:53:55Z"
+last_updated: "2026-08-08T19:55:33Z"
 lint: PASS
 evaluator: unittest
 evaluator_command: ".venv/bin/python -m unittest discover -s tests/source_integrity -t . -v"
 total_items: 4
 completed_items: 3
-dev_complete_items: 0
+dev_complete_items: 1
 qa_cycles: 1
 prd_sections:
   - docs/sprint/sprints/2026-08-08-open-us-law-source-integrity-review.md
@@ -42,18 +42,17 @@ branches, locks, tests, Developers, and QA verdicts.
   20 passes plus the single opt-in live skip; no publication was performed.
 - Contract lint now accepts the full sprint state machine and QA-cycle range;
   exhaustive 55-case tooling verification passed at `c3069cc`.
+- QA-cycle-1 Alaska dotted-prefix failure is fixed at `351b824`; manager full
+  verification is 24 passes plus the single opt-in live skip.
 
 ## Next Steps
 
-- SI-2 — Deterministic release materializer: **[QA-FAIL: actual validator
-  rejects pinned `STATE_AK_T11_C11.76_S11.76.115` / `11.76.115` vs expected
-  preservation of valid dotted structural components while retaining the
-  terminal `_S{section_number}` agreement.]** Repair the identity grammar and
-  satisfy the committed QA RED before returning this item to QA.
+None — SI-2 has returned to independent QA.
 
 ## Dev Complete
 
-None.
+- SI-2 — Deterministic release materializer: QA-cycle-1 repair `351b824`;
+  pinned Alaska dotted structural ID now passes while suffix agreement remains.
 
 ## Completed
 
@@ -73,6 +72,8 @@ Manager authoritative pass: `.venv/bin/python -m unittest discover -s
 tests/source_integrity -t . -v` ran 21 tests: 20 passed and the opt-in live
 GovInfo test skipped. Diff audit found no Developer test/fixture edits. The
 materializer dry-run produced real deterministic Parquet and no publication.
+QA-cycle-1 manager pass at `351b824`: 25 tests, 24 passed, 1 live skip; the
+committed Alaska regression passes and the diff is one production line.
 
 ## QA Notes
 
@@ -83,12 +84,11 @@ materializer dry-run produced real deterministic Parquet and no publication.
 
 ## Context Dump
 
-- QA all four items independently; production code is frozen.
-- Exercise the real GovInfo typed-source check if network access is available.
-- Inspect a real dry-run Parquet/manifest/lineage/quarantine artifact set.
-- Confirm numeric-ID preservation beyond the Planner's PA sample.
+- QA cycle 2 re-verifies SI-2 and runs the complete evaluator independently.
+- Confirm the Alaska pinned-HF regression and terminal section agreement.
+- Recheck a fresh dry-run Parquet/manifest/lineage/quarantine artifact set.
 - No HF upload: trusted complete HI capture and maintainer credentials are absent.
-- LexGraph downstream B1 work resumes only after this upstream QA verdict.
+- LexGraph downstream B1 work resumes only after the upstream QA verdict.
 
 ## Planner evidence and verified boundary
 
