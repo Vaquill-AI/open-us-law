@@ -116,7 +116,7 @@ jurisdictions:
     containers: "Miss. Code 1972: titles 1-99 (~49 populated)"
     est_sections: "no official aggregate; complete"
     official_source: "https://legislature.ms.gov/"
-    bulk_source: "no first-party bulk; per-section via billstatus.ls.state.ms.us + commercially hosted MS Code; community parses"
+    bulk_source: "no first-party bulk; per-section via billstatus.ls.state.ms.us. The compiled Miss. Code has no free official bulk feed."
     source_tier: html
     access: "No official zip/API - the weakest refresh path in the set."
     citation_scheme: "title-chapter-section - deterministic"
@@ -354,7 +354,7 @@ jurisdictions:
     containers: "titles 1-90"
     est_sections: "~28,000-31,000 (est.)"
     official_source: "https://mca.legmt.gov/bills/mca/index.html"
-    bulk_source: "mca.legmt.gov (per-section HTML); the official bulk is a paid Folio product (free only to MT/tribal govt)"
+    bulk_source: "mca.legmt.gov (per-section HTML); the official bulk feed is paid, and free only to MT/tribal government"
     source_tier: html
     access: "No free zip/API. Deep paths are anti-bot (headers/proxy)."
     citation_scheme: "title-chapter-part-section (e.g. 45-5-102) - deterministic"
@@ -438,10 +438,10 @@ jurisdictions:
     dump_ready: true
     containers: "53 titles"
     est_sections: "~28,000-31,000 (est.)"
-    official_source: "https://www.legis.ga.gov/ (OCGA, commercially hosted)"
-    bulk_source: "https://archive.org/details/gov.ga.ocga.2024 (unrestricted OCR bulk, mixed vintages); clean feed is commercially hosted"
+    official_source: "https://www.legis.ga.gov/ (O.C.G.A.)"
+    bulk_source: "no free official bulk. The O.C.G.A. is published under an exclusive commercial arrangement, so there is no first-party feed to rebuild from."
     source_tier: html
-    access: "Free bulk is OCR with patchwork per-volume vintages; the clean feed is anti-bot. Freshness gap, not a coverage gap."
+    access: "No free official bulk feed. Freshness gap, not a coverage gap."
     citation_scheme: "title-chapter-section (e.g. 16-5-1) - deterministic"
     notes: "Structurally complete."
 
@@ -609,7 +609,7 @@ jurisdictions:
     containers: "79 chapters"
     est_sections: "~26,000-30,000 (est.) (shipped complete in v2026.07)"
     official_source: "https://nmonesource.com/"
-    bulk_source: "nmonesource.com (per-section HTML, Lexum SPA)"
+    bulk_source: "nmonesource.com (per-section HTML; JavaScript single-page app)"
     source_tier: html
     access: "JavaScript SPA (Selenium/headless), fragile. No public bulk/API. No geo-block."
     citation_scheme: "chapter-article-section (e.g. 30-3-2 NMSA) - deterministic"
@@ -645,7 +645,7 @@ jurisdictions:
     official_source: "https://malegislature.gov/Laws/GeneralLaws"
     bulk_source: "https://malegislature.gov/api (official REST API; Swagger at /api/swagger/, Chapters/Sections endpoints)"
     source_tier: api
-    access: "Official REST API, no key, no geo-block. The macode.org mirror is stale - do not use."
+    access: "Official REST API, no key, no geo-block. Third-party mirrors of this code are stale - use the API."
     citation_scheme: "chapter section (e.g. c.276 s.2) - deterministic"
     notes: "Complete. The 4-Part top level is correct, not a gap."
 
@@ -679,7 +679,7 @@ jurisdictions:
     official_source: "https://www.azleg.gov/arstitle/"
     bulk_source: "https://www.azleg.gov/arsDetail/?title={NN} (whole-title HTML) + ROC combined statute-book PDF (roc.az.gov)"
     source_tier: html
-    access: "No API/zip, no block. Site is maintained for drafting (points to Thomson Reuters for the official version)."
+    access: "No API/zip, no block. Site is maintained for drafting and points elsewhere for the certified official version."
     citation_scheme: "title-section (e.g. 13-1105) - deterministic"
     notes: "Shipped complete in v2026.07."
 
@@ -863,10 +863,10 @@ jurisdictions:
     dump_ready: true
     containers: "71 titles"
     est_sections: "~40,000-48,000 (est.) (shipped complete in v2026.07)"
-    official_source: "official free public access portal (official free public access)"
-    bulk_source: "official public portal (per-section HTML)"
+    official_source: "state-provided free public access portal"
+    bulk_source: "free public access portal (per-section HTML)"
     source_tier: html
-    access: "JS/anti-bot a commercial database portal, no zip/API - needs a headless browser or a licensed feed."
+    access: "JavaScript/anti-bot, no zip/API - needs a headless browser or a licensed feed."
     citation_scheme: "TCA title-chapter-section (e.g. 39-13-202) - deterministic on the cite"
     notes: "Shipped complete in v2026.07."
 
@@ -949,7 +949,7 @@ jurisdictions:
     containers: "34 LPRA titles"
     est_sections: "~12,000-16,000 (est.) (shipped complete in v2026.07)"
     official_source: "https://www.statedepartment.pr.gov/laws-of-puerto-rico"
-    bulk_source: "LexJuris per-title PDFs (lexjuris.com) + statedepartment.pr.gov"
+    bulk_source: "official OGP portal (bvirtualogp.pr.gov) per-title PDFs + statedepartment.pr.gov"
     source_tier: pdf
     access: "Per-title PDFs, anti-bot, bilingual (Spanish/English duplication hazard on ingest). No API/zip."
     citation_scheme: "Titulo X seccion Y - deterministic on the cite"
@@ -965,9 +965,9 @@ jurisdictions:
     dump_ready: true
     containers: "28 titles"
     est_sections: "~33,000-38,000 (est.) (shipped complete in v2026.07)"
-    official_source: "official free public access portal (official free public access)"
-    bulk_source: "official public portal (per-section HTML)"
+    official_source: "state-provided free public access portal"
+    bulk_source: "free public access portal (per-section HTML)"
     source_tier: html
-    access: "JS/anti-bot a commercial database portal, no zip/API (commercial mirrors are Cloudflare-blocked) - needs a headless browser or a licensed feed."
+    access: "JavaScript/anti-bot, no zip/API (third-party mirrors are bot-walled) - needs a headless browser or a licensed feed."
     citation_scheme: "ACA title-chapter-section (e.g. 5-4-401) - deterministic on the cite"
-    notes: "Shipped complete in v2026.07: 36,936 sections via the official ScrapFly cutover."
+    notes: "Shipped complete in v2026.07: 36,936 sections."
