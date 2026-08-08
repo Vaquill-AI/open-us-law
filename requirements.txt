@@ -17,3 +17,4 @@ pydantic>=2.0
 tenacity>=8.0
 structlog>=24.0          # structured logging in the bulk-ingester pipeline (vaquill_pipeline)
 selenium>=4.0           # only the 11 Selenium states (+ chromedriver on PATH)
+pyarrow>=24.0           # deterministic release Parquet materialization

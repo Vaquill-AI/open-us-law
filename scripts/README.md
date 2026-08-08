@@ -40,3 +40,22 @@ Some state sources are geo-restricted and require a US proxy; those scripts read
 `WEBSHARE_PROXY_HOST` / `WEBSHARE_PROXY_PORT` / `WEBSHARE_PROXY_USER` /
 `WEBSHARE_PROXY_PWD` from the environment (see `.env.example`). No credentials are
 hardcoded anywhere.
+# Release materializer
+
+Create a local, auditable source snapshot without network access or Hugging Face
+credentials:
+
+```bash
+python -m scripts.release.materialize_snapshot \
+  --input input.jsonl --output-dir release-output \
+  --producer-code-revision "$(git rev-parse HEAD)" \
+  --hf-repo-id OWNER/DATASET --hf-revision TAG --dry-run
+```
+
+The command emits deterministic `us_hi_statutes.parquet`, `producer-manifest.json`,
+`identity-lineage.jsonl`, and `quarantine.jsonl`. It validates source provenance,
+sorts identities, and fails on duplicate normalized identities unless
+`--duplicate-policy quarantine` is explicit; all colliding rows are then excluded
+from Parquet. `--dry-run` is deliberately offline and always records
+`upload_performed: false`. Dataset publication remains the dataset maintainer's
+separate, credentialed operation after trusted input capture and checksum review.
