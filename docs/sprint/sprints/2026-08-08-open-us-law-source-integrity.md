@@ -3,10 +3,10 @@ id: "2026-08-08-open-us-law-source-integrity"
 status: qa-fail
 current_role: developer
 branch: sprint/2026-08-08-open-us-law-source-integrity
-locked_by: "codex:qa"
-locked_at: "2026-08-08T19:41:33Z"
-last_agent: "codex:qa"
-last_updated: "2026-08-08T19:50:00Z"
+locked_by: "codex:developer"
+locked_at: "2026-08-08T19:53:55Z"
+last_agent: "codex:manager"
+last_updated: "2026-08-08T19:53:55Z"
 lint: PASS
 evaluator: unittest
 evaluator_command: ".venv/bin/python -m unittest discover -s tests/source_integrity -t . -v"
