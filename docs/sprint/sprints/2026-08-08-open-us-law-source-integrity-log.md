@@ -57,3 +57,20 @@ Append-only evidence and role roster for the cross-repo repair.
   unittest. Contract lint PASS after the role handoff.
 - Stale-pin sweep repeated across the only test root: two intentional matching
   snapshot references and zero stale/mismatched pins.
+
+## Planner Parquet and dry-run target correction — 2026-08-08
+
+- Added the Planner-owned test dependency
+  `tests/source_integrity/requirements.txt` pinning `pyarrow==24.0.0`; repo
+  profile setup now installs it after the existing production requirements.
+  Production `requirements.txt` remains untouched.
+- The existing CLI RED now opens the emitted file through PyArrow, requires the
+  published 24-column Parquet schema, two distinct `431:15-*` rows, exact text
+  round-trip, deterministic file bytes/hash, and an empty Parquet artifact for
+  quarantined duplicate IDs. Arbitrary bytes with a `.parquet` suffix cannot
+  satisfy it.
+- The same CLI RED passes test-only `--hf-repo-id` and `--hf-revision` values;
+  it requires the exact values and `upload_performed: false` in the manifest
+  while `HF_ENDPOINT` is unreachable. Thus a dry run must not upload. The real
+  HF target decision remains external.
+- Count remains `Ran 16 tests`; `FAILED (failures=14, skipped=1)`, zero errors.

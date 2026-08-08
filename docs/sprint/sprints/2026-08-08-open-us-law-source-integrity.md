@@ -56,7 +56,12 @@ tests/source_integrity -t . -v` runs 16 tests: 14 failures, 1 preservation
 green, 1 opt-in live GovInfo skip. Expected RED by file: `test_hi_identity.py`
 has 3 parser/emitted-Node failures and 1 hyphenated-ID GREEN;
 `test_release_contract.py` has 7 failures (6 API contracts plus the actual CLI
-materializer/dry-run/collision integration path); `test_usc_source_segments.py`
+materializer/dry-run/collision integration path). The CLI integration opens the
+emitted artifact with the Planner-pinned PyArrow verifier and requires the
+published 24-column schema, two distinct corrected HI IDs, exact statutory
+body text, deterministic bytes/hash, and no collision-body merge. It also
+requires explicit test-only HF repository/revision inputs bound to the manifest
+with `upload_performed: false`; `test_usc_source_segments.py`
 has 4 failures (2 helper contracts and both existing `download_usc` and
 `parse_usc_zip` call seams) plus the opt-in live source test. Missing planned
 modules are converted into assertion failures which continue into behavior
@@ -129,12 +134,12 @@ None.
    route both USC paths through it. It must consume only GovInfo's typed statute
    segment, preserve that segment's text, reject a missing/malformed statutory
    segment, and never infer the boundary from editorial prose.
-4. **SI-4 — Publishable dry-run, not an implied release.** Add a dry-run that
-   produces the SI-2 artifact set and records the exact Hugging Face target
-   revision/tag intended for publication. A real upload requires an external
-   `HF_TOKEN` with dataset-write scope and a trusted, complete HI input capture;
-   it must neither overwrite `301000fc…` nor claim a corrected snapshot before
-   checksums and manifest are built.
+4. **SI-4 — Publishable dry-run, not an implied release.** Require explicit
+   offline `--hf-repo-id` and `--hf-revision`/tag inputs, bind them into the
+   deterministic manifest, and record `upload_performed: false` for `--dry-run`.
+   A real upload requires an external `HF_TOKEN` with dataset-write scope and a
+   trusted, complete HI input capture; it must neither overwrite `301000fc…`
+   nor claim a corrected snapshot before checksums and manifest are built.
 
 ## Exact Developer write set, commands, and stop rules
 
@@ -150,7 +155,10 @@ Write only:
   provenance-publication instructions required by the new production path.
 
 The Planner-owned files under `tests/source_integrity/` (including fixtures) are
-frozen: Developer must not edit them. Sprint contract bookkeeping follows the
+frozen: Developer must not edit them, including the test-only pinned
+`tests/source_integrity/requirements.txt` Parquet verifier. If the production
+materializer itself needs a runtime dependency, the Developer must declare it
+independently in `requirements.txt`. Sprint contract bookkeeping follows the
 assigned role workflow and is not part of the production write set.
 
 Commands: run the contract lint; run the complete unittest command; then run

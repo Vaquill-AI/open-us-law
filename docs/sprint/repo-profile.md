@@ -11,13 +11,14 @@ evaluator_commands:
 test_roots:
   - tests/source_integrity
 registries: []
-venv_setup: "python -m venv .venv && .venv/bin/python -m pip install -r requirements.txt"
+venv_setup: "python -m venv .venv && .venv/bin/python -m pip install -r requirements.txt -r tests/source_integrity/requirements.txt"
 gemma_local_spawning: false
 notes: |
   The repository ships no pre-existing test root, test runner configuration, or
   CI workflow. This sprint establishes stdlib unittest discovery at the listed
-  root; its runtime dependencies are the existing requirements.txt. The
-  contract linter is sprint tooling only. The source-release materializer and
+  root; its runtime dependencies are the existing requirements.txt plus the
+  Planner-owned, pinned Parquet verifier in tests/source_integrity/requirements.txt.
+  The contract linter is sprint tooling only. The source-release materializer and
   Hugging Face publication workflow are absent from this checkout and must not
   be inferred from the dataset card. Scope is coordinated with LexGraph sprint
   2026-08-04-defs-us-preamble.

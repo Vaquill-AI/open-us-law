@@ -12,9 +12,18 @@ import tempfile
 import unittest
 from pathlib import Path
 
+import pyarrow.parquet as pq
+
 
 ROOT = Path(__file__).resolve().parents[2]
 FIXTURE = ROOT / "tests" / "source_integrity" / "fixtures" / "release_rows.jsonl"
+PARQUET_SCHEMA = [
+    "act_id", "citation", "citation_short", "state", "jurisdiction", "document_type",
+    "title_number", "title_name", "chapter", "chapter_name", "section_number",
+    "section_title", "breadcrumb", "display_path", "act_status", "text", "word_count",
+    "source_url", "last_amended_year", "subsection_count", "cross_references_usc",
+    "cross_references_cfr", "public_laws_referenced", "year",
+]
 
 
 def release_module(testcase: unittest.TestCase):
@@ -126,9 +135,13 @@ class ReleaseContractTests(unittest.TestCase):
             base = [
                 sys.executable, "-m", "scripts.release.materialize_snapshot",
                 "--input", str(input_path), "--producer-code-revision", "test-revision",
+                "--hf-repo-id", "test-org/open-us-law-source-integrity",
+                "--hf-revision", "test-v2026.08-source-integrity",
                 "--dry-run",
             ]
             env = {**os.environ, "HF_ENDPOINT": "http://127.0.0.1:9"}
+            env.pop("HF_TOKEN", None)
+            env.pop("HUGGINGFACE_HUB_TOKEN", None)
             run_one = subprocess.run(
                 [*base, "--output-dir", str(first)], cwd=ROOT, env=env,
                 text=True, capture_output=True, check=False,
@@ -141,10 +154,36 @@ class ReleaseContractTests(unittest.TestCase):
             self.assertEqual({path.name for path in first.iterdir()}, expected)
             manifest = json.loads((first / "producer-manifest.json").read_text())
             self.assertEqual(manifest["producer"]["code_revision"], "test-revision")
-            self.assertIn("rows_sha256", manifest["outputs"])
-            self.assertNotIn("uploaded", manifest)
             self.assertEqual(
-                hashlib.sha256((first / "us_hi_statutes.parquet").read_bytes()).hexdigest(),
+                manifest["publication_target"],
+                {
+                    "repository_id": "test-org/open-us-law-source-integrity",
+                    "revision": "test-v2026.08-source-integrity",
+                    "upload_performed": False,
+                },
+            )
+            self.assertIn("rows_sha256", manifest["outputs"])
+            parquet = first / "us_hi_statutes.parquet"
+            table = pq.read_table(parquet)
+            self.assertEqual(table.schema.names, PARQUET_SCHEMA)
+            self.assertEqual(table.num_rows, 2)
+            columns = table.to_pydict()
+            self.assertEqual(
+                columns["act_id"],
+                [
+                    "STATE_HI_D2_T24_C431_S431:15-304",
+                    "STATE_HI_D2_T24_C431_S431:15-305",
+                ],
+            )
+            self.assertEqual(
+                columns["text"],
+                [
+                    "(a) Any court in this State before which an action is pending shall stay the action.",
+                    "(a) The rehabilitator may appeal in the manner provided by law.",
+                ],
+            )
+            self.assertEqual(
+                hashlib.sha256(parquet.read_bytes()).hexdigest(),
                 manifest["outputs"]["rows_sha256"],
             )
             run_two = subprocess.run(
@@ -166,6 +205,7 @@ class ReleaseContractTests(unittest.TestCase):
                 cwd=ROOT, env=env, text=True, capture_output=True, check=False,
             )
             self.assertNotEqual(failed.returncode, 0)
+            self.assertFalse((root / "fail" / "us_hi_statutes.parquet").exists())
             quarantined = subprocess.run(
                 [*base, "--input", str(collision_path), "--output-dir", str(root / "quarantine"),
                  "--duplicate-policy", "quarantine"],
@@ -175,3 +215,7 @@ class ReleaseContractTests(unittest.TestCase):
             self.assertEqual(
                 len((root / "quarantine" / "quarantine.jsonl").read_text().splitlines()), 2,
             )
+            quarantined_table = pq.read_table(root / "quarantine" / "us_hi_statutes.parquet")
+            self.assertEqual(quarantined_table.schema.names, PARQUET_SCHEMA)
+            self.assertEqual(quarantined_table.num_rows, 0)
+            self.assertNotIn("must never merge", "\n".join(quarantined_table.column("text").to_pylist()))

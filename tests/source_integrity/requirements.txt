@@ -1,0 +1,2 @@
+# Planner-owned verifier only; do not treat this as a production dependency.
+pyarrow==24.0.0
