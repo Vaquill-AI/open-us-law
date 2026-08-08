@@ -3,10 +3,10 @@ id: "2026-08-08-open-us-law-source-integrity"
 status: review
 current_role: planner
 branch: sprint/2026-08-08-open-us-law-source-integrity
-locked_by: "codex:qa"
-locked_at: "2026-08-08T19:55:33Z"
-last_agent: "codex:qa2"
-last_updated: "2026-08-08T19:57:24Z"
+locked_by: null
+locked_at: null
+last_agent: "codex:manager"
+last_updated: "2026-08-08T19:58:19Z"
 lint: PASS
 evaluator: unittest
 evaluator_command: ".venv/bin/python -m unittest discover -s tests/source_integrity -t . -v"
