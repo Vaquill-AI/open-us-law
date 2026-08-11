@@ -123,7 +123,7 @@ Many states also have a newer **bulk-source ingester** at [`scripts/statutes/ing
 | Connecticut (`ct`) | [scrapeCT.py](scripts/state_scrapers/src/scrapers/us/states/ct/statutes/scrapeCT.py) | 16,082 | proxy |
 | Delaware (`de`) | [scrapeDE.py](scripts/state_scrapers/src/scrapers/us/states/de/statutes/scrapeDE.py) | 21,649 |  |
 | Florida (`fl`) | [scrapeFL.py](scripts/state_scrapers/src/scrapers/us/states/fl/statutes/scrapeFL.py) | 24,866 |  |
-| Georgia (`ga`) | data-only (in the dataset) | 28,154 |  |
+| Georgia (`ga`) | withdrawn | 28,154 (in `v2026.07` only) | see note below |
 | Hawaii (`hi`) | [scrapeHI.py](scripts/state_scrapers/src/scrapers/us/states/hi/statutes/scrapeHI.py) | 16,446 |  |
 | Iowa (`ia`) | [scrapeIA.py](scripts/state_scrapers/src/scrapers/us/states/ia/statutes/scrapeIA.py) | 28,223 |  |
 | Idaho (`id`) | [scrapeID.py](scripts/state_scrapers/src/scrapers/us/states/id/statutes/scrapeID.py) | 22,754 |  |
@@ -140,7 +140,7 @@ Many states also have a newer **bulk-source ingester** at [`scripts/statutes/ing
 | Missouri (`mo`) | [scrapeMO.py](scripts/state_scrapers/src/scrapers/us/states/mo/statutes/scrapeMO.py) | 29,296 |  |
 | Mississippi (`ms`) | data-only (in the dataset) | 158,688 |  |
 | Montana (`mt`) | [scrapeMT.py](scripts/state_scrapers/src/scrapers/us/states/mt/statutes/scrapeMT.py) | 30,514 |  |
-| North Carolina (`nc`) | data-only (in the dataset) | 26,685 |  |
+| North Carolina (`nc`) | withdrawn | 26,685 (in `v2026.07` only) | see note below |
 | North Dakota (`nd`) | [scrapeND.py](scripts/state_scrapers/src/scrapers/us/states/nd/statutes/scrapeND.py) | 29,042 |  |
 | Nebraska (`ne`) | [scrapeNE.py](scripts/state_scrapers/src/scrapers/us/states/ne/statutes/scrapeNE.py) | 25,997 |  |
 | New Hampshire (`nh`) | [scrapeNH.py](scripts/state_scrapers/src/scrapers/us/states/nh/statutes/scrapeNH.py) | 25,375 | proxy |
@@ -168,6 +168,8 @@ Many states also have a newer **bulk-source ingester** at [`scripts/statutes/ing
 > Puerto Rico statutes: complete, 23,636 sections, ingested from the official OGP portal (bvirtualogp.pr.gov).
 
 > States marked **data-only** are included in the published dataset. This repo ships scrapers only for sources published by a government body, so where our copy came from somewhere else no scraper is included; official-source scrapers for those states are in progress.
+
+> **Georgia and North Carolina statutes have been withdrawn.** Our copy of both carried the source site's own navigation and footer text inside the section bodies, so the sections were not clean statutory text. They have been removed from the live corpus and will not appear in the next snapshot. They are still present in `v2026.07`, which is a fixed historical artifact. Both are being re-ingested from an official publisher; Georgia is the harder of the two, since the O.C.G.A. has no free official bulk source.
 
 ### State regulations
 

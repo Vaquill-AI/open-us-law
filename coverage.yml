@@ -431,11 +431,11 @@ jurisdictions:
   - code: ga
     name: "Georgia"
     kind: state
-    section_count: 28154
-    coverage_status: complete
-    coverage_verified: true
-    status: shipped
-    dump_ready: true
+    section_count: 0
+    coverage_status: withdrawn
+    coverage_verified: false
+    status: withdrawn
+    dump_ready: false
     containers: "53 titles"
     est_sections: "~28,000-31,000 (est.)"
     official_source: "https://www.legis.ga.gov/ (O.C.G.A.)"
@@ -443,7 +443,7 @@ jurisdictions:
     source_tier: html
     access: "No free official bulk feed. Freshness gap, not a coverage gap."
     citation_scheme: "title-chapter-section (e.g. 16-5-1) - deterministic"
-    notes: "Structurally complete."
+    notes: "WITHDRAWN 2026-08-12: the section bodies carried the source site's navigation and footer text, so they were not clean statutory text. Removed from the live corpus; present in v2026.07 only. Re-ingest from an official publisher pending. Structurally complete."
 
   - code: mn
     name: "Minnesota"
@@ -465,11 +465,11 @@ jurisdictions:
   - code: nc
     name: "North Carolina"
     kind: state
-    section_count: 26685
-    coverage_status: complete
-    coverage_verified: true
-    status: shipped
-    dump_ready: true
+    section_count: 0
+    coverage_status: withdrawn
+    coverage_verified: false
+    status: withdrawn
+    dump_ready: false
     containers: "chapters 1-169 (~155 active)"
     est_sections: "~26,000-30,000 (est.)"
     official_source: "https://www.ncleg.gov/Laws/GeneralStatutesTOC"
@@ -477,7 +477,7 @@ jurisdictions:
     source_tier: html
     access: "No zip/API. Mirror ncleg.net."
     citation_scheme: "chapter-section (e.g. 14-17) - deterministic"
-    notes: "Complete to near-complete."
+    notes: "WITHDRAWN 2026-08-12: the section bodies carried the source site's navigation and footer text, so they were not clean statutory text. Removed from the live corpus; present in v2026.07 only. Re-ingest from an official publisher pending. Complete to near-complete."
 
   - code: ne
     name: "Nebraska"
