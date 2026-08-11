@@ -1049,11 +1049,10 @@ _WS_INLINE_STATES = {
     # (Marijuana, 2022), which Wikisource never had at all). Wikisource had
     # 360 pts / 13 articles, verdict CLEAN (no split bug, just incomplete).
     # "ms" removed 2026-08-08: replaced by the official-source scrape_ms
-    # below (sos.state.ms.us, a new official domain -- MS's own statute
-    # scraper is FindLaw-only). Wikisource had 310 pts / 15 articles,
-    # verdict CLEAN, so this replaces it purely for provenance (official
-    # .gov source vs a third-party mirror), not because the old source was
-    # found incomplete.
+    # below (sos.state.ms.us, the Secretary of State's own domain).
+    # Wikisource had 310 pts / 15 articles, verdict CLEAN, so this replaces
+    # it purely for provenance, not because the old source was found
+    # incomplete.
     # "mt" removed 2026-08-08: replaced by the official-source scrape_mt below
     # (mca.legmt.gov, same Drupal-style templated platform MT's own statute
     # scraper already parses, one extra Article level deep). Wikisource had
@@ -5422,59 +5421,6 @@ def scrape_hi(r2) -> list[Section]:
 
 
 # ---------------------------------------------------------------------------
-# North Carolina -- replaces the Wikisource source (see _WS_INLINE_STATES'
-# former "nc" entry, 167 pts / 14 articles). codes.findlaw.com is the one
-# state in the whole 41-state migration where FindLaw genuinely IS the right
-# source: ncleg.gov/www.ncleg.gov/sites.ncleg.gov all 403 bots (reconfirmed
-# live 2026-08-08), and NC's own official statute corpus already uses this
-# same FindLaw mirror for exactly that reason (scrapeNC.py) -- same licensing
-# profile already accepted for that corpus, not a shortcut being taken here.
-#
-# The index page (codes.findlaw.com/nc/north-carolina-constitution/) lists
-# every article's title server-side (an accordion header, real text in the
-# static HTML) but lazy-loads each article's section LINKS via JS -- none of
-# the ~150 real per-section URLs are discoverable from that page's static
-# HTML. Per-section URLs ARE all indexed in FindLaw's own sitemap
-# (sitemap_index.xml -> 6 NC shards -> nc-const-art-{roman}-sect-{N} plus one
-# nc-const-preamble), the same sitemap-driven discovery scrapeNC.py's own
-# `_enumerate_sections_via_sitemap` already uses for the statute corpus.
-# Verified live 2026-08-08: 155 section URLs across all 14 real articles
-# (I-XIV), each article's section numbers contiguous 1..N with zero gaps
-# (Art. I alone: 1-38, matching the real NC Const. Article I, Declaration of
-# Rights), plus the one preamble URL -- captured as its own article_id="0"
-# section_number="0" record, the same convention scrape_mn/scrape_az already
-# use for their preambles.
-#
-# Per-page structure is IDENTICAL to scrapeNC.py's own `_fetch_section_content`
-# (same FindLaw template both corpora share): <main> holds an <h1> citation
-# header ("North Carolina Constitution Art. I, § 37. Rights of victims of
-# crime") followed by body <p> tags, then FindLaw's own "Cite this
-# article"/"FindLaw Codes may not reflect..." boilerplate paragraphs, which
-# are excluded by the same low-signal-prefix check scrapeNC.py already uses.
-#
-# No amendment-history citation trailer of any kind appears on any sampled
-# section (Article I -- heavily amended -- and the 2012 marriage amendment,
-# Art. XIV Sec. 6, both checked live 2026-08-08) -- this FindLaw template
-# carries history for STATUTES but not for this constitution corpus, unlike
-# the Wikisource-era "(2013-300, s. 1.)" trailing citation the existing
-# `_nc_amendment_years`/`_NC_TRAILING_CITE_RE` extractor above was written
-# against. Left registered rather than removed: it is a harmless no-op
-# against this source's text (no trailing-parenthetical-with-year pattern to
-# match), and this comment documents why NC will report amendments_count=0
-# going forward -- a genuine source-driven change, not a scraper bug.
-# ---------------------------------------------------------------------------
-
-
-
-
-
-
-
-
-
-
-
-# ---------------------------------------------------------------------------
 # Kansas -- replaces the Wikisource source (see _WS_INLINE_STATES' former
 # "ks" entry / _SECTION_SPLIT_OVERRIDES' former "ks" entry -- Wikisource used
 # a colon form "§ N:" that no longer applies to this source; 245 pts / 16
@@ -6256,17 +6202,6 @@ def scrape_or(r2) -> list[Section]:
 # ---------------------------------------------------------------------------
 
 
-
-
-
-
-
-
-
-
-
-
-
 # ---------------------------------------------------------------------------
 # Rhode Island -- replaces the Wikisource source (removed from
 # _WS_INLINE_STATES below). rilegislature.gov/riconstitution/Constitution/
@@ -6662,8 +6597,8 @@ def scrape_vt(r2) -> list[Section]:
 # ---------------------------------------------------------------------------
 # Mississippi -- replaces the Wikisource source (see _WS_INLINE_STATES'
 # former "ms" entry). Source is the Secretary of State's own page
-# (sos.state.ms.us/ed_pubs/constitution/constitution.asp) -- a new official
-# domain, not the FindLaw mirror MS's own statute scraper uses. The markup
+# (sos.state.ms.us/ed_pubs/constitution/constitution.asp), an official state
+# domain. The markup
 # is Word-export span/font soup, but `BeautifulSoup.get_text()` handles that
 # automatically; the real complexity is structural, not markup-cleanliness.
 #
