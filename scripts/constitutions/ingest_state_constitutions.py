@@ -989,9 +989,8 @@ _WS_INLINE_STATES = {
     # articles but was flagged BUG_PRESENT in the C07 batch research; the
     # official TOC confirms only 29 real article/part units (1-22, 6.1, Part
     # 1/2 of Article 4, 25-30 -- no 23/24 at all).
-    # CO: no official-publisher scraper ships here. The state's
-    # own portal is not reproducible from this repo, so this falls back to
-    # the open mirror rather than to a commercial aggregator.
+    # CO: reads the open mirror for now. An official-publisher scraper
+    # is in progress and will replace this entry when it lands.
     "co": "Constitution_of_the_State_of_Colorado_(2020)",
     "ct": "Constitution_of_Connecticut",
     "de": "Constitution_of_Delaware_(2023)",
@@ -1058,9 +1057,8 @@ _WS_INLINE_STATES = {
     # scraper already parses, one extra Article level deep). Wikisource had
     # 194 pts / 14 articles, verdict CLEAN, but this is still a third-party
     # mirror, never a state's own .gov source.
-    # NC: no official-publisher scraper ships here. The state's
-    # own portal is not reproducible from this repo, so this falls back to
-    # the open mirror rather than to a commercial aggregator.
+    # NC: reads the open mirror for now. An official-publisher scraper
+    # is in progress and will replace this entry when it lands.
     "nc": "North_Carolina_Constitution",
     # "ne" removed 2026-08-08: replaced by the official-source scrape_ne below
     # (nebraskalegislature.gov, one pre-split page per clause). Wikisource had
