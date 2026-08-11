@@ -66,13 +66,13 @@ pip install -r requirements.txt
 python scripts/federal/download_usc_zips.py --help
 python scripts/federal/parse_ecfr_streaming.py --help
 
-# A state statutory code (Colorado, HTTP - no browser needed):
+# A state statutory code (Kansas, HTTP - no browser needed):
 cd scripts/state_scrapers
-OUT_DIR=./data python -m src.scrapers.us.states.co.statutes.scrapeCO
-#   -> ./data/us_co_statutes.jsonl   (one JSON object per statutory node)
+OUT_DIR=./data python -m src.scrapers.us.states.ks.statutes.scrapeKS
+#   -> ./data/us_ks_statutes.jsonl   (one JSON object per statutory node)
 ```
 
-Swap `co` / `scrapeCO` for any state in the table below. Each script is self-documenting - run it with `--help`, or read its module docstring for the exact source and options.
+Swap `ks` / `scrapeKS` for any state in the table below. Each script is self-documenting - run it with `--help`, or read its module docstring for the exact source and options.
 
 ## What you get (output format)
 
@@ -119,7 +119,7 @@ Many states also have a newer **bulk-source ingester** at [`scripts/statutes/ing
 | Arkansas (`ar`) | data-only (in the dataset) | 36,936 |  |
 | Arizona (`az`) | [scrapeAZ.py](scripts/state_scrapers/src/scrapers/us/states/az/statutes/scrapeAZ.py) | 22,674 |  |
 | California (`ca`) | [scrapeCA.py](scripts/state_scrapers/src/scrapers/us/states/ca/statutes/scrapeCA.py) | 161,429 |  |
-| Colorado (`co`) | [scrapeCO.py](scripts/state_scrapers/src/scrapers/us/states/co/statutes/scrapeCO.py) | 34,231 |  |
+| Colorado (`co`) | data-only (in the dataset) | 34,231 |  |
 | Connecticut (`ct`) | [scrapeCT.py](scripts/state_scrapers/src/scrapers/us/states/ct/statutes/scrapeCT.py) | 16,082 | proxy |
 | Delaware (`de`) | [scrapeDE.py](scripts/state_scrapers/src/scrapers/us/states/de/statutes/scrapeDE.py) | 21,649 |  |
 | Florida (`fl`) | [scrapeFL.py](scripts/state_scrapers/src/scrapers/us/states/fl/statutes/scrapeFL.py) | 24,866 |  |
@@ -150,7 +150,7 @@ Many states also have a newer **bulk-source ingester** at [`scripts/statutes/ing
 | New York (`ny`) | [scrapeNY.py](scripts/state_scrapers/src/scrapers/us/states/ny/statutes/scrapeNY.py) | 40,102 | proxy |
 | Ohio (`oh`) | [scrapeOH.py](scripts/state_scrapers/src/scrapers/us/states/oh/statutes/scrapeOH.py) | 33,161 | also [official-source](scripts/statutes/ingest_oh_statutes.py) |
 | Oklahoma (`ok`) | [scrapeOK.py](scripts/state_scrapers/src/scrapers/us/states/ok/statutes/scrapeOK.py) | 35,329 |  |
-| Oregon (`or`) | [scrapeOR.py](scripts/state_scrapers/src/scrapers/us/states/or/statutes/scrapeOR.py) | 36,202 |  |
+| Oregon (`or`) | data-only (in the dataset) | 36,202 |  |
 | Pennsylvania (`pa`) | [ingest_pa_bulk.py](scripts/statutes/ingest_pa_bulk.py) | 14,547 (Consolidated; Purdon's pending) |  |
 | Rhode Island (`ri`) | [scrapeRI.py](scripts/state_scrapers/src/scrapers/us/states/ri/statutes/scrapeRI.py) | 21,107 |  |
 | South Carolina (`sc`) | [scrapeSC.py](scripts/state_scrapers/src/scrapers/us/states/sc/statutes/scrapeSC.py) | 29,947 |  |
@@ -167,7 +167,7 @@ Many states also have a newer **bulk-source ingester** at [`scripts/statutes/ing
 
 > Puerto Rico statutes: complete, 23,636 sections, ingested from the official OGP portal (bvirtualogp.pr.gov).
 
-> States marked **data-only** are included in the published dataset; their ingestion scripts are not part of this repo.
+> States marked **data-only** are included in the published dataset. This repo ships scrapers only for sources published by a government body, so where our copy came from somewhere else no scraper is included; official-source scrapers for those states are in progress.
 
 ### State regulations
 
@@ -207,8 +207,8 @@ State administrative codes. Some geo-restrict - see [caveats](#important-caveats
 |---|---|
 | 50 state constitutions | [ingest_state_constitutions.py](scripts/constitutions/ingest_state_constitutions.py) |
 
-38 of the 47 jurisdictions in that script are scraped from the state's own official publisher (its legislature or secretary of state).
-The remaining 9 - **AK, CO, CT, DE, GA, NC, NH, SC, SD** - still read an open mirror. Official-publisher scrapers for these are in progress and will replace the mirror entries as they land.
+All 38 jurisdictions in that script are scraped from the state's own official publisher (its legislature or secretary of state).
+The 9 not yet covered - **AK, CO, CT, DE, GA, NC, NH, SC, SD** - are in the published dataset; their official-publisher scrapers are in progress.
 
 ---
 
@@ -254,9 +254,9 @@ Most data derives from official government sources (state legislature / secretar
 
 A minority of state statutory codes were obtained from commercial aggregators rather than an official publisher. In the published dataset those records carry **no** `source_url` rather than linking to a third party, and the per-jurisdiction table in the [dataset card](https://huggingface.co/datasets/vaquill/open-us-law) marks them. We would rather state that plainly than imply the whole corpus is officially sourced. The retrieval layer (embeddings, semantic index, citation graph) is intentionally out of scope here.
 
-Separately, 9 state constitutions (**AK, CO, CT, DE, GA, NC, NH, SC, SD**) currently come from an open mirror rather than the state's own publisher, and those records keep their `source_url`. Official sources for these are being added.
-The other 38 constitutions are scraped from official state publishers.
-Two statutory corpora likewise retain a non-government `source_url` in the `v2026.07` snapshot: all 36,202 Oregon sections, and 1,090 of Puerto Rico's. Both are queued to be re-sourced from their official publishers in a later snapshot.
+Every scraper in this repo now reads a government publisher. Where our published copy of a jurisdiction came from somewhere else, no scraper is included rather than shipping one that points at a third party, and the official-source scraper is in progress.
+
+Some `v2026.07` records still carry a non-government `source_url` from an earlier ingest: 36,202 Oregon statute sections, 1,090 Puerto Rico sections, and 4,918 constitution sections. These are corrected as each jurisdiction is re-ingested from its official source.
 
 ## Maintained by
 

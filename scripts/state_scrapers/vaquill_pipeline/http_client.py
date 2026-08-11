@@ -1,9 +1,9 @@
 """Python port of vaquill-all/news/scripts/job-scrapper/http-client.ts.
 
 Adopted instead of reinvented:
-    - DataImpulse residential proxy with country geo-targeting (sticky sessions
+    - Residential proxy with country geo-targeting (sticky sessions
       via sid). Set DATAIMPULSE_USERNAME / DATAIMPULSE_PASSWORD.
-    - ZenRows / ScraperAPI fallback for sites known to challenge bots
+    - a scraping service fallback for sites known to challenge bots
       (Cloudflare, Akamai). Set SCRAPER_SERVICE_API_KEY.
     - 4-profile User-Agent rotation matching the news repo (Chrome 130/131
       on Windows/macOS/Linux with Sec-Ch-Ua hints).
@@ -102,8 +102,8 @@ def _random_profile() -> Dict[str, str]:
 
 
 # ---------------------------------------------------------------------------
-# Residential proxy. Webshare is primary (creds verified, US rotating works);
-# DataImpulse remains as fallback (its current creds return 407 from the gateway).
+# Residential proxy. the datacenter tier is primary (creds verified, US rotating works);
+# a secondary provider remains as fallback (its current creds return 407 from the gateway).
 # ---------------------------------------------------------------------------
 
 _CA_BUNDLE_CACHE: Optional[str] = None
@@ -167,9 +167,9 @@ _DC_STICKY: Optional[tuple] = None
 
 
 def _webshare_datacenter_endpoints() -> list:
-    """Load (and cache) the Webshare datacenter proxy list.
+    """Load (and cache) the datacenter proxy list.
 
-    One IP:port per line, ``ip:port:user:pass``. Downloaded from the Webshare
+    One IP:port per line, ``ip:port:user:pass``. Downloaded from the proxy
     dashboard; the path is gitignored because the lines carry credentials.
     """
     global _DC_LIST_CACHE
@@ -204,7 +204,7 @@ def _webshare_datacenter_endpoints() -> list:
 
 
 def _webshare_datacenter_proxies(country_code: str) -> Optional[Dict[str, str]]:
-    """Preferred proxy tier: Webshare DATACENTER (100 US IPs / 250 GB, ~$3/mo).
+    """Preferred proxy tier: Datacenter proxy tier (100 US IPs / 250 GB, ~$3/mo).
 
     Chosen over rotating residential because it is both cheaper and far larger:
     the rotating plan bills per GB and hit its cap in July 2026, after which every
@@ -214,7 +214,7 @@ def _webshare_datacenter_proxies(country_code: str) -> Optional[Dict[str, str]]:
     Measured the same day against the sources that reject the box directly: 8 of 9
     became reachable through a US datacenter exit (Chicago), 0 of 9 direct. These
     are country filters, not bot-walls, so a datacenter IP in the US satisfies them.
-    The genuine bot-walls (Justia, NV, NH, LA, OK) are handled by the
+    The genuine bot-walls (NV, NH, LA, OK) are handled by the
     scraping-service path below, not by any proxy.
 
     Only honours country_code="us"; the plan is US-only.
@@ -257,7 +257,7 @@ def _webshare_proxies(country_code: str) -> Optional[Dict[str, str]]:
     pwd = os.environ.get("WEBSHARE_PASSWORD")
     if not user or not pwd:
         return None
-    # Webshare residential format: {user}-{COUNTRY}-rotate:{pass} for rotating
+    # Residential proxy format: {user}-{COUNTRY}-rotate:{pass} for rotating
     # US exit. Country code must be uppercase. Verified 2026-05-11.
     proxy_user = f"{user}-{country_code.upper()}-rotate"
     host = os.environ.get("WEBSHARE_PROXY_HOST", "p.webshare.io")
@@ -280,12 +280,12 @@ def _dataimpulse_proxies(country_code: str) -> Optional[Dict[str, str]]:
 def _proxy_for(country_code: str = "us", session_id: Optional[str] = None) -> Optional[Dict[str, str]]:
     """Return a requests-style proxies dict, cheapest workable tier first.
 
-    1. Webshare DATACENTER - 100 US IPs / 250 GB for ~$3/mo. Clears 8 of the 9
+    1. Datacenter proxy tier - 100 US IPs / 250 GB for ~$3/mo. Clears 8 of the 9
        sources that refuse the box directly, because those are country filters.
-    2. Webshare ROTATING RESIDENTIAL - billed per GB and ~9x the price for 1/25th
+    2. Rotating residential tier - billed per GB and ~9x the price for 1/25th
        the bandwidth, so it is reserved for sites that actually refuse datacenter
        IPs. Kept wired because the plan's quota resets monthly.
-    3. DataImpulse - last resort.
+    3. secondary provider - last resort.
     """
     return (
         _webshare_datacenter_proxies(country_code)
@@ -295,13 +295,10 @@ def _proxy_for(country_code: str = "us", session_id: Optional[str] = None) -> Op
 
 
 # ---------------------------------------------------------------------------
-# Sites that need the scraping-service fallback (ZenRows / ScraperAPI)
+# Sites that need the scraping-service fallback (a scraping service)
 # ---------------------------------------------------------------------------
 
 _HARD_SITE_HINTS = (
-    # Justia frequently 403s direct hits from non-US residential IPs.
-    "law.justia.com",
-    "justia.com",
     # IL legislative site sometimes returns Cloudflare challenge.
     "ilga.gov",
     # eCFR backed by Cloudflare in some regions.
@@ -310,7 +307,7 @@ _HARD_SITE_HINTS = (
     "code.wvlegislature.gov",
     "wvlegislature.gov",
     # NH RSA is behind FortiWeb Cloud WAF (Azure); drops all non-browser HTTP
-    # connections from non-US IPs. Needs ZenRows or a US exit proxy.
+    # connections from non-US IPs. Needs a scraping service or a US exit proxy.
     "gencourt.state.nh.us",
     # NE Legislature TCP-times out from non-US IPs. Needs US residential proxy.
     "nebraskalegislature.gov",
@@ -324,29 +321,29 @@ _HARD_SITE_HINTS = (
     # versioned static HTML content files are accessible once routing is US-based.
     "le.utah.gov",
     # RI Legislature webserver TCP-times-out from non-US IPs (IP firewall at
-    # the state network level). Route through a US residential proxy or ZenRows.
+    # the state network level). Route through a US residential proxy or the scraping service.
     "webserver.rilin.state.ri.us",
     "rilegislature.gov",
     "www.rilegislature.gov",
     # MO Revisor of Statutes TCP-times-out from non-US IPs (state firewall
     # geo-block). HTTPS 443 drops all packets; HTTP 80 returns 403. Must be
-    # fetched through ZenRows (SCRAPER_SERVICE_API_KEY) or a US residential proxy.
+    # fetched through a scraping service (SCRAPER_SERVICE_API_KEY) or a US residential proxy.
     "revisor.mo.gov",
     "www.revisor.mo.gov",
     # MI Legislature TCP-times-out from non-US IPs (state network geo-block).
     # The ASP.NET objectname-based URLs are session-free once proxied through
-    # ZenRows (SCRAPER_SERVICE_API_KEY) or a US residential proxy.
+    # a scraping service (SCRAPER_SERVICE_API_KEY) or a US residential proxy.
     "legislature.mi.gov",
     "www.legislature.mi.gov",
     # MA General Court (malegislature.gov) TCP-times-out from non-US IPs
     # (Massachusetts state firewall geo-block). HTTPS 443 drops all packets
-    # to international egress. Must be fetched through ZenRows
+    # to international egress. Must be fetched through the scraping service
     # (SCRAPER_SERVICE_API_KEY) or a US residential proxy.
     "malegislature.gov",
     "www.malegislature.gov",
     # OH Revised Code TCP-times-out from non-US IPs (state firewall geo-block).
     # HTTPS 443 drops packets to international egress. Must be fetched through
-    # a US residential proxy (Webshare) or ZenRows. Verified 2026-05-12.
+    # a US residential proxy or the scraping service. Verified 2026-05-12.
     "codes.ohio.gov",
 )
 
@@ -383,13 +380,13 @@ def fetch_html(
     """Fetch a URL and return decoded HTML/text.
 
     Strategy: **prefer direct fetch**, fall back to proxy only on
-    geo-block / connection failure. Webshare bandwidth is metered, so
+    geo-block / connection failure. Proxy bandwidth is metered, so
     we don't want to route every fetch through it when direct works.
 
     Each attempt:
       1) direct (no proxy) — for most sites this succeeds
       2) on TCP/connection failure: retry with residential proxy
-      3) on persistent failure: try ZenRows scraper-service if configured
+      3) on persistent failure: try the scraping service scraper-service if configured
 
     Raises ``requests.HTTPError`` if all retries fail.
     """
@@ -398,7 +395,7 @@ def fetch_html(
 
     for attempt in range(1, max_retries + 1):
         # 1) PREFER DIRECT on the first attempt — most state-gov sites work
-        #    direct and Webshare bandwidth is metered. Only fall back to
+        #    direct and Proxy bandwidth is metered. Only fall back to
         #    proxy on attempt >= 2 (after a connection failure).
         is_hard = _is_hard_site(url)
         use_proxy_this_attempt = (
@@ -406,7 +403,7 @@ def fetch_html(
             and (attempt > 1 or is_hard)  # 1st attempt: direct unless known-hard site
         )
 
-        # 1a) Hard sites: route through ZenRows if a key is configured
+        # 1a) Hard sites: route through the scraping service if a key is configured
         if scraper_key and is_hard and attempt >= 2:
             bypass = (
                 "https://api.zenrows.com/v1/?apikey=" + urllib.parse.quote(scraper_key)
@@ -454,7 +451,7 @@ def fetch_html(
             resp = _get_session().get(url, headers=headers, proxies=proxies, timeout=timeout, allow_redirects=True)
         except requests.exceptions.ProxyError as e:
             # Transient proxy hiccup — retry the next attempt with the proxy
-            # again. Webshare rotating exits occasionally drop a connection;
+            # again. Rotating proxy exits occasionally drop a connection;
             # permanently disabling the proxy for the whole run causes every
             # subsequent fetch to hit the direct path and stall on geo-blocked
             # hosts (e.g. codes.ohio.gov).
@@ -516,7 +513,7 @@ def fetch_bytes(
     Like ``fetch_html``, this prefers a DIRECT fetch and only falls back to the
     residential proxy on attempt >= 2 (or immediately for a known-hard/
     geo-blocked host). That matters more here than for HTML: these are the
-    PDF/DOCX/XML payloads, i.e. the largest bodies we pull, and Webshare
+    PDF/DOCX/XML payloads, i.e. the largest bodies we pull, and proxy
     bandwidth is metered. Previously every byte of every PDF was proxied.
 
     Raises ``requests.HTTPError`` if all retries fail.
@@ -549,7 +546,7 @@ def fetch_bytes(
             # again, exactly as fetch_html does. This used to set a module-wide
             # _PROXY_DISABLED flag on the FIRST such error, which permanently
             # disabled proxying for the rest of the process. Because the flag
-            # was also read by fetch_html, one dropped Webshare exit during a
+            # was also read by fetch_html, one dropped proxy exit during a
             # single PDF fetch silently forced every later HTML fetch onto the
             # direct path, where geo-blocked hosts (codes.ohio.gov et al) just
             # hang until timeout. It also never reset and was mutated from

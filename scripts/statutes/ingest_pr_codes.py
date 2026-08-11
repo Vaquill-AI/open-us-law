@@ -1,33 +1,19 @@
 #!/usr/bin/env python3
-"""Ingest the major Codes of Puerto Rico into the state-statutes pipeline.
+"""Shared parsing helpers for the Puerto Rico statute corpus.
 
-Puerto Rico's codified law is published (free, public domain) on LexJuris.com
-as PDF documents. Unlike the US-50 states there is no single unified "code";
-instead each major Code is its own multi-part PDF set. We ingest the codes
-most useful for legal research:
+This module no longer fetches anything. It holds the `Article` dataclass, the
+PDF text extractor and the chunk-record builder, which `ingest_pr_bulk.py`
+imports to build Puerto Rico from the official OGP portal
+(bvirtualogp.pr.gov). Run that script, not this one.
 
-    Civil Code 2020       (Código Civil)        — 7 PDF "Libros"
-    Penal Code 2012       (Código Penal)        - 1 PDF
-    Internal Revenue 2011 (Código de Rentas)    - 1 PDF
-    Incentives Code 2019  (Código de Incentivos)- 1 HTML/PDF
-
-The content is in SPANISH (Voyage's multilingual embedder handles this well).
-Each code's body is split on "Artículo N.-<heading>" markers into one chunk
-per article.
-
-Output:
-    JSONL at <OUT_DIR>/state_pr_statutes.jsonl
-    corpus_type='state', state='pr', category='state_statute'.
-
-Geo-restricted-friendly: uses Webshare US proxy + Mozilla UA.
+The prior fetch registry in this file pulled per-title PDFs from a commercial
+host and has been removed; the official portal is the supported source.
 """
 
 from __future__ import annotations
 
-import argparse
 import hashlib
 import io
-import json
 import os
 import re
 import sys
@@ -49,7 +35,6 @@ _MOZ_UA = (
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
     "(KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36"
 )
-_LEX_BASE = "https://www.lexjuris.com/LexLex"
 
 
 def _load_env() -> None:
@@ -103,54 +88,6 @@ def fetch_bytes(url: str, retries: int = 5) -> Optional[bytes]:
 # ---------------------------------------------------------------------------
 # Code catalog
 # ---------------------------------------------------------------------------
-
-# Each code: slug, display name, citation prefix, list of (part_label, pdf_url)
-PR_CODES = {
-    "civil": {
-        "name": "Código Civil de Puerto Rico (2020)",
-        "name_en": "Civil Code of Puerto Rico (2020)",
-        "citation": "Cód. Civ. P.R.",
-        "year": 2020,
-        "parts": [
-            ("Título Preliminar", f"{_LEX_BASE}/Leyes2020/lexl2020055a.pdf"),
-            ("Libro Primero: Las Relaciones Jurídicas", f"{_LEX_BASE}/Leyes2020/lexl2020055b.pdf"),
-            ("Libro Segundo: Las Instituciones Familiares", f"{_LEX_BASE}/Leyes2020/lexl2020055c.pdf"),
-            ("Libro Tercero: Los Derechos Generales", f"{_LEX_BASE}/Leyes2020/lexl2020055d.pdf"),
-            ("Libro Cuarto: Las Obligaciones", f"{_LEX_BASE}/Leyes2020/lexl2020055e.pdf"),
-            ("Libro Quinto: Los Contratos y Otras Fuentes", f"{_LEX_BASE}/Leyes2020/lexl2020055f.pdf"),
-            ("Libro Sexto: La Sucesión por Causa de Muerte", f"{_LEX_BASE}/Leyes2020/lexl2020055g.pdf"),
-        ],
-    },
-    "penal": {
-        "name": "Código Penal de Puerto Rico (2012)",
-        "name_en": "Penal Code of Puerto Rico (2012)",
-        "citation": "Cód. Pen. P.R.",
-        "year": 2012,
-        "parts": [
-            ("Código Penal", f"{_LEX_BASE}/Leyes2012/CodigoPenal2012.pdf"),
-        ],
-    },
-    "rentas": {
-        "name": "Código de Rentas Internas de Puerto Rico (2011)",
-        "name_en": "Internal Revenue Code of Puerto Rico (2011)",
-        "citation": "Cód. Rent. Int. P.R.",
-        "year": 2011,
-        "marker": "seccion",  # tax code uses "Sección N.-" not "Artículo N.-"
-        "parts": [
-            ("Código de Rentas Internas", f"{_LEX_BASE}/Leyes2011/lexl2011001.pdf"),
-        ],
-    },
-    "incentivos": {
-        "name": "Código de Incentivos de Puerto Rico (2019)",
-        "name_en": "Incentives Code of Puerto Rico (2019)",
-        "citation": "Cód. Inc. P.R.",
-        "year": 2019,
-        "marker": "seccion",
-        "parts": [
-            ("Código de Incentivos", f"{_LEX_BASE}/Leyes2019/lexl2019060.pdf"),
-        ],
-    },
-}
 
 
 # ---------------------------------------------------------------------------
@@ -316,75 +253,3 @@ def to_chunk_record(a: Article) -> dict:
 # ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
-
-def process_code(slug: str, meta: dict) -> list[Article]:
-    articles: list[Article] = []
-    for part_idx, (part_label, pdf_url) in enumerate(meta["parts"], 1):
-        pdf_bytes = fetch_bytes(pdf_url)
-        if not pdf_bytes:
-            print(f"  [{slug}] FAIL fetch {pdf_url}", flush=True)
-            continue
-        try:
-            text = _pdf_text(pdf_bytes)
-        except Exception as e:
-            print(f"  [{slug}] pdf parse err: {e}", flush=True)
-            continue
-        part_articles = parse_code_part(text, slug, meta, part_label, pdf_url)
-        print(f"  [{slug}] {part_label[:45]}: {len(part_articles)} articles", flush=True)
-        articles.extend(part_articles)
-    return articles
-
-
-def main() -> int:
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--codes", default="", help="Comma-separated code slugs. Default: all.")
-    ap.add_argument("--dry-run", action="store_true")
-    args = ap.parse_args()
-
-    DATA_DIR.mkdir(parents=True, exist_ok=True)
-    codes = PR_CODES
-    if args.codes:
-        wanted = {c.strip() for c in args.codes.split(",") if c.strip()}
-        codes = {k: v for k, v in PR_CODES.items() if k in wanted}
-
-    print(f"[PR] codes: {list(codes.keys())}", flush=True)
-    if args.dry_run:
-        for slug, meta in codes.items():
-            print(f"  {slug}: {len(meta['parts'])} parts")
-        return 0
-
-    all_articles: list[Article] = []
-    t0 = time.time()
-    for slug, meta in codes.items():
-        print(f"\n[PR] === {meta['name']} ===", flush=True)
-        arts = process_code(slug, meta)
-        all_articles.extend(arts)
-        print(f"[PR] {slug}: {len(arts)} articles total", flush=True)
-
-    # Dedup + write
-    seen: set[str] = set()
-    if OUT.exists():
-        with open(OUT) as fh:
-            for line in fh:
-                try:
-                    seen.add(json.loads(line)["point_id"])
-                except Exception:
-                    pass
-    written = 0
-    with open(OUT, "a") as fh:
-        for a in all_articles:
-            rec = to_chunk_record(a)
-            if rec["point_id"] in seen:
-                continue
-            fh.write(json.dumps(rec, ensure_ascii=False) + "\n")
-            seen.add(rec["point_id"])
-            written += 1
-
-    print(f"\n=== Done: parsed={len(all_articles):,}, new={written:,}, "
-          f"elapsed={time.time()-t0:.1f}s ===", flush=True)
-    print(f"JSONL: {OUT}")
-    return 0
-
-
-if __name__ == "__main__":
-    sys.exit(main())
