@@ -55,7 +55,9 @@ _HERE = Path(__file__).resolve().parent
 _SCRAPERS = _HERE.parent / "state_scrapers"
 sys.path.insert(0, str(_HERE))
 sys.path.insert(0, str(_SCRAPERS))
-sys.path.insert(0, str(_ROOT / "scripts" / "us_corpus"))
+# `scripts/` itself, so a sibling package under it resolves whether this file is
+# run by path or imported as a module.
+sys.path.insert(0, str(_HERE.parent))
 
 from nj_bulk.parse import Section, iter_sections
 

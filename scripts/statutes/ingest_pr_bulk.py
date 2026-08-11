@@ -264,7 +264,7 @@ def main() -> int:
         flush=True,
     )
     print(f"JSONL: {args.out}")
-    print(f"Next: python scripts/us_corpus/lib/embed_and_upsert.py --input {args.out}")
+    print(f"Next: python lib/embed_and_upsert.py --input {args.out}")
     return 0
 
 

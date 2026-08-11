@@ -44,11 +44,11 @@ from xml.etree import ElementTree as ET
 
 sys.stdout.reconfigure(line_buffering=True)  # type: ignore[attr-defined]
 
-_PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent
+_PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 DATA_DIR = Path(
     os.environ.get(
         "STATE_CHUNKS_DIR_OVERRIDE",
-        str(_PROJECT_ROOT / "scripts/us_corpus/state_scrapers/data/state_chunks"),
+        str(_PROJECT_ROOT / "scripts/state_scrapers/data/state_chunks"),
     )
 )
 OUT = DATA_DIR / "state_dc_statutes_chunks.jsonl"

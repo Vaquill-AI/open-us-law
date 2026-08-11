@@ -46,16 +46,16 @@ if TYPE_CHECKING:
 sys.stdout.reconfigure(line_buffering=True)  # type: ignore[attr-defined]
 
 _PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
-# The repo root has to be importable for `chunk_body` to reach the canonical
-# chunker. This script is launched both as `python -m scripts...` (root already
-# on the path) and by absolute path (sys.path[0] is this directory), and in the
-# second case a missing bootstrap would make the chunker import fail silently
-# and quietly restore the one-record-per-section behaviour this module exists to
-# fix.
+# The repo root has to be importable for the `scripts.lib.*` and
+# `scripts.statutes.*` imports below. This script is launched both as
+# `python -m scripts...` (root already on the path) and by absolute path
+# (sys.path[0] is this directory), and in the second case a missing bootstrap
+# would fail every one of those imports.
 if str(_PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(_PROJECT_ROOT))
 
 from scripts.lib.payload_builder import build_payload  # noqa: E402
+from scripts.lib.pdf_extract import PdfExtractionUnavailable, pdf_to_text  # noqa: E402
 
 DATA_DIR = Path(os.environ.get("OUT_DIR", "./data"))
 OUT = DATA_DIR / "state_constitutions_chunks.jsonl"
@@ -333,14 +333,27 @@ def act_id_for(sec: Section) -> str:
 
 
 def chunk_body(text: str) -> list[str]:
-    """Split a section body using the pipeline's canonical chunker."""
+    """One chunk per section: this repo does not ship the canonical chunker.
+
+    The pipeline's canonical chunker is not published here, so every section
+    is emitted whole. That is safe for the large majority of constitution
+    sections (a paragraph or two, well under any chunk ceiling) and only
+    matters for the handful of long article-length sections, which land in a
+    single oversized record instead of several.
+
+    Deliberately NOT wired to the one other chunker in this repo,
+    `state_scrapers/vaquill_pipeline/node_to_payload.py::chunk_text`. Its
+    header claims parity with the canonical implementation, but it runs on
+    different knobs (1000-token target and a 100-token floor, against the
+    canonical 512/50) and folds an undersized trailing fragment back into the
+    previous chunk, so it splits the same text at different offsets. Chunk
+    boundaries feed `point_id_for`, so adopting a chunker that disagrees with
+    the one a corpus was built with does not re-chunk that corpus, it
+    duplicates it under new ids. A wrong chunker is worse than one chunk.
+    """
     if not text:
         return [""]
-    try:
-        from scripts.us_corpus.lib.chunk_and_ingest import chunk_text
-    except ImportError:
-        return [text]
-    return chunk_text(text) or [text]
+    return [text]
 
 
 def chunk_header(
@@ -2165,9 +2178,14 @@ def _fetch_bytes_proxy(url: str, retries: int = 3) -> bytes | None:
 def _fetch_pdf_bytes_resilient(url: str) -> bytes | None:
     """Like `_fetch_bytes_proxy`, but treats a 200 response that is NOT
     actually a PDF (checked via the `%PDF` magic bytes) as a failure rather
-    than a silent success, then escalates to the scraping service (via the shared
-    `resilient_fetch` module, which also tries the US proxy again first) before
-    giving up.
+    than a silent success.
+
+    Internally this escalated to a commercial scraping service on failure.
+    That tier is not part of this repo (it needs a paid API key and adds
+    nothing reproducible), so the magic-byte check is the whole difference
+    from `_fetch_bytes_proxy` here. A soft block therefore surfaces as a
+    `_DROPS.fetch_failed` for that state rather than as zero silently
+    ingested sections, which is the outcome the check exists for.
 
     Added for C07 batch 6: `_fetch_bytes_proxy` alone previously counted a
     200 response as success unconditionally, but iga.in.gov (IN) started
@@ -2184,33 +2202,31 @@ def _fetch_pdf_bytes_resilient(url: str) -> bytes | None:
     b = _fetch_bytes_proxy(url)
     if b and b[:4] == b"%PDF":
         return b
-    try:
-        from scripts.us_corpus.lib.resilient_fetch import get_bytes_sync
-
-        b2 = get_bytes_sync(url, timeout=120, headers={"User-Agent": _MOZ_UA})
-        if b2 and b2[:4] == b"%PDF":
-            return b2
-    except Exception:
-        pass
+    if b:
+        print(f"  ! {url}: 200 but not a PDF ({len(b)} bytes), treating as a block")
     return None
 
 
 def _pdf_to_text(pdf_bytes: bytes) -> str:
     """Extract a PDF's text layer, page by page, newlines preserved.
 
-    Thin wrapper around the shared scripts.us_corpus.lib.pdf_extract.pdf_to_text
+    Thin wrapper around the shared scripts.lib.pdf_extract.pdf_to_text
     (PyMuPDF-based) that fits this file's existing print-and-empty-string
     failure convention -- every call site here already treats an empty
-    return as the failure signal via _DROPS.unit_empty, so this preserves
-    that instead of letting the shared function's exception propagate.
-    Verified live 2026-08-07 against the WA and MI constitution PDFs: output
-    is equivalent (same page-boundary/hyphenation-at-linewrap shape the
-    per-state cleanup regexes already handle), same section-split counts.
+    return as the failure signal via _DROPS.unit_empty, so a malformed or
+    scanned PDF is reported as a dropped unit for THAT state instead of
+    aborting the whole multi-state run.
+
+    A missing PyMuPDF install is deliberately re-raised rather than folded
+    into that convention: it is not a per-document problem, it is a broken
+    environment that would otherwise silently empty out every PDF-sourced
+    state (MI, NM, WA, WI, IN, LA, AR, TN, WY) while the run still reported
+    success.
     """
     try:
-        from scripts.us_corpus.lib.pdf_extract import pdf_to_text
-
         return pdf_to_text(pdf_bytes)
+    except PdfExtractionUnavailable:
+        raise
     except Exception as e:
         print(f"  ! pdf extract failed: {e}")
         return ""
@@ -4178,10 +4194,12 @@ def scrape_wi(r2) -> list[Section]:
     put_if_changed(r2, r2_pdf_key, pdf_bytes, "application/pdf")
     r2_pdf_url = public_url(r2_pdf_key)
 
+    # Not _pdf_to_text: the WI print edition is a genuine two-column layout,
+    # and single-column extraction interleaves the two columns line by line.
     try:
-        from scripts.us_corpus.lib.pdf_extract import pdf_to_text
-
         text = pdf_to_text(pdf_bytes, columns=2)
+    except PdfExtractionUnavailable:
+        raise
     except Exception as e:
         print(f"  ! WI pdf extract failed: {e}")
         text = ""
@@ -5890,7 +5908,7 @@ def _ny_article_titles(result: dict) -> dict[str, str]:
 
 
 def scrape_ny(r2) -> list[Section]:
-    from scripts.us_corpus.statutes.ny_bulk.walk import iter_sections
+    from scripts.statutes.ny_bulk.walk import iter_sections
 
     result = _fetch_ny_law_tree("CNS")
     if not result:

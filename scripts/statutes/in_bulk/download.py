@@ -31,7 +31,7 @@ import requests
 # whether this module is run via the orchestrator or imported directly. Walk up to
 # find it rather than assume a fixed nesting depth.
 for _p in Path(__file__).resolve().parents:
-    _cand = _p / "scripts" / "us_corpus" / "state_scrapers"
+    _cand = _p / "scripts" / "state_scrapers"
     if _cand.is_dir():
         if str(_cand) not in sys.path:
             sys.path.insert(0, str(_cand))
