@@ -209,7 +209,6 @@ State administrative codes. Some geo-restrict - see [caveats](#important-caveats
 
 38 of the 47 jurisdictions in that script are scraped from the state's own official publisher (its legislature or secretary of state).
 The remaining 9 - **AK, CO, CT, DE, GA, NC, NH, SC, SD** - still read an open mirror. Official-publisher scrapers for these are in progress and will replace the mirror entries as they land.
-The mirror is an open source, not a commercial one.
 
 ---
 
@@ -255,7 +254,7 @@ Most data derives from official government sources (state legislature / secretar
 
 A minority of state statutory codes were obtained from commercial aggregators rather than an official publisher. In the published dataset those records carry **no** `source_url` rather than linking to a third party, and the per-jurisdiction table in the [dataset card](https://huggingface.co/datasets/vaquill/open-us-law) marks them. We would rather state that plainly than imply the whole corpus is officially sourced. The retrieval layer (embeddings, semantic index, citation graph) is intentionally out of scope here.
 
-Separately, 9 state constitutions (**AK, CO, CT, DE, GA, NC, NH, SC, SD**) currently come from an open mirror rather than the state's own publisher, and those records keep their `source_url`, because the mirror is an open source rather than a commercial one. Official sources for these are being added.
+Separately, 9 state constitutions (**AK, CO, CT, DE, GA, NC, NH, SC, SD**) currently come from an open mirror rather than the state's own publisher, and those records keep their `source_url`. Official sources for these are being added.
 The other 38 constitutions are scraped from official state publishers.
 Two statutory corpora likewise retain a non-government `source_url` in the `v2026.07` snapshot: all 36,202 Oregon sections, and 1,090 of Puerto Rico's. Both are queued to be re-sourced from their official publishers in a later snapshot.
 
