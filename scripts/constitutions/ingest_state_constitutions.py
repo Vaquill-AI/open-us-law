@@ -118,14 +118,14 @@ SESSION = _session()
 
 def _us_proxies() -> dict | None:
     """US-rotating proxy dict for state .gov sources that geo-block.
-    Returns None if WEBSHARE_USERNAME / WEBSHARE_PASSWORD aren't set."""
+    Returns None if US_PROXY_USERNAME / US_PROXY_PASSWORD aren't set."""
     _load_env()
-    user = os.environ.get("WEBSHARE_USERNAME", "")
-    pwd = os.environ.get("WEBSHARE_PASSWORD", "")
+    user = os.environ.get("US_PROXY_USERNAME", "")
+    pwd = os.environ.get("US_PROXY_PASSWORD", "")
     if not user or not pwd:
         return None
-    host = os.environ.get("WEBSHARE_PROXY_HOST", "p.webshare.io")
-    port = os.environ.get("WEBSHARE_PROXY_PORT", "80")
+    host = os.environ.get("US_PROXY_HOST", "")
+    port = os.environ.get("US_PROXY_PORT", "80")
     import urllib.parse
 
     proxy_user = f"{user}-US-rotate"

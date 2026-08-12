@@ -35,7 +35,7 @@ rule_amplifies ("interprets s. ...").
 corpus_type='state_regulation'. Bluebook cite form: "Wis. Admin. Code <Agency>
 § <ch>.<sec>".
 
-Geo-restricted; Webshare US proxy + Mozilla UA + polite pacing (the site 429s
+Geo-restricted; the US proxy + Mozilla UA + polite pacing (the site 429s
 under heavy concurrency).
 """
 
@@ -89,13 +89,13 @@ _load_env()
 
 
 def _us_proxies() -> Optional[dict]:
-    user = os.environ.get("WEBSHARE_USERNAME", "")
-    pwd = os.environ.get("WEBSHARE_PASSWORD", "")
+    user = os.environ.get("US_PROXY_USERNAME", "")
+    pwd = os.environ.get("US_PROXY_PASSWORD", "")
     if not user or not pwd:
         return None
     proxy_user = f"{user}-US-rotate"
-    host = os.environ.get("WEBSHARE_PROXY_HOST", "p.webshare.io")
-    port = os.environ.get("WEBSHARE_PROXY_PORT", "80")
+    host = os.environ.get("US_PROXY_HOST", "")
+    port = os.environ.get("US_PROXY_PORT", "80")
     url = (
         f"http://{urllib.parse.quote(proxy_user)}:"
         f"{urllib.parse.quote(pwd)}@{host}:{port}"

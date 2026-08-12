@@ -4,7 +4,7 @@ Source: https://le.utah.gov/xcode/
 
 Site notes:
   - le.utah.gov TCP-times-out from non-US IPs. Run from a US host or use
-    Webshare US residential proxy (configured in http_client.py).
+    a US residential proxy (configured in http_client.py).
   - Each wrapper .html page embeds an inline versionArr JS variable that names
     a versioned static content file relative to the wrapper page's directory
     (e.g. Title3/C3_1800010118000101.html). That content file carries the real

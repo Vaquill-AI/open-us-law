@@ -3,7 +3,7 @@
 iga.in.gov geo-fences the ZIP, it does not bot-wall the file itself: a non-US
 client (including the scraper box's direct German egress) gets a 691-byte SPA
 shell served with HTTP 200, while a US exit gets the real ~43 MB
-``application/zip``. So we ALWAYS fetch through the Webshare US-rotate proxy and
+``application/zip``. So we ALWAYS fetch through the US-rotate proxy and
 validate the response is a real ZIP (zip content-type + ``PK`` magic bytes),
 rotating to a fresh US exit and retrying until it is. The file URL is
 year-templated:
@@ -62,7 +62,7 @@ def download_zip(year: int, dest: Path, retries: int = 8) -> Path:
     proxies = _proxy_for("us")
     if not proxies:
         raise SystemExit(
-            "WEBSHARE_USERNAME / WEBSHARE_PASSWORD not set: cannot reach the "
+            "US_PROXY_USERNAME / US_PROXY_PASSWORD not set: cannot reach the "
             "geo-fenced Indiana Code ZIP. Set them, or pass --src with a local copy."
         )
     url = zip_url(year)

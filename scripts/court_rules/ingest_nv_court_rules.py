@@ -81,13 +81,13 @@ _load_env()
 
 
 def _us_proxies() -> Optional[dict]:
-    user = os.environ.get("WEBSHARE_USERNAME", "")
-    pwd = os.environ.get("WEBSHARE_PASSWORD", "")
+    user = os.environ.get("US_PROXY_USERNAME", "")
+    pwd = os.environ.get("US_PROXY_PASSWORD", "")
     if not user or not pwd:
         return None
     proxy_user = f"{user}-US-rotate"
-    host = os.environ.get("WEBSHARE_PROXY_HOST", "p.webshare.io")
-    port = os.environ.get("WEBSHARE_PROXY_PORT", "80")
+    host = os.environ.get("US_PROXY_HOST", "")
+    port = os.environ.get("US_PROXY_PORT", "80")
     url = (
         f"http://{urllib.parse.quote(proxy_user)}:{urllib.parse.quote(pwd)}@{host}:{port}"
     )
@@ -99,7 +99,7 @@ SESSION.headers.update({"User-Agent": _MOZ_UA})
 
 
 def fetch(url: str, retries: int = 5) -> Optional[str]:
-    """GET with Webshare US rotate + 429/5xx backoff. 502 commonly means the
+    """GET with US-rotate proxy + 429/5xx backoff. 502 commonly means the
     proxy IP is bad — retry yields a fresh IP."""
     proxies = _us_proxies()
     for attempt in range(retries):

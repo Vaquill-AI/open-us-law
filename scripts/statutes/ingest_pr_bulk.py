@@ -94,7 +94,7 @@ def _extract_title(pdf_text: str) -> str:
     return ""
 
 
-# OGP is NOT geo-fenced, so fetch it DIRECT (no Webshare proxy) - the proxy adds the ~20
+# OGP is NOT geo-fenced, so fetch it DIRECT (no proxy) - the proxy adds the ~20
 # ceiling + ~10x latency for nothing. Reused across the named-law sweep.
 _DIRECT = None
 

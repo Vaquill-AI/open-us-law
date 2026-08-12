@@ -49,7 +49,7 @@ Notes:
     * ssa.gov requires a full browser header set (User-Agent, Accept,
       Accept-Language, Sec-Fetch-*) and a same-origin Referer for deep
       pages, otherwise it returns 403 via Akamai.
-    * The WEBSHARE US proxy IPs are blocked by ssa.gov, so direct fetches
+    * The US proxy IPs are blocked by ssa.gov, so direct fetches
       are used. Any US-egress or US-adjacent host works with the headers.
 """
 

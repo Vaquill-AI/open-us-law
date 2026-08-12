@@ -43,7 +43,7 @@ regulations and are captured into structured fields (statutory_authority,
 history, register_citations, effective_date, prior_effective_dates) - nothing
 discarded.
 
-The host is geo-restricted to the US; Webshare US proxy + Mozilla UA + polite
+The host is geo-restricted to the US; the US proxy + Mozilla UA + polite
 pacing.
 """
 
@@ -98,13 +98,13 @@ _load_env()
 
 
 def _us_proxies() -> dict | None:
-    user = os.environ.get("WEBSHARE_USERNAME", "")
-    pwd = os.environ.get("WEBSHARE_PASSWORD", "")
+    user = os.environ.get("US_PROXY_USERNAME", "")
+    pwd = os.environ.get("US_PROXY_PASSWORD", "")
     if not user or not pwd:
         return None
     proxy_user = f"{user}-US-rotate"
-    host = os.environ.get("WEBSHARE_PROXY_HOST", "p.webshare.io")
-    port = os.environ.get("WEBSHARE_PROXY_PORT", "80")
+    host = os.environ.get("US_PROXY_HOST", "")
+    port = os.environ.get("US_PROXY_PORT", "80")
     url = f"http://{urllib.parse.quote(proxy_user)}:{urllib.parse.quote(pwd)}@{host}:{port}"
     return {"http": url, "https": url}
 

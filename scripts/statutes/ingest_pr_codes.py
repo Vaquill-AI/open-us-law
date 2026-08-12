@@ -53,14 +53,14 @@ _load_env()
 
 
 def _us_proxies() -> Optional[dict]:
-    user = os.environ.get("WEBSHARE_USERNAME", "")
-    pwd = os.environ.get("WEBSHARE_PASSWORD", "")
+    user = os.environ.get("US_PROXY_USERNAME", "")
+    pwd = os.environ.get("US_PROXY_PASSWORD", "")
     if not user or not pwd:
         return None
     import urllib.parse
     proxy_user = f"{user}-US-rotate"
-    host = os.environ.get("WEBSHARE_PROXY_HOST", "p.webshare.io")
-    port = os.environ.get("WEBSHARE_PROXY_PORT", "80")
+    host = os.environ.get("US_PROXY_HOST", "")
+    port = os.environ.get("US_PROXY_PORT", "80")
     url = f"http://{urllib.parse.quote(proxy_user)}:{urllib.parse.quote(pwd)}@{host}:{port}"
     return {"http": url, "https": url}
 

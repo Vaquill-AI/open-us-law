@@ -62,7 +62,7 @@ _SESSION.headers.update({
 
 
 def _build_proxies() -> Optional[dict[str, str]]:
-    """Webshare residential proxy (optional). Enabled when VAQUILL_USE_PROXY=1.
+    """the US proxy residential proxy (optional). Enabled when VAQUILL_USE_PROXY=1.
 
     Last NY run used direct connections with 1 worker. Re-runs against the
     108 missing laws benefit from proxy IP rotation in case Cloudflare
@@ -70,10 +70,10 @@ def _build_proxies() -> Optional[dict[str, str]]:
     """
     if os.environ.get("VAQUILL_USE_PROXY") != "1":
         return None
-    user = os.environ.get("WEBSHARE_USERNAME")
-    pwd = os.environ.get("WEBSHARE_PASSWORD")
-    host = os.environ.get("WEBSHARE_PROXY_HOST")
-    port = os.environ.get("WEBSHARE_PROXY_PORT")
+    user = os.environ.get("US_PROXY_USERNAME")
+    pwd = os.environ.get("US_PROXY_PASSWORD")
+    host = os.environ.get("US_PROXY_HOST")
+    port = os.environ.get("US_PROXY_PORT")
     if not all([user, pwd, host, port]):
         print("[scrapeNY] WARN: VAQUILL_USE_PROXY=1 but creds incomplete; using direct.", flush=True)
         return None
@@ -83,7 +83,7 @@ def _build_proxies() -> Optional[dict[str, str]]:
 
 _PROXIES = _build_proxies()
 if _PROXIES:
-    print(f"[scrapeNY] Webshare proxy enabled (host={os.environ.get('WEBSHARE_PROXY_HOST')})", flush=True)
+    print(f"[scrapeNY] US proxy enabled (host={host})", flush=True)
 
 
 def _fetch_soup(url: str, retries: int = 3) -> BeautifulSoup:

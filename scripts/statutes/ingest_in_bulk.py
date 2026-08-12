@@ -7,7 +7,7 @@ file per title, every section carrying its full Title-Article-Chapter-Section id
 on the div, so the hierarchy is read directly rather than scraped. iga.in.gov
 GEO-FENCES this ZIP (a non-US client, including the box's direct egress, gets a
 691-byte SPA shell; a US exit gets the real ~43 MB zip), so with no --src the
-ingest auto-downloads it through the Webshare US-rotate proxy (see in_bulk/
+ingest auto-downloads it through the US-rotate proxy (see in_bulk/
 download.py). The downloads page is a JS SPA that hides the file URL, which is
 why the year-templated URL is hardcoded there rather than discovered.
 

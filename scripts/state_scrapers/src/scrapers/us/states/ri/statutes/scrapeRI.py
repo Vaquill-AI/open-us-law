@@ -4,7 +4,7 @@ Source: https://webserver.rilegislature.gov/Statutes/
 Hierarchy: title -> chapter -> section
 Citation: R.I. Gen. Laws § <SECTION>
 
-REAL HTML landmarks (verified 2026-05-11 against live site via Webshare proxy):
+REAL HTML landmarks (verified 2026-05-11 against live site via the US proxy):
 
   Master TOC  (https://webserver.rilegislature.gov/Statutes/):
       Bare fragment HTML with no <html>/<body> wrapper. Just <LI> elements.

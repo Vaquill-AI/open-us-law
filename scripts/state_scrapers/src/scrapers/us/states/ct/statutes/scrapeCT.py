@@ -6,7 +6,7 @@ Citation: Conn. Gen. Stat. § <SECTION>  (e.g., "Conn. Gen. Stat. § 1-1")
 
 Notes:
 - cga.ct.gov uses a TLS certificate that fails proxy MITM verification.
-  All requests go through the Webshare US-rotate proxy with verify=False
+  All requests go through the US-rotate proxy with verify=False
   (InsecureRequestWarning suppressed via urllib3).
 - All sections on a chapter page are inline anchors, not separate URLs.
   We walk siblings from each anchor's parent <p> until the next section
@@ -53,7 +53,7 @@ RESERVED_KEYWORDS = ("(REPEALED)", "(EXPIRED)", "(RESERVED)", "(RENUMBERED)", "(
 
 
 # ---------------------------------------------------------------------------
-# HTTP helpers (verify=False required for Webshare MITM + cga.ct.gov cert)
+# HTTP helpers (verify=False required for the US proxy MITM + cga.ct.gov cert)
 # ---------------------------------------------------------------------------
 
 _UA = (
@@ -63,12 +63,12 @@ _UA = (
 
 
 def _proxies() -> Optional[dict[str, str]]:
-    user = os.environ.get("WEBSHARE_USERNAME")
-    pwd = os.environ.get("WEBSHARE_PASSWORD")
+    user = os.environ.get("US_PROXY_USERNAME")
+    pwd = os.environ.get("US_PROXY_PASSWORD")
     if not user or not pwd:
         return None
-    host = os.environ.get("WEBSHARE_PROXY_HOST", "p.webshare.io")
-    port = os.environ.get("WEBSHARE_PROXY_PORT", "80")
+    host = os.environ.get("US_PROXY_HOST", "")
+    port = os.environ.get("US_PROXY_PORT", "80")
     proxy_user = f"{user}-US-rotate"
     url = f"http://{urllib.parse.quote(proxy_user)}:{urllib.parse.quote(pwd)}@{host}:{port}"
     return {"http": url, "https": url}
@@ -78,7 +78,7 @@ def _get_soup(url: str, max_retries: int = 4) -> BeautifulSoup:
     """Fetch URL and return BeautifulSoup. Uses proxy with verify=False.
 
     Retries on transient network errors (ChunkedEncodingError, IncompleteRead,
-    ConnectionError) which occasionally occur with the Webshare rotating proxy
+    ConnectionError) which occasionally occur with the rotating US proxy
     on large pages.
     """
     import time as _time

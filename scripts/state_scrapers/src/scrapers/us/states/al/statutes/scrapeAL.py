@@ -140,10 +140,10 @@ _SECTION_QUERY = (
 
 
 def _gql(query: str, variables: Optional[dict] = None, *, timeout: float = 30.0) -> dict:
-    """POST a GraphQL query through the same Webshare US proxy as fetch_html.
+    """POST a GraphQL query through the same the US proxy as fetch_html.
 
     We don't go through fetch_html because that's a GET helper. Replicating
-    the proxy/UA pattern here keeps us on the supported Webshare credentials.
+    the proxy/UA pattern here keeps us on the supported the US proxy credentials.
     """
     headers = {
         "Content-Type": "application/json",
@@ -156,11 +156,11 @@ def _gql(query: str, variables: Optional[dict] = None, *, timeout: float = 30.0)
         ),
     }
     proxies = None
-    user = os.environ.get("WEBSHARE_USERNAME")
-    pwd = os.environ.get("WEBSHARE_PASSWORD")
+    user = os.environ.get("US_PROXY_USERNAME")
+    pwd = os.environ.get("US_PROXY_PASSWORD")
     if user and pwd:
-        host = os.environ.get("WEBSHARE_PROXY_HOST", "p.webshare.io")
-        port = os.environ.get("WEBSHARE_PROXY_PORT", "80")
+        host = os.environ.get("US_PROXY_HOST", "")
+        port = os.environ.get("US_PROXY_PORT", "80")
         pu = f"{user}-US-rotate"
         proxy_url = (
             f"http://{urllib.parse.quote(pu)}:{urllib.parse.quote(pwd)}@{host}:{port}"

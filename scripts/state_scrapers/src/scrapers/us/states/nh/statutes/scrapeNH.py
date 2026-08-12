@@ -3,8 +3,8 @@
 Source: https://www.gencourt.state.nh.us/rsa/html/
 
 NOTE: The gencourt.state.nh.us site is behind FortiWeb Cloud WAF (Azure) and
-geo-restricts non-US IPs. Run from a US host, or supply WEBSHARE_USERNAME /
-WEBSHARE_PASSWORD (US rotating residential proxy). The vaquill_pipeline
+geo-restricts non-US IPs. Run from a US host, or supply US_PROXY_USERNAME /
+US_PROXY_PASSWORD (US rotating residential proxy). The vaquill_pipeline
 http_client already routes this domain through the proxy when the env vars are
 present.
 

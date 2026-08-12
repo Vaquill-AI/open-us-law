@@ -5,7 +5,7 @@ Online Sunshine is the state's own ColdFusion statutes app. It publishes the SAM
 ``SectionNumber`` / ``CatchlineText`` / ``SectionBody`` / ``History`` / ``div.Part``
 / ``PartNumber``), so the parser is shared. We use Online Sunshine rather than
 flsenate.gov because flsenate.gov blocks the scraper box (direct egress times out;
-the Webshare US proxy exits are 502'd) while leg.state.fl.us serves the box
+the US proxy exits are 502'd) while leg.state.fl.us serves the box
 DIRECTLY (verified: HTTP 200 for Chapter 782/627/440/1002 from Hetzner fsn1). It
 also blocks aggressively on burst, so keep concurrency modest.
 

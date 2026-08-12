@@ -2,7 +2,7 @@
 """Ingest the Kentucky Administrative Regulations (KAR) — Kentucky's state regs.
 
 OFFICIAL SOURCE ONLY: apps.legislature.ky.gov (the same domain the Kentucky
-constitution scraper uses, so it is Webshare-US-proxy accessible). No commercial aggregators.
+constitution scraper uses, so it is the US proxy-US-proxy accessible). No commercial aggregators.
 ZenRows, or other aggregators.
 
 There is NO bulk/structured (XML) feed. KAR is served as HTML, with per-section
@@ -33,7 +33,7 @@ and a HISTORY block of effective dates. The promulgating agency is the Title
 name. corpus_type='state_regulation', state='ky'.
 
 We ingest the in-force ("Current") regulations (the live body of law) and record
-status. Geo-restricted; Webshare US proxy + Chrome UA + polite pacing.
+status. Geo-restricted; the US proxy + Chrome UA + polite pacing.
 """
 
 from __future__ import annotations
@@ -90,15 +90,15 @@ _load_env()
 
 
 def _us_proxies() -> dict | None:
-    user = os.environ.get("WEBSHARE_USERNAME", "")
-    pwd = os.environ.get("WEBSHARE_PASSWORD", "")
+    user = os.environ.get("US_PROXY_USERNAME", "")
+    pwd = os.environ.get("US_PROXY_PASSWORD", "")
     if not user or not pwd:
         return None
     import urllib.parse
 
     proxy_user = f"{user}-US-rotate"
-    host = os.environ.get("WEBSHARE_PROXY_HOST", "p.webshare.io")
-    port = os.environ.get("WEBSHARE_PROXY_PORT", "80")
+    host = os.environ.get("US_PROXY_HOST", "")
+    port = os.environ.get("US_PROXY_PORT", "80")
     url = f"http://{urllib.parse.quote(proxy_user)}:{urllib.parse.quote(pwd)}@{host}:{port}"
     return {"http": url, "https": url}
 

@@ -1,6 +1,6 @@
 """Michigan Compiled Laws (MCL) scraper.
 
-Real site structure (verified 2026-05-11 via Webshare US proxy):
+Real site structure (verified 2026-05-11 via the US proxy):
 
   Chapter Index:  https://www.legislature.mi.gov/Laws/ChapterIndex
     -> Chapter page: /Home/GetObject?objectName=mcl-chapN

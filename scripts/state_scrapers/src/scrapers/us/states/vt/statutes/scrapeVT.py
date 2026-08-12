@@ -12,7 +12,7 @@ Node types:
 
 Citation format: "<title_num> V.S.A. § <section_num>"
 
-REAL HTML landmarks (verified 2026-05-11 against live site via Webshare proxy):
+REAL HTML landmarks (verified 2026-05-11 against live site via the US proxy):
     TOC:
         <ul class="item-list statutes-list">
             <li><a href="statutes/title/01">Title 1: General Provisions</a></li>

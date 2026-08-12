@@ -166,7 +166,7 @@ _DC_LIST_CACHE: Optional[list] = None
 _DC_STICKY: Optional[tuple] = None
 
 
-def _webshare_datacenter_endpoints() -> list:
+def _datacenter_proxy_endpoints() -> list:
     """Load (and cache) the datacenter proxy list.
 
     One IP:port per line, ``ip:port:user:pass``. Downloaded from the proxy
@@ -177,7 +177,7 @@ def _webshare_datacenter_endpoints() -> list:
         return _DC_LIST_CACHE
 
     entries: list = []
-    rel = os.environ.get("WEBSHARE_DC_LIST", "data/proxies/webshare_datacenter.txt")
+    rel = os.environ.get("US_PROXY_DC_LIST", "data/proxies/proxy_datacenter.txt")
     path = Path(rel)
     if not path.is_absolute():
         # scripts/us_corpus/state_scrapers/vaquill_pipeline/ -> project root
@@ -192,9 +192,9 @@ def _webshare_datacenter_endpoints() -> list:
 
     if not entries:
         # Single endpoint fallback when the list file is not deployed.
-        ep = os.environ.get("WEBSHARE_DC_ENDPOINT", "")
-        u = os.environ.get("WEBSHARE_DC_USERNAME", "")
-        p = os.environ.get("WEBSHARE_DC_PASSWORD", "")
+        ep = os.environ.get("US_PROXY_DC_ENDPOINT", "")
+        u = os.environ.get("US_PROXY_DC_USERNAME", "")
+        p = os.environ.get("US_PROXY_DC_PASSWORD", "")
         if ep and u and p and ":" in ep:
             ip, _, port = ep.partition(":")
             entries = [(ip, port, u, p)]
@@ -203,7 +203,7 @@ def _webshare_datacenter_endpoints() -> list:
     return entries
 
 
-def _webshare_datacenter_proxies(country_code: str) -> Optional[Dict[str, str]]:
+def _datacenter_proxies(country_code: str) -> Optional[Dict[str, str]]:
     """Preferred proxy tier: Datacenter proxy tier (100 US IPs / 250 GB, ~$3/mo).
 
     Chosen over rotating residential because it is both cheaper and far larger:
@@ -221,7 +221,7 @@ def _webshare_datacenter_proxies(country_code: str) -> Optional[Dict[str, str]]:
     """
     if country_code.lower() != "us":
         return None
-    entries = _webshare_datacenter_endpoints()
+    entries = _datacenter_proxy_endpoints()
     if not entries:
         return None
 
@@ -252,16 +252,16 @@ def rotate_datacenter_endpoint() -> None:
     _DC_STICKY = None
 
 
-def _webshare_proxies(country_code: str) -> Optional[Dict[str, str]]:
-    user = os.environ.get("WEBSHARE_USERNAME")
-    pwd = os.environ.get("WEBSHARE_PASSWORD")
+def _residential_proxies(country_code: str) -> Optional[Dict[str, str]]:
+    user = os.environ.get("US_PROXY_USERNAME")
+    pwd = os.environ.get("US_PROXY_PASSWORD")
     if not user or not pwd:
         return None
     # Residential proxy format: {user}-{COUNTRY}-rotate:{pass} for rotating
     # US exit. Country code must be uppercase. Verified 2026-05-11.
     proxy_user = f"{user}-{country_code.upper()}-rotate"
-    host = os.environ.get("WEBSHARE_PROXY_HOST", "p.webshare.io")
-    port = os.environ.get("WEBSHARE_PROXY_PORT", "80")
+    host = os.environ.get("US_PROXY_HOST", "")
+    port = os.environ.get("US_PROXY_PORT", "80")
     proxy_url = f"http://{urllib.parse.quote(proxy_user)}:{urllib.parse.quote(pwd)}@{host}:{port}"
     return {"http": proxy_url, "https": proxy_url}
 
@@ -288,8 +288,8 @@ def _proxy_for(country_code: str = "us", session_id: Optional[str] = None) -> Op
     3. secondary provider - last resort.
     """
     return (
-        _webshare_datacenter_proxies(country_code)
-        or _webshare_proxies(country_code)
+        _datacenter_proxies(country_code)
+        or _residential_proxies(country_code)
         or _dataimpulse_proxies(country_code)
     )
 

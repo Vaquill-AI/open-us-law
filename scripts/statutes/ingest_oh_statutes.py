@@ -17,7 +17,7 @@ each section from its anchor until the next anchor; metadata trailers
 ("Effective:", "Latest Legislation:", "PDF: Download Authenticated PDF")
 are stripped to keep just the substantive rule text.
 
-Geo-restricted; uses Webshare US proxy + Mozilla UA. Rate-limited politely
+Geo-restricted; uses the US proxy + Mozilla UA. Rate-limited politely
 (2 workers, 1.5s pause per chapter) - the site 429s at >4 req/s.
 """
 
@@ -71,14 +71,14 @@ _MOZ_UA = (
 
 
 def _us_proxies() -> Optional[dict]:
-    user = os.environ.get("WEBSHARE_USERNAME", "")
-    pwd = os.environ.get("WEBSHARE_PASSWORD", "")
+    user = os.environ.get("US_PROXY_USERNAME", "")
+    pwd = os.environ.get("US_PROXY_PASSWORD", "")
     if not user or not pwd:
         return None
     import urllib.parse
     proxy_user = f"{user}-US-rotate"
-    host = os.environ.get("WEBSHARE_PROXY_HOST", "p.webshare.io")
-    port = os.environ.get("WEBSHARE_PROXY_PORT", "80")
+    host = os.environ.get("US_PROXY_HOST", "")
+    port = os.environ.get("US_PROXY_PORT", "80")
     url = f"http://{urllib.parse.quote(proxy_user)}:{urllib.parse.quote(pwd)}@{host}:{port}"
     return {"http": url, "https": url}
 

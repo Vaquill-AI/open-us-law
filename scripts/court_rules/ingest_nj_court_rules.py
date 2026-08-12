@@ -18,7 +18,7 @@ WAF with a JavaScript challenge: a plain requests/curl fetch returns a ~940-byte
 403 Incapsula block page, not the PDF. A realistic User-Agent alone does NOT
 clear it (it is a JS/cookie challenge, not UA filtering, and not geographic).
 
-Empirical status (2026-07-19, box + Webshare US residential proxy):
+Empirical status (2026-07-19, box + US residential proxy):
   - curl_cffi chrome impersonation -> blocked (returns the ~940-byte block page).
   - `--use-browser` (Playwright on a sticky US IP) DOES clear the Incapsula
     challenge on the njcourts.gov HOMEPAGE (renders fine), but the PDF file
@@ -113,13 +113,13 @@ _load_env()
 
 
 def _proxies() -> dict[str, str] | None:
-    user = os.environ.get("WEBSHARE_USERNAME", "")
-    pwd = os.environ.get("WEBSHARE_PASSWORD", "")
+    user = os.environ.get("US_PROXY_USERNAME", "")
+    pwd = os.environ.get("US_PROXY_PASSWORD", "")
     if not user or not pwd:
         return None
     proxy_user = f"{user}-US-rotate"
-    host = os.environ.get("WEBSHARE_PROXY_HOST", "p.webshare.io")
-    port = os.environ.get("WEBSHARE_PROXY_PORT", "80")
+    host = os.environ.get("US_PROXY_HOST", "")
+    port = os.environ.get("US_PROXY_PORT", "80")
     url = f"http://{urllib.parse.quote(proxy_user)}:{urllib.parse.quote(pwd)}@{host}:{port}"
     return {"http": url, "https": url}
 
@@ -155,13 +155,13 @@ _PW: dict = {}
 
 
 def _sticky_proxy_pw() -> dict | None:
-    user = os.environ.get("WEBSHARE_USERNAME", "")
-    pwd = os.environ.get("WEBSHARE_PASSWORD", "")
+    user = os.environ.get("US_PROXY_USERNAME", "")
+    pwd = os.environ.get("US_PROXY_PASSWORD", "")
     if not user or not pwd:
         return None
     slot = os.environ.get("NJ_PROXY_SLOT", "1")
-    host = os.environ.get("WEBSHARE_PROXY_HOST", "p.webshare.io")
-    port = os.environ.get("WEBSHARE_PROXY_PORT", "80")
+    host = os.environ.get("US_PROXY_HOST", "")
+    port = os.environ.get("US_PROXY_PORT", "80")
     return {
         "server": f"http://{host}:{port}",
         "username": f"{user}-US-{slot}",

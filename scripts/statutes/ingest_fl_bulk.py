@@ -18,7 +18,7 @@ Two modes:
                          run: 490 net-new sections, embedded additively.
 
 Source note: flsenate.gov publishes the same statutes but blocks the scraper box
-(direct egress times out; the Webshare US proxy is 502'd). leg.state.fl.us serves
+(direct egress times out; the US proxy is 502'd). leg.state.fl.us serves
 the box DIRECTLY and carries the SAME statute text with the SAME HTML classes, so
 it is the source here.
 

@@ -79,14 +79,14 @@ _load_env()
 
 
 def _us_proxies() -> Optional[dict]:
-    user = os.environ.get("WEBSHARE_USERNAME", "")
-    pwd = os.environ.get("WEBSHARE_PASSWORD", "")
+    user = os.environ.get("US_PROXY_USERNAME", "")
+    pwd = os.environ.get("US_PROXY_PASSWORD", "")
     if not user or not pwd:
         return None
     import urllib.parse
     proxy_user = f"{user}-US-rotate"
-    host = os.environ.get("WEBSHARE_PROXY_HOST", "p.webshare.io")
-    port = os.environ.get("WEBSHARE_PROXY_PORT", "80")
+    host = os.environ.get("US_PROXY_HOST", "")
+    port = os.environ.get("US_PROXY_PORT", "80")
     url = f"http://{urllib.parse.quote(proxy_user)}:{urllib.parse.quote(pwd)}@{host}:{port}"
     return {"http": url, "https": url}
 
@@ -104,9 +104,11 @@ async def _discover_title_xml_urls() -> dict[str, str]:
     from playwright.async_api import async_playwright
     proxy = _us_proxies()
     if proxy is None:
-        raise RuntimeError("Webshare proxy required for UT discovery")
+        raise RuntimeError("the US proxy required for UT discovery")
     pw_proxy = {
-        "server": "http://p.webshare.io:80",
+        # Derived from the resolved proxy, not hardcoded: the host is
+        # configurable and a literal here silently ignored it.
+        "server": "http://" + proxy["http"].split("@", 1)[1],
         "username": proxy["http"].split("//", 1)[1].split(":", 1)[0],
         "password": proxy["http"].split(":", 2)[2].split("@", 1)[0],
     }

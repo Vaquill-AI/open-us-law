@@ -16,7 +16,7 @@ weekly bulk refresh and any concurrent state ingest contend for).
 
 Geo-fence: www.palegis.us is unreachable from the scraper box directly (direct
 connects time out) and only answers US exits, so every request MUST egress
-through the Webshare US-rotate residential proxy. We reuse the proven
+through the US-rotate residential proxy. We reuse the proven
 ``vaquill_pipeline.http_client._proxy_for("us")`` (which builds the
 ``-US-rotate`` username form, NOT the bare global-rotate one) rather than
 hand-rolling the proxy URL. A geo-fence can also answer HTTP 200 with a decoy

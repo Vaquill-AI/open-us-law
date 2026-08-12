@@ -11,7 +11,7 @@ The Texas Judicial Branch publishes each statewide rule set as ONE text-layered
 PDF, indexed at https://www.txcourts.gov/rules-forms/rules-standards/. txcourts.gov
 is GEO-FENCED behind an Azure Front Door WAF (403 to non-US IPs, including the
 Hetzner scraper box) but is otherwise open: from a US IP every request is a plain
-PDF GET, no JS challenge. So ALL fetches here route through the Webshare US-rotate
+PDF GET, no JS challenge. So ALL fetches here route through the US-rotate
 residential proxy. Media-ID URLs (/media/<id>/...pdf) rotate on every amendment,
 so we resolve the current URLs from the index each run, falling back to pinned
 seeds.
@@ -121,13 +121,13 @@ _load_env()
 
 
 def _proxies() -> dict[str, str] | None:
-    user = os.environ.get("WEBSHARE_USERNAME", "")
-    pwd = os.environ.get("WEBSHARE_PASSWORD", "")
+    user = os.environ.get("US_PROXY_USERNAME", "")
+    pwd = os.environ.get("US_PROXY_PASSWORD", "")
     if not user or not pwd:
         return None
     proxy_user = f"{user}-US-rotate"
-    host = os.environ.get("WEBSHARE_PROXY_HOST", "p.webshare.io")
-    port = os.environ.get("WEBSHARE_PROXY_PORT", "80")
+    host = os.environ.get("US_PROXY_HOST", "")
+    port = os.environ.get("US_PROXY_PORT", "80")
     url = f"http://{urllib.parse.quote(proxy_user)}:{urllib.parse.quote(pwd)}@{host}:{port}"
     return {"http": url, "https": url}
 
