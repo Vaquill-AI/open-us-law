@@ -36,7 +36,5 @@ python scripts/federal/extract_usc_zips.py --help
 python scripts/federal/parse_ecfr_streaming.py --help
 ```
 
-Some state sources are geo-restricted and require a US proxy; those scripts read
-`WEBSHARE_PROXY_HOST` / `WEBSHARE_PROXY_PORT` / `WEBSHARE_PROXY_USER` /
-`WEBSHARE_PROXY_PWD` from the environment (see `.env.example`). No credentials are
+Some state sources serve US traffic only; run those from a US host. No credentials are
 hardcoded anywhere.

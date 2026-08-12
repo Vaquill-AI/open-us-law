@@ -108,19 +108,19 @@ Every scraper writes **JSONL** - one normalized node/section per line - to `$OUT
 
 ### State statutes (all 50 states)
 
-Run via `cd scripts/state_scrapers && OUT_DIR=./data python -m src.scrapers.us.states.<xx>.statutes.scrape<XX>`. States marked **proxy** geo-restrict non-US IPs - see [caveats](#important-caveats-please-read). A few states also have an **official-source** alternative scraper noted in the last column. All 50 states plus DC and Puerto Rico have complete statutory coverage, with one exception: Pennsylvania, whose Consolidated Statutes are complete but whose older unconsolidated (Purdon's) statutes are a separate backfill. The **Sections** column is the section count in the published `v2026.07` snapshot; the live count is always available from the API.
+Run via `cd scripts/state_scrapers && OUT_DIR=./data python -m src.scrapers.us.states.<xx>.statutes.scrape<XX>`. States marked **US-only** serve US traffic only - see [caveats](#important-caveats-please-read). A few states also have an **official-source** alternative scraper noted in the last column. All 50 states plus DC and Puerto Rico have complete statutory coverage, with one exception: Pennsylvania, whose Consolidated Statutes are complete but whose older unconsolidated (Purdon's) statutes are a separate backfill. The **Sections** column is the section count in the published `v2026.07` snapshot; the live count is always available from the API.
 
 Many states also have a newer **bulk-source ingester** at [`scripts/statutes/ingest_<state>_bulk.py`](scripts/statutes/) that pulls from an official bulk source (XML zip, API, or PDF) instead of scraping HTML. These share a small pipeline in [`scripts/state_scrapers/vaquill_pipeline/`](scripts/state_scrapers/vaquill_pipeline/) (fetch, chunk, record-build) and per-state parsers in `scripts/statutes/<state>_bulk/`. Run e.g. `OUT_DIR=./data python scripts/statutes/ingest_ny_bulk.py`.
 
 | State | Statute scraper | Sections (v2026.07) | Notes |
 |---|---|---|---|
 | Alaska (`ak`) | [scrapeAK.py](scripts/state_scrapers/src/scrapers/us/states/ak/statutes/scrapeAK.py) | 17,935 |  |
-| Alabama (`al`) | [scrapeAL.py](scripts/state_scrapers/src/scrapers/us/states/al/statutes/scrapeAL.py) | 45,984 | proxy |
+| Alabama (`al`) | [scrapeAL.py](scripts/state_scrapers/src/scrapers/us/states/al/statutes/scrapeAL.py) | 45,984 | US-only |
 | Arkansas (`ar`) | data-only (in the dataset) | 36,936 |  |
 | Arizona (`az`) | [scrapeAZ.py](scripts/state_scrapers/src/scrapers/us/states/az/statutes/scrapeAZ.py) | 22,674 |  |
 | California (`ca`) | [scrapeCA.py](scripts/state_scrapers/src/scrapers/us/states/ca/statutes/scrapeCA.py) | 161,429 |  |
 | Colorado (`co`) | data-only (in the dataset) | 34,231 |  |
-| Connecticut (`ct`) | [scrapeCT.py](scripts/state_scrapers/src/scrapers/us/states/ct/statutes/scrapeCT.py) | 16,082 | proxy |
+| Connecticut (`ct`) | [scrapeCT.py](scripts/state_scrapers/src/scrapers/us/states/ct/statutes/scrapeCT.py) | 16,082 | US-only |
 | Delaware (`de`) | [scrapeDE.py](scripts/state_scrapers/src/scrapers/us/states/de/statutes/scrapeDE.py) | 21,649 |  |
 | Florida (`fl`) | [scrapeFL.py](scripts/state_scrapers/src/scrapers/us/states/fl/statutes/scrapeFL.py) | 24,866 |  |
 | Georgia (`ga`) | withdrawn | 28,154 (in `v2026.07` only) | see note below |
@@ -128,7 +128,7 @@ Many states also have a newer **bulk-source ingester** at [`scripts/statutes/ing
 | Iowa (`ia`) | [scrapeIA.py](scripts/state_scrapers/src/scrapers/us/states/ia/statutes/scrapeIA.py) | 28,223 |  |
 | Idaho (`id`) | [scrapeID.py](scripts/state_scrapers/src/scrapers/us/states/id/statutes/scrapeID.py) | 22,754 |  |
 | Illinois (`il`) | [scrapeIL.py](scripts/state_scrapers/src/scrapers/us/states/il/statutes/scrapeIL.py) | 72,456 |  |
-| Indiana (`in`) | [scrapeIN.py](scripts/state_scrapers/src/scrapers/us/states/in/statutes/scrapeIN.py) | 83,148 | proxy |
+| Indiana (`in`) | [scrapeIN.py](scripts/state_scrapers/src/scrapers/us/states/in/statutes/scrapeIN.py) | 83,148 | US-only |
 | Kansas (`ks`) | [scrapeKS.py](scripts/state_scrapers/src/scrapers/us/states/ks/statutes/scrapeKS.py) | 24,361 |  |
 | Kentucky (`ky`) | [scrapeKY.py](scripts/state_scrapers/src/scrapers/us/states/ky/statutes/scrapeKY.py) | 20,894 |  |
 | Louisiana (`la`) | [ingest_la_bulk.py](scripts/statutes/ingest_la_bulk.py) | 43,474 |  |
@@ -143,11 +143,11 @@ Many states also have a newer **bulk-source ingester** at [`scripts/statutes/ing
 | North Carolina (`nc`) | withdrawn | 26,685 (in `v2026.07` only) | see note below |
 | North Dakota (`nd`) | [scrapeND.py](scripts/state_scrapers/src/scrapers/us/states/nd/statutes/scrapeND.py) | 29,042 |  |
 | Nebraska (`ne`) | [scrapeNE.py](scripts/state_scrapers/src/scrapers/us/states/ne/statutes/scrapeNE.py) | 25,997 |  |
-| New Hampshire (`nh`) | [scrapeNH.py](scripts/state_scrapers/src/scrapers/us/states/nh/statutes/scrapeNH.py) | 25,375 | proxy |
+| New Hampshire (`nh`) | [scrapeNH.py](scripts/state_scrapers/src/scrapers/us/states/nh/statutes/scrapeNH.py) | 25,375 | US-only |
 | New Jersey (`nj`) | [ingest_nj_bulk.py](scripts/statutes/ingest_nj_bulk.py) | 55,897 |  |
 | New Mexico (`nm`) | data-only (in the dataset) | 34,455 |  |
 | Nevada (`nv`) | data-only (in the dataset) | 48,190 |  |
-| New York (`ny`) | [scrapeNY.py](scripts/state_scrapers/src/scrapers/us/states/ny/statutes/scrapeNY.py) | 40,102 | proxy |
+| New York (`ny`) | [scrapeNY.py](scripts/state_scrapers/src/scrapers/us/states/ny/statutes/scrapeNY.py) | 40,102 | US-only |
 | Ohio (`oh`) | [scrapeOH.py](scripts/state_scrapers/src/scrapers/us/states/oh/statutes/scrapeOH.py) | 33,161 | also [official-source](scripts/statutes/ingest_oh_statutes.py) |
 | Oklahoma (`ok`) | [scrapeOK.py](scripts/state_scrapers/src/scrapers/us/states/ok/statutes/scrapeOK.py) | 35,329 |  |
 | Oregon (`or`) | data-only (in the dataset) | 36,202 |  |
@@ -216,7 +216,7 @@ The 9 not yet covered - **AK, CO, CT, DE, GA, NC, NH, SC, SD** - are in the publ
 
 ## Important caveats (please read)
 
-**1. Some sources need a US IP / proxy.** A number of state sites geo-restrict non-US traffic or throttle aggressively. Those scripts read `WEBSHARE_USERNAME` / `WEBSHARE_PASSWORD` (a US rotating proxy) from the environment - see [`.env.example`](.env.example) - or you can run from a US host. State **statute** scrapers currently needing a proxy: **AL, CT, IN, NH, NY** (several regulation scrapers too, e.g. MN, WA, WI). If a run returns almost nothing, geo-blocking is the usual cause.
+**1. Some sources serve US traffic only.** A number of state sites drop or throttle connections from outside the US. Run those scrapers from a US host. State **statute** scrapers affected: **AL, CT, IN, NH, NY** (several regulation scrapers too, e.g. MN, WA, WI). If a run returns almost nothing and you are outside the US, that is the usual cause.
 
 **2. Some scripts may stop working over time.** These scrapers target **live government websites**. Those sites get redesigned, move URLs, change HTML, or add anti-bot measures - so a scraper that worked at publish time can break later. When that happens it usually needs a small parser update, not a rewrite. If you hit one, please [open an issue or PR](#contributing); fixes to individual state parsers are exactly where community help compounds.
 
