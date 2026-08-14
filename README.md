@@ -23,7 +23,7 @@ If it helps one person get a fair hearing they would not otherwise have got, it 
 
 Use it. Break it. Build on it. Tell us what is wrong with it.
 
-Built by [Priyansh Khodiyar](https://www.linkedin.com/in/zriyansh/) and the team at Vaquill. If you find an error, a gap, or a provision we got wrong, tell us and we will fix it in the next release. If you build something with this, we would genuinely love to hear about it.
+Built by [Priyansh Khodiyar](https://www.linkedin.com/in/zriyansh/) and the team at [Vaquill AI](https://vaquill.ai/). If you find an error, a gap, or a provision we got wrong, tell us and we will fix it in the next release. If you build something with this, we would genuinely love to hear about it.
 
 ---
 
