@@ -283,7 +283,11 @@ New-jurisdiction parsers, coverage fixes, and - especially - **repairs to state 
 
 Most data derives from official government sources (state legislature / secretary-of-state sites, uscode.house.gov, the eCFR, the Federal Register, GPO govinfo), and those records keep the exact source URL they were ingested from.
 
+A minority of state statutory codes were originally obtained from commercial aggregators rather than an official publisher. Those records carry **no** `source_url` rather than linking to a third party. We would rather state that plainly than imply the whole corpus is officially sourced.
+
 Every scraper in this repo reads a government publisher. Where our published copy of a jurisdiction came from somewhere else, no scraper is included rather than shipping one that points at a third party, and the official-source scraper is in progress.
+
+The `v2026.07` snapshot carried non-government `source_url` values on some records: 36,202 Oregon statute sections, 1,090 Puerto Rico sections, and 4,918 constitution sections. Those have since been corrected, and `v2026.08` is built by a pipeline that refuses to publish any file containing a non-government source URL.
 
 The retrieval layer (embeddings, semantic index, citation graph) is intentionally out of scope here.
 
