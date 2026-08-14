@@ -3,6 +3,30 @@
 **Open, structured US primary law - plus the scrapers that build it.**  
 State statutory codes, the US Code, the Code of Federal Regulations, state administrative regulations, state and federal constitutions, and court rules - normalized to a single schema, overwhelmingly from official government sources.
 
+## Why this exists
+
+The law is public. Reading it should not cost money.
+
+In practice, it does. A state's regulations sit behind a login. Court rules are scanned PDFs nobody can search. The annotated code that actually tells you what a statute means costs more per year than a legal aid clinic spends on rent. The people who most need to read the law are the least able to pay for the privilege, and everyone in this industry knows it and quietly accepts it.
+
+We are not accepting it.
+
+So here is every US statute, regulation, constitution, court rule and agency guidance document we could get our hands on. Pulled from official government sources. Cleaned, parsed, deduplicated, structured, and handed over. Three million sections. No key, no quota, no seat licence, no sales call, no contract, no catch. Download it and do whatever you like with it, including building something that competes with us.
+
+We built this because somebody had to, and because the people who could have done it years ago decided the paywall was more interesting.
+
+If a tenant facing eviction, a solo attorney with no research budget, a clinic with three staff, or one stubborn developer in a garage ends up with the same raw material as a firm paying six figures a year for it, then this was worth every hour.
+
+And selfishly: this is what we want to be remembered for. Not a product. This. That some people were crazy enough to take an entire country's law, put it in a file, and give it away.
+
+If it helps one person get a fair hearing they would not otherwise have got, it has already paid for itself.
+
+Use it. Break it. Build on it. Tell us what is wrong with it.
+
+Built by [Priyansh Khodiyar](https://www.linkedin.com/in/zriyansh/) and the team at Vaquill. If you find an error, a gap, or a provision we got wrong, tell us and we will fix it in the next release. If you build something with this, we would genuinely love to hear about it.
+
+---
+
 US law is public domain. In *Georgia v. Public.Resource.Org* (2020) the Supreme Court reaffirmed the government-edicts doctrine: statutes, regulations, constitutions, and the official materials legislators produce cannot be copyrighted. Yet clean, structured, bulk access to the **compiled 50-state statutory codes** does not exist in the open - case law and federal law (govinfo USLM XML) are open, but the state codes sit behind commercial APIs. This project publishes that missing layer, and the tooling to reproduce it.
 
 ## Watch the walkthrough
@@ -20,23 +44,28 @@ The built snapshot is published on Hugging Face. **You do not need to run any of
 ```python
 from datasets import load_dataset
 
-ds = load_dataset("vaquill/open-us-law", "statutes", split="train")
-ca = load_dataset("vaquill/open-us-law", data_files="us_ca_statutes.parquet")
+ds = load_dataset("vaquill/open-us-law", data_files="us_ca_statutes.parquet")
+rules = load_dataset("vaquill/open-us-law", data_files="us_*_court_rules.parquet")
 ```
 
-Prefer a direct download? Everything is mirrored on Cloudflare R2 (zero egress, range-request friendly): browse **[oss-data-us.vaquill.ai](https://oss-data-us.vaquill.ai/index.html)**, grab the [combined tarball](https://oss-data-us.vaquill.ai/v2026.07/open-us-law-v2026.07-parquet.tar), or read the [manifest](https://oss-data-us.vaquill.ai/index.json).
+Prefer a direct download? Everything is mirrored on Cloudflare R2 (zero egress, range-request friendly): browse **[oss-data-us.vaquill.ai](https://oss-data-us.vaquill.ai/index.html)**, grab the [v2026.07 combined tarball](https://oss-data-us.vaquill.ai/v2026.07/open-us-law-v2026.07-parquet.tar), or read the [manifest](https://oss-data-us.vaquill.ai/index.json). The mirror is being updated to `v2026.08`; Hugging Face has it now.
 
-Snapshot `v2026.07` contains **2,046,009 sections**:
+Snapshot `v2026.08` contains **2,978,617 sections** across 229 files:
 
 | Corpus | Sections | Jurisdictions |
 |---|---:|---|
-| State & territorial statutes | 1,983,394 | 50 states + DC + Puerto Rico |
-| United States Code | 54,853 | federal |
-| Constitutions | 7,762 | 52 |
+| Statutes (state, territorial, and the US Code) | 1,997,490 | 51 |
+| Regulations (state and federal) | 885,121 | 17 |
+| Court rules | 43,809 | 44 |
+| Agency guidance (including state insurance bulletins) | 25,461 | 50 |
+| Constitutions | 13,382 | 52 |
+| Federal rulings, treaties, executive orders, proclamations and other | 13,354 | federal |
 
 Parquet, one 24-column schema across every jurisdiction, CC BY 4.0. Sections carry `act_status` (`in_force`, `repealed`, `reserved`, `renumbered`, …), citation, full title/chapter hierarchy, and cross-references into the USC and CFR. New dated snapshots quarterly.
 
-**Coming next:** federal agency rules and guidance, and more corpora to fill the remaining gaps. See what's being added on the [coverage roadmap](https://www.vaquill.ai/docs/api-guide/coverage#coming-next).
+`v2026.08` is the first snapshot to publish court rules, agency guidance, and the federal ruling and presidential-document sets. It supersedes `v2026.07`, which contained statutes and constitutions only and remains a fixed historical artifact.
+
+**Coming next:** more state regulations from official publishers, and more corpora to fill the remaining gaps. See what's being added on the [coverage roadmap](https://www.vaquill.ai/docs/api-guide/coverage#coming-next).
 
 This README doubles as the **table of contents** - the file tree is deep, so every scraper is linked below.
 
@@ -169,7 +198,7 @@ Many states also have a newer **bulk-source ingester** at [`scripts/statutes/ing
 
 > States marked **data-only** are included in the published dataset. This repo ships scrapers only for sources published by a government body, so where our copy came from somewhere else no scraper is included; official-source scrapers for those states are in progress.
 
-> **Georgia and North Carolina statutes have been withdrawn.** Our copy of both carried the source site's own navigation and footer text inside the section bodies, so the sections were not clean statutory text. They have been removed from the live corpus and will not appear in the next snapshot. They are still present in `v2026.07`, which is a fixed historical artifact. Both are being re-ingested from an official publisher; Georgia is the harder of the two, since the O.C.G.A. has no free official bulk source.
+> **Georgia and North Carolina statutes have been withdrawn.** Our copy of both carried the source site's own navigation and footer text inside the section bodies, so the sections were not clean statutory text. They have been removed from the live corpus and do not appear in `v2026.08`. They are still present in `v2026.07`, which is a fixed historical artifact. Both are being re-ingested from an official publisher; Georgia is the harder of the two, since the O.C.G.A. has no free official bulk source.
 
 ### State regulations
 
@@ -254,11 +283,9 @@ New-jurisdiction parsers, coverage fixes, and - especially - **repairs to state 
 
 Most data derives from official government sources (state legislature / secretary-of-state sites, uscode.house.gov, the eCFR, the Federal Register, GPO govinfo), and those records keep the exact source URL they were ingested from.
 
-A minority of state statutory codes were obtained from commercial aggregators rather than an official publisher. In the published dataset those records carry **no** `source_url` rather than linking to a third party, and the per-jurisdiction table in the [dataset card](https://huggingface.co/datasets/vaquill/open-us-law) marks them. We would rather state that plainly than imply the whole corpus is officially sourced. The retrieval layer (embeddings, semantic index, citation graph) is intentionally out of scope here.
+Every scraper in this repo reads a government publisher. Where our published copy of a jurisdiction came from somewhere else, no scraper is included rather than shipping one that points at a third party, and the official-source scraper is in progress.
 
-Every scraper in this repo now reads a government publisher. Where our published copy of a jurisdiction came from somewhere else, no scraper is included rather than shipping one that points at a third party, and the official-source scraper is in progress.
-
-Some `v2026.07` records still carry a non-government `source_url` from an earlier ingest: 36,202 Oregon statute sections, 1,090 Puerto Rico sections, and 4,918 constitution sections. These are corrected as each jurisdiction is re-ingested from its official source.
+The retrieval layer (embeddings, semantic index, citation graph) is intentionally out of scope here.
 
 ## Maintained by
 
