@@ -48,7 +48,7 @@ ds = load_dataset("vaquill/open-us-law", data_files="us_ca_statutes.parquet")
 rules = load_dataset("vaquill/open-us-law", data_files="us_*_court_rules.parquet")
 ```
 
-Prefer a direct download? Everything is mirrored on Cloudflare R2 (zero egress, range-request friendly): browse **[oss-data-us.vaquill.ai](https://oss-data-us.vaquill.ai/index.html)**, grab the [v2026.07 combined tarball](https://oss-data-us.vaquill.ai/v2026.07/open-us-law-v2026.07-parquet.tar), or read the [manifest](https://oss-data-us.vaquill.ai/index.json). The mirror is being updated to `v2026.08`; Hugging Face has it now.
+Prefer a direct download? Everything is mirrored on Cloudflare R2 (zero egress, range-request friendly): browse **[oss-data-us.vaquill.ai](https://oss-data-us.vaquill.ai/index.html)**, grab the [combined tarball](https://oss-data-us.vaquill.ai/v2026.08/open-us-law-v2026.08-parquet.tar) (4.09 GB), or read the [manifest](https://oss-data-us.vaquill.ai/index.json). `index.json` and `latest.json` always describe the current snapshot, so those URLs never change between releases.
 
 Snapshot `v2026.08` contains **2,978,617 sections** across 229 files:
 
