@@ -291,6 +291,33 @@ The `v2026.07` snapshot carried non-government `source_url` values on some recor
 
 The retrieval layer (embeddings, semantic index, citation graph) is intentionally out of scope here.
 
+## More open source from Vaquill AI
+
+Everything below is public and Apache-2.0 or CC BY unless noted.
+
+**Data and benchmarks**
+
+- [open-us-law](https://github.com/Vaquill-AI/open-us-law) - this repo. US primary law as structured data, plus the scrapers.
+- [open-legal-answer-benchmark](https://github.com/Vaquill-AI/open-legal-answer-benchmark) - reproducible benchmark of US legal-answer quality. Verified questions, a standard-library scorer, results anyone can rerun.
+- [legal-mt-benchmark](https://github.com/Vaquill-AI/legal-mt-benchmark) - English to Hindi legal machine translation on the WMT25 Legal Domain Test Suite, 7 metrics, all outputs published.
+
+**MCP servers**
+
+- [courtlistener-mcp](https://github.com/Vaquill-AI/courtlistener-mcp) - CourtListener (US federal and state courts, PACER, eCFR). Hosted, bring your own key.
+- [canlii-mcp](https://github.com/Vaquill-AI/canlii-mcp) - CanLII, the Canadian legal database.
+- [vaquill-mcp](https://github.com/Vaquill-AI/vaquill-mcp) - the Vaquill research API over USC, CFR, state law and case law.
+- [integrations](https://github.com/Vaquill-AI/integrations) - Slack, Discord, Teams, WhatsApp, Telegram and WordPress connectors.
+
+**Tools for the way lawyers actually work**
+
+- [ms-word-addin](https://github.com/Vaquill-AI/ms-word-addin) - contract review, playbooks, drafting and research inside Word.
+- [google-docs-addon](https://github.com/Vaquill-AI/google-docs-addon) - the same for Google Docs, with native tracked-change redlines.
+
+**Reference**
+
+- [awesome-legaltech](https://github.com/Vaquill-AI/awesome-legaltech) - a curated list of open source legal tech, models, datasets and companies.
+- [playbooks](https://github.com/Vaquill-AI/playbooks) - attorney-grade negotiation playbooks for US commercial contracts, clause by clause.
+
 ## Maintained by
 
 [Vaquill AI](https://www.vaquill.ai). This open corpus is the substrate; Vaquill AI's API adds continuous freshness, retrieval, and citation resolution on top of it.
