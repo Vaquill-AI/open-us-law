@@ -145,10 +145,10 @@ Many states also have a newer **bulk-source ingester** at [`scripts/statutes/ing
 |---|---|---|---|
 | Alaska (`ak`) | [scrapeAK.py](scripts/state_scrapers/src/scrapers/us/states/ak/statutes/scrapeAK.py) | 17,935 |  |
 | Alabama (`al`) | [scrapeAL.py](scripts/state_scrapers/src/scrapers/us/states/al/statutes/scrapeAL.py) | 45,984 | US-only |
-| Arkansas (`ar`) | data-only (in the dataset) | 36,936 |  |
+| Arkansas (`ar`) | in progress | 36,936 |  |
 | Arizona (`az`) | [scrapeAZ.py](scripts/state_scrapers/src/scrapers/us/states/az/statutes/scrapeAZ.py) | 22,674 |  |
 | California (`ca`) | [scrapeCA.py](scripts/state_scrapers/src/scrapers/us/states/ca/statutes/scrapeCA.py) | 161,429 |  |
-| Colorado (`co`) | data-only (in the dataset) | 34,231 |  |
+| Colorado (`co`) | in progress | 34,231 |  |
 | Connecticut (`ct`) | [scrapeCT.py](scripts/state_scrapers/src/scrapers/us/states/ct/statutes/scrapeCT.py) | 16,082 | US-only |
 | Delaware (`de`) | [scrapeDE.py](scripts/state_scrapers/src/scrapers/us/states/de/statutes/scrapeDE.py) | 21,649 |  |
 | Florida (`fl`) | [scrapeFL.py](scripts/state_scrapers/src/scrapers/us/states/fl/statutes/scrapeFL.py) | 24,866 |  |
@@ -167,24 +167,24 @@ Many states also have a newer **bulk-source ingester** at [`scripts/statutes/ing
 | Michigan (`mi`) | [scrapeMI.py](scripts/state_scrapers/src/scrapers/us/states/mi/statutes/scrapeMI.py) | 40,658 |  |
 | Minnesota (`mn`) | [scrapeMN.py](scripts/state_scrapers/src/scrapers/us/states/mn/statutes/scrapeMN.py) | 27,747 |  |
 | Missouri (`mo`) | [scrapeMO.py](scripts/state_scrapers/src/scrapers/us/states/mo/statutes/scrapeMO.py) | 29,296 |  |
-| Mississippi (`ms`) | data-only (in the dataset) | 158,688 |  |
+| Mississippi (`ms`) | in progress | 158,688 |  |
 | Montana (`mt`) | [scrapeMT.py](scripts/state_scrapers/src/scrapers/us/states/mt/statutes/scrapeMT.py) | 30,514 |  |
 | North Carolina (`nc`) | withdrawn | 26,685 (in `v2026.07` only) | see note below |
 | North Dakota (`nd`) | [scrapeND.py](scripts/state_scrapers/src/scrapers/us/states/nd/statutes/scrapeND.py) | 29,042 |  |
 | Nebraska (`ne`) | [scrapeNE.py](scripts/state_scrapers/src/scrapers/us/states/ne/statutes/scrapeNE.py) | 25,997 |  |
 | New Hampshire (`nh`) | [scrapeNH.py](scripts/state_scrapers/src/scrapers/us/states/nh/statutes/scrapeNH.py) | 25,375 | US-only |
 | New Jersey (`nj`) | [ingest_nj_bulk.py](scripts/statutes/ingest_nj_bulk.py) | 55,897 |  |
-| New Mexico (`nm`) | data-only (in the dataset) | 34,455 |  |
-| Nevada (`nv`) | data-only (in the dataset) | 48,190 |  |
+| New Mexico (`nm`) | in progress | 34,455 |  |
+| Nevada (`nv`) | in progress | 48,190 |  |
 | New York (`ny`) | [scrapeNY.py](scripts/state_scrapers/src/scrapers/us/states/ny/statutes/scrapeNY.py) | 40,102 | US-only |
 | Ohio (`oh`) | [scrapeOH.py](scripts/state_scrapers/src/scrapers/us/states/oh/statutes/scrapeOH.py) | 33,161 | also [official-source](scripts/statutes/ingest_oh_statutes.py) |
 | Oklahoma (`ok`) | [scrapeOK.py](scripts/state_scrapers/src/scrapers/us/states/ok/statutes/scrapeOK.py) | 35,329 |  |
-| Oregon (`or`) | data-only (in the dataset) | 36,202 |  |
+| Oregon (`or`) | in progress | 36,202 |  |
 | Pennsylvania (`pa`) | [ingest_pa_bulk.py](scripts/statutes/ingest_pa_bulk.py) | 14,547 (Consolidated; Purdon's pending) |  |
 | Rhode Island (`ri`) | [scrapeRI.py](scripts/state_scrapers/src/scrapers/us/states/ri/statutes/scrapeRI.py) | 21,107 |  |
 | South Carolina (`sc`) | [scrapeSC.py](scripts/state_scrapers/src/scrapers/us/states/sc/statutes/scrapeSC.py) | 29,947 |  |
 | South Dakota (`sd`) | [scrapeSD.py](scripts/state_scrapers/src/scrapers/us/states/sd/statutes/scrapeSD.py) | 39,589 |  |
-| Tennessee (`tn`) | data-only (in the dataset) | 32,693 |  |
+| Tennessee (`tn`) | in progress | 32,693 |  |
 | Texas (`tx`) | [scrapeTX.py](scripts/state_scrapers/src/scrapers/us/states/tx/statutes/scrapeTX.py) | 122,535 |  |
 | Utah (`ut`) | [scrapeUT.py](scripts/state_scrapers/src/scrapers/us/states/ut/statutes/scrapeUT.py) | 25,880 | also [official-source](scripts/statutes/ingest_ut_statutes.py) |
 | Virginia (`va`) | [scrapeVA.py](scripts/state_scrapers/src/scrapers/us/states/va/statutes/scrapeVA.py) | 33,856 |  |
@@ -192,11 +192,9 @@ Many states also have a newer **bulk-source ingester** at [`scripts/statutes/ing
 | Washington (`wa`) | [scrapeWA.py](scripts/state_scrapers/src/scrapers/us/states/wa/statutes/scrapeWA.py) | 51,498 |  |
 | Wisconsin (`wi`) | [scrapeWI.py](scripts/state_scrapers/src/scrapers/us/states/wi/statutes/scrapeWI.py) | 18,158 |  |
 | West Virginia (`wv`) | [scrapeWV.py](scripts/state_scrapers/src/scrapers/us/states/wv/statutes/scrapeWV.py) | 25,460 |  |
-| Wyoming (`wy`) | data-only (in the dataset) | 10,219 |  |
+| Wyoming (`wy`) | in progress | 10,219 |  |
 
 > Puerto Rico statutes: complete, 23,636 sections, ingested from the official OGP portal (bvirtualogp.pr.gov).
-
-> States marked **data-only** are included in the published dataset. This repo ships scrapers only for sources published by a government body, so where our copy came from somewhere else no scraper is included; official-source scrapers for those states are in progress.
 
 > **Georgia and North Carolina statutes have been withdrawn.** Our copy of both carried the source site's own navigation and footer text inside the section bodies, so the sections were not clean statutory text. They have been removed from the live corpus and do not appear in `v2026.08`. They are still present in `v2026.07`, which is a fixed historical artifact. Both are being re-ingested from an official publisher; Georgia is the harder of the two, since the O.C.G.A. has no free official bulk source.
 
