@@ -236,7 +236,7 @@ State administrative codes. Some geo-restrict - see [caveats](#important-caveats
 |---|---|
 | 50 state constitutions | [ingest_state_constitutions.py](scripts/constitutions/ingest_state_constitutions.py) |
 
-All 38 jurisdictions in that script are scraped from the state's own official publisher (its legislature or secretary of state).
+Every jurisdiction in that script is scraped from the state's own official publisher (its legislature or secretary of state).
 
 ---
 
@@ -278,7 +278,7 @@ New-jurisdiction parsers, coverage fixes, and - especially - **repairs to state 
 
 ## Provenance
 
-Most data derives from official government sources (state legislature / secretary-of-state sites, uscode.house.gov, the eCFR, the Federal Register, GPO govinfo), and those records keep the exact source URL they were ingested from.
+Data derives from official government sources (state legislature / secretary-of-state sites, uscode.house.gov, the eCFR, the Federal Register, GPO govinfo), and those records keep the exact source URL they were ingested from.
 
 The retrieval layer (embeddings, semantic index, citation graph) is intentionally out of scope here.
 
