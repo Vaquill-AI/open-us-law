@@ -237,7 +237,6 @@ State administrative codes. Some geo-restrict - see [caveats](#important-caveats
 | 50 state constitutions | [ingest_state_constitutions.py](scripts/constitutions/ingest_state_constitutions.py) |
 
 All 38 jurisdictions in that script are scraped from the state's own official publisher (its legislature or secretary of state).
-The 9 not yet covered - **AK, CO, CT, DE, GA, NC, NH, SC, SD** - are in the published dataset; their official-publisher scrapers are in progress.
 
 ---
 
@@ -280,8 +279,6 @@ New-jurisdiction parsers, coverage fixes, and - especially - **repairs to state 
 ## Provenance
 
 Most data derives from official government sources (state legislature / secretary-of-state sites, uscode.house.gov, the eCFR, the Federal Register, GPO govinfo), and those records keep the exact source URL they were ingested from.
-
-Every scraper in this repo reads a government publisher. Where our published copy of a jurisdiction came from somewhere else, no scraper is included rather than shipping one that points at a third party, and the official-source scraper is in progress.
 
 The retrieval layer (embeddings, semantic index, citation graph) is intentionally out of scope here.
 
