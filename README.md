@@ -3,6 +3,8 @@
 **Open, structured US primary law - plus the scrapers that build it.**  
 State statutory codes, the US Code, the Code of Federal Regulations, state administrative regulations, state and federal constitutions, and court rules - normalized to a single schema, overwhelmingly from official government sources.
 
+[![Discord](https://img.shields.io/badge/Discord-Join%20the%20community-5865F2?logo=discord&logoColor=white)](https://discord.gg/GQtnwxf8nQ)
+
 ## Why this exists
 
 The law is public. Reading it should not cost money.
@@ -313,7 +315,7 @@ Everything below is public and Apache-2.0 or CC BY unless noted.
 
 [Vaquill AI](https://www.vaquill.ai). This open corpus is the substrate; Vaquill AI's API adds continuous freshness, retrieval, and citation resolution on top of it.
 
-Questions, ideas, or want to help? DM me on [LinkedIn](https://www.linkedin.com/in/zriyansh/).
+Questions, ideas, or want to help? Join the [Discord](https://discord.gg/GQtnwxf8nQ), or DM me on [LinkedIn](https://www.linkedin.com/in/zriyansh/).
 
 ---
 
