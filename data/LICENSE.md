@@ -28,9 +28,3 @@ Under the following terms:
 For commercial use of the compilation, email contact@vaquill.ai for a commercial licence.
 
 Full license text: https://creativecommons.org/licenses/by-nc/4.0/legalcode
-
-## Earlier snapshots
-
-Snapshots published before `v2026.09` were released under CC BY 4.0
-(https://creativecommons.org/licenses/by/4.0/legalcode), and that licence continues to
-apply to copies of those snapshots.
