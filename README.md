@@ -268,7 +268,7 @@ Every jurisdiction in that script is scraped from the state's own official publi
 The **law itself is public domain** (US government edicts - *Georgia v. Public.Resource.Org*). On top of that:
 
 - **Scripts** - Apache-2.0 ([`LICENSE`](LICENSE)). Free, including commercial use.
-- **Data / compilation** - CC BY-NC 4.0 from `v2026.09` ([`data/LICENSE.md`](data/LICENSE.md)). Free for non-commercial use, with attribution. Snapshots before `v2026.09` were released under CC BY 4.0, and that licence continues to apply to copies of them.
+- **Data / compilation** - CC BY-NC 4.0 from `v2026.09` ([`data/LICENSE.md`](data/LICENSE.md)). Free for non-commercial use, with attribution.
 
 **The dataset is free for non-commercial use.** Research, teaching, legal aid, journalism, public-interest work and open-source projects can download it and use it without asking us, as long as you attribute it. Building something commercial on the compilation needs a licence from us: email **contact@vaquill.ai**, or use the hosted API below.
 
