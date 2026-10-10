@@ -1,0 +1,20 @@
+{
+ "built": "2026-10-10",
+ "source": "CourtListener opinions via a self-hosted mirror; 10,745,929 opinions read",
+ "extractor_version": "0.6.0",
+ "rows_in": 3450046,
+ "rows_published": 2950812,
+ "occurrences_published": 35006606,
+ "excluded_weak": 496867,
+ "excluded_artifact": 2344,
+ "excluded_publisher_or_url_noise": 23,
+ "categories": [
+  "administrative-registers",
+  "constitutions",
+  "court-rules",
+  "regulations",
+  "session-laws",
+  "statutes"
+ ],
+ "csv_files": 331
+}
