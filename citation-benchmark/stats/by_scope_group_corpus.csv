@@ -1,0 +1,12 @@
+scope_group,corpus,rows
+rules,court_rule,11821
+statutes,statute,10393
+constitutions,constitution,3361
+regulations,regulation,2672
+statutes,session_law,2625
+statutes,federal_code,2360
+regulations,federal_reg,1072
+rules,federal_rule,605
+other,other,390
+regulations,admin_register,84
+other,guidance,83

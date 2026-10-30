@@ -1,0 +1,60 @@
+{
+ "by_area": {
+  "constitutions": 1768,
+  "court_rules": 11361,
+  "federal_sessionlaws": 5364,
+  "regulations": 2668,
+  "statutes_am": 2958,
+  "statutes_nw": 5064,
+  "synthetic_forms": 6283
+ },
+ "by_corpus": {
+  "admin_register": 84,
+  "constitution": 3361,
+  "court_rule": 11821,
+  "federal_code": 2360,
+  "federal_reg": 1072,
+  "federal_rule": 605,
+  "guidance": 83,
+  "other": 390,
+  "regulation": 2672,
+  "session_law": 2625,
+  "statute": 10393
+ },
+ "by_outcome": {
+  "flag_or_refuse": 1264,
+  "refuse": 880,
+  "resolve": 32400,
+  "session_law": 922
+ },
+ "by_scope_group": {
+  "constitutions": 3361,
+  "other": 473,
+  "regulations": 3828,
+  "rules": 12426,
+  "statutes": 15378
+ },
+ "dropped_from_internal_set": {
+  "target_not_in_corpus": 52
+ },
+ "match_level_rows": 178,
+ "no_jurisdiction_rows": 515,
+ "pinpoint_rows": 1314,
+ "refusal_reason": {
+  "ambiguous": 282,
+  "container_level": 869,
+  "multi_section": 395,
+  "not_held": 508,
+  "out_of_scope": 90
+ },
+ "repair_rows": 70,
+ "rows": 35466,
+ "rows_with_alternatives": 778,
+ "state_scope_rows": 3064,
+ "statutes_scope_by_outcome": {
+  "flag_or_refuse": 915,
+  "refuse": 638,
+  "resolve": 12903,
+  "session_law": 922
+ }
+}
