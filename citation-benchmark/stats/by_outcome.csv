@@ -1,6 +1,6 @@
 scope_group,outcome,refusal_reason,rows
 statutes,resolve,,12903
-rules,resolve,,12298
+rules,resolve,,12315
 regulations,resolve,,3616
 constitutions,resolve,,3141
 statutes,session_law,,922
@@ -10,10 +10,10 @@ statutes,refuse,not_held,383
 statutes,flag_or_refuse,multi_section,258
 statutes,refuse,ambiguous,247
 regulations,flag_or_refuse,container_level,107
+rules,refuse,not_held,97
 constitutions,flag_or_refuse,container_level,91
 constitutions,flag_or_refuse,multi_section,90
 regulations,refuse,out_of_scope,68
-rules,refuse,not_held,62
 rules,flag_or_refuse,multi_section,42
 constitutions,refuse,not_held,29
 other,refuse,not_held,17

@@ -1,6 +1,6 @@
 # US Citation Resolution Benchmark
 
-35,466 labelled legal citation strings, each with the outcome a citation resolver should produce.
+35,518 labelled legal citation strings, each with the outcome a citation resolver should produce.
 A lawyer writes `N.Y. Penal Law § 125.25 (McKinney 2023)`, `42 USC 1983` or `Cal. Rules of Court, rule 8.204`.
 The resolver must return the one right provision, or must refuse (or say it is answering a container or a range) when the citation does not name one section.
 
@@ -84,21 +84,21 @@ Statutes versus rules: the headline scope is `scope_group = statutes`.
 
 ## Counts
 
-Total 35,466 rows.
+Total 35,518 rows.
 
 | scope_group | rows |
 | --- | ---: |
 | statutes | 15,378 |
-| rules | 12,426 |
+| rules | 12,478 |
 | regulations | 3,828 |
 | constitutions | 3,361 |
 | other | 473 |
 
 | outcome | rows |
 | --- | ---: |
-| resolve | 32,400 |
+| resolve | 32,417 |
 | flag_or_refuse | 1,264 |
-| refuse | 880 |
+| refuse | 915 |
 | session_law | 922 |
 
 | area | rows | note |
@@ -107,11 +107,11 @@ Total 35,466 rows.
 | statutes_nw | 5,064 | researched |
 | constitutions | 1,768 | researched |
 | regulations | 2,668 | researched |
-| court_rules | 11,361 | researched |
+| court_rules | 11,413 | researched |
 | federal_sessionlaws | 5,364 | researched (federal code, rules, registers, session laws) |
 | synthetic_forms | 6,283 | generated typed variants of real sections |
 
-Other counts: 3,064 rows need a state scope, 515 name no jurisdiction, 1,314 carry a pinpoint, 178 carry a `match_level`, 70 carry a `repair_kind`, 778 list alternatives.
+Other counts: 3,117 rows need a state scope, 515 name no jurisdiction, 1,287 carry a pinpoint, 178 carry a `match_level`, 70 carry a `repair_kind`, 778 list alternatives.
 Full tables are in `stats/`.
 
 ## How the rows were made and labelled
@@ -130,7 +130,7 @@ We expect residual label errors. Report them.
 ## What was left out of this release
 
 Rows whose target is in a third-party snapshot or a state regulation slice we do not redistribute as text are published as citations with corpus metadata only (canonical citation, title, status). No section text is included in this folder.
-Rows whose target id no longer exists in the corpus were removed or re-keyed.
+Rows whose target id no longer existed in the corpus were re-keyed to the current id or marked as not held.
 
 ## Licence and attribution
 

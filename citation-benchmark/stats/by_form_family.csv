@@ -329,6 +329,7 @@ me_civ_bluebook,22
 mo_court_rules,22
 nc_app_bluebook,22
 ny_nycrr_130_200_500_nycrr_stored,22
+pa_crim_pacode_pacode_sec,22
 pr_crim_pr_own,22
 sal_named_act_pub_l,22
 sal_pub_l_act_level,22
@@ -407,6 +408,7 @@ nh_crim_nh_style,17
 oh_jud_cond_ohio_stored,17
 other_not_held,17
 pa_civ_pacode_pacode_sec,17
+pa_evid_pacode_pacode_sec,17
 sd_rpc_sd_rpc,17
 sibling_ma_const,17
 syn_state_regulation_noise_nbsp_after_symbol,17
@@ -3263,11 +3265,15 @@ pa_crim_pa_long,3
 pa_crim_pa_rcrimp_no,3
 pa_crim_pa_rcrp,3
 pa_crim_pa_rule_comma,3
+pa_crim_pacode_pacode_nosym,3
+pa_crim_pacode_pacode_rule,3
 pa_evid_bluebook,3
 pa_evid_pa_long,3
 pa_evid_pa_re_space,3
 pa_evid_pa_rev,3
 pa_evid_pa_rule_comma,3
+pa_evid_pacode_pacode_nosym,3
+pa_evid_pacode_pacode_rule,3
 pa_juv_bluebook,3
 pa_juv_pa_rjcp_space,3
 pa_juv_pa_rule_comma,3
@@ -3850,8 +3856,6 @@ oh_sup_sup_r_space,2
 ok_laws_ch_year_shared_no_state,2
 ok_provision_not_in_corpus,2
 pa_act_no_of_year,2
-pa_crim_pacode_pacode_sec,2
-pa_evid_pacode_pacode_sec,2
 pa_ocp_pa_oc_long,2
 pa_ocp_pa_oc_space,2
 pa_ocp_pa_own,2
@@ -5827,6 +5831,12 @@ pa_crim__mech_lowercase,1
 pa_crim__mech_nbsp,1
 pa_crim__mech_trailing_period,1
 pa_crim__mech_uppercase,1
+pa_crim_pacode__mech_double_space,1
+pa_crim_pacode__mech_lowercase,1
+pa_crim_pacode__mech_nbsp,1
+pa_crim_pacode__mech_see_signal,1
+pa_crim_pacode__mech_trailing_period,1
+pa_crim_pacode__mech_uppercase,1
 pa_decimal_section,1
 pa_evid__mech_double_space,1
 pa_evid__mech_inserted_section_sign,1
@@ -5840,7 +5850,6 @@ pa_evid_pacode__mech_nbsp,1
 pa_evid_pacode__mech_see_signal,1
 pa_evid_pacode__mech_trailing_period,1
 pa_evid_pacode__mech_uppercase,1
-pa_evid_pacode_pacode_rule,1
 pa_juv__mech_double_space,1
 pa_juv__mech_inserted_section_sign,1
 pa_juv__mech_lowercase,1

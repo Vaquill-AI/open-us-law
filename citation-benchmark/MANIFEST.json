@@ -1,11 +1,11 @@
 {
  "name": "citation-benchmark",
  "built": "2026-10-30",
- "total_rows": 35466,
+ "total_rows": 35518,
  "files": {
   "README.md": {
-   "bytes": 9763,
-   "sha256": "873951fc9ff21fbbe16bd1b719dc17594a1cfba3d1654c6f5e9e6f40f44e615f"
+   "bytes": 9793,
+   "sha256": "f318d1057669c6eb19c733ab52fcc11c5fa86eb295ebda36d28f2bcaf9a0ac4d"
   },
   "data/constitutions.jsonl.gz": {
    "bytes": 52061,
@@ -13,9 +13,9 @@
    "rows": 1768
   },
   "data/court_rules.jsonl.gz": {
-   "bytes": 329361,
-   "sha256": "4143aee599c6e761c7191cd9d320eb92d7b517a9b663b9584a39d33bec103ebf",
-   "rows": 11361
+   "bytes": 330803,
+   "sha256": "ba0ea85470595e150caf486281d19ce3fa0082f8534ca630d8d15f194912af76",
+   "rows": 11413
   },
   "data/federal_sessionlaws.jsonl.gz": {
    "bytes": 106645,
@@ -43,8 +43,8 @@
    "rows": 6283
   },
   "samples/sample_200.jsonl": {
-   "bytes": 105956,
-   "sha256": "6881a2f6f0a40b0783456634b729f0235cc2171229d92f052f8043721943f9d5"
+   "bytes": 104639,
+   "sha256": "1e0c503437bc78eae10330120fad4ef7de2bb64db80305bc895f2bc04f800d77"
   },
   "scripts/verify.py": {
    "bytes": 3322,
@@ -52,27 +52,27 @@
   },
   "stats/by_area.csv": {
    "bytes": 152,
-   "sha256": "7e195b58cfcd5192365b3e083c211da959eca25bcdc03c6504b8ace3b071c54f"
+   "sha256": "09053d4e8849bc5224a09d58796ed0e902dab1b95d7276d8c6c030a4f7d32d14"
   },
   "stats/by_form_family.csv": {
-   "bytes": 183610,
-   "sha256": "dde093ff01fdf832d5bf017686051e66ee7e15479997876fcfdf04adde95593a"
+   "bytes": 183913,
+   "sha256": "b45e0d245c8bff875b47ac17d05a9f1a0d23d330bbc2a4a8aefd7410236e4cb4"
   },
   "stats/by_outcome.csv": {
    "bytes": 1024,
-   "sha256": "9f3a14aaf70f66651e390fbf4552f9836c4984b14301e31578581fef2d1b7810"
+   "sha256": "cbb4041d17f46c92519efbbbab99e3fc6f83d38b9982f6bccfb063c4a8585433"
   },
   "stats/by_scope_group_corpus.csv": {
    "bytes": 311,
-   "sha256": "1d19bf3700612a075c38911133b1933b51692d7a8941e9a7fe859e65eb293263"
+   "sha256": "015cfea3e13d7136845925ec3935f270a6b56e3438b4cc3a1fbc5a73db3c9924"
   },
   "stats/by_state.csv": {
-   "bytes": 482,
-   "sha256": "6a2808503f555697128e1af9ed4bb3a0161e9eceab3fbc610bd14c4b0fb1d26f"
+   "bytes": 481,
+   "sha256": "070dbc56fb3c1b93b4bd6379dfa22532874aaa36adae6ff712da8fe20b794833"
   },
   "stats/summary.json": {
-   "bytes": 1180,
-   "sha256": "62c43d07856ce5e65f21e0a3b9446f79ed857513c65019c31d3d00534fffc5a2"
+   "bytes": 1149,
+   "sha256": "b36a6acf7760ded2c92e6686662b5d3edc91718891e670364513f0475a6602ca"
   }
  }
 }
