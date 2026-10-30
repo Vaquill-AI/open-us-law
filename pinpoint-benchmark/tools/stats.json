@@ -1,0 +1,52 @@
+{
+ "mn": {
+  "n": 120,
+  "A_eq_first_engine": 106,
+  "truth_eq_first_engine": 108,
+  "nodes": 1555,
+  "disagreements": 14,
+  "B_labelled": 14,
+  "B_eq_A": 10,
+  "B_eq_engine": 2,
+  "B_differs_from_A": 4,
+  "B_differs_and_adjudicated": 1
+ },
+ "ia": {
+  "n": 120,
+  "A_eq_first_engine": 110,
+  "truth_eq_first_engine": 114,
+  "nodes": 1206,
+  "disagreements": 10,
+  "B_labelled": 10,
+  "B_eq_A": 5,
+  "B_eq_engine": 4,
+  "B_differs_from_A": 5,
+  "B_differs_and_adjudicated": 0
+ },
+ "mo": {
+  "n": 120,
+  "A_eq_first_engine": 118,
+  "truth_eq_first_engine": 118,
+  "nodes": 995,
+  "disagreements": 2,
+  "B_labelled": 2,
+  "B_eq_A": 2,
+  "B_eq_engine": 0
+ },
+ "wi": {
+  "n": 120,
+  "A_eq_first_engine": 115,
+  "truth_eq_first_engine": 115,
+  "nodes": 1223,
+  "disagreements": 5,
+  "B_labelled": 5,
+  "B_eq_A": 5,
+  "B_eq_engine": 0
+ },
+ "mi": {
+  "n": 120,
+  "A_eq_first_engine": 120,
+  "truth_eq_first_engine": 120,
+  "nodes": 1065
+ }
+}

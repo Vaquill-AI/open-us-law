@@ -1,0 +1,17 @@
+{
+ "COUNTS.json": "0b970829c8e1e45e15442634aeba48586f893769ab71bb2070fd7bfbc39a01d4",
+ "LICENSE-DATA.md": "11e67bc68a3577d25a267b14ac12d60595c9e43284edf91865b3188b8b5bd86e",
+ "README.md": "f7f0ccdfe9c652640c3d71ff6dcf35081f986574a1fd56a383a6a9bd4ce45d89",
+ "data/pinpoint_ia.jsonl.gz": "af187fe1e2fe7974b4720eaa4bc1045920fe7b42fdbd9feb3c9aa5153a918847",
+ "data/pinpoint_mi.jsonl.gz": "9a321ac53d33c7a5941fa0e21663bef44c79ab4bf71b588eb93391d6cbce3747",
+ "data/pinpoint_mn.jsonl.gz": "56ac96fd7ee792dc2e09a0f7bffd9a5f1e3be52c6ae7db12d4ebbee698b423d1",
+ "data/pinpoint_mo.jsonl.gz": "0a7888a1a621c06d95bb3f5a7a1753d959e18d38ac797ec58b6bab922101b463",
+ "data/pinpoint_wi.jsonl.gz": "2f9f19d73fa4d37c1e2c8a4f54a5503ef993b6c402d37aea93af177392e0d692",
+ "data_outline_only/pinpoint_ia.jsonl.gz": "4fc428ed8bde4eb7b12cbef1f3a5c9547cf01c2d58ea688d9b9331f62d57bcc8",
+ "data_outline_only/pinpoint_mi.jsonl.gz": "e9494d47cb0323718bc39071bcc815564bed63043bf1fb473dc63bd030b93fee",
+ "data_outline_only/pinpoint_mn.jsonl.gz": "94f16e76c806643254fab984ff5bc39dc3f54829e07fff151df5e0b56fc0405c",
+ "data_outline_only/pinpoint_mo.jsonl.gz": "fc16ba1baf159a88a74d3d71e2b0cfdb339c7c7c87817081c985cedd5583b62c",
+ "data_outline_only/pinpoint_wi.jsonl.gz": "ec7ac64db254dbc11a40e51e2212b8e7196938b5cbb691f386fd51aea57c80ab",
+ "score.py": "64c2d97d1b79155401fb16518e7e6a3dd89361f70a6c24e81d7466eeed85711f",
+ "verify.py": "7f7a49c7456d10132fadf5fcba90291f7aa94346eb26f1d1e8dda01ac640e4ee"
+}
